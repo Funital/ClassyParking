@@ -1,6 +1,9 @@
+import 'package:classy_parking/core/constants/font.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../core/constants/color.dart';
+import '../../core/router/route_path.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({super.key});
@@ -27,7 +30,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onTap: (){
             // context.go(RoutePath.home);
           },
-          child: Image.asset('assets/images/classyparking_logo.png', height: 50)),
+          // child: Image.asset('assets/images/classyparking_logo.png', height: 50)),
+          child: Text(
+            '주차의 품격',
+            style: AppFont.size20.copyWith(
+              fontWeight: FontWeight.w800,
+              color: Colors.black
+            ),
+          )
+      ),
       actions: [
         Padding(
           padding: const EdgeInsets.only(right: 10),
@@ -38,7 +49,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             iconSize: 40,
             onPressed: () {
-              // context.push(RoutePath.myPage);
+              context.push(RoutePath.myPage);
             },
           ),
         ),
