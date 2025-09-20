@@ -1,30 +1,35 @@
-// This is a basic Flutter widget test.
+// This is a basic Flutter widgets test.
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
+// To perform an interaction with a widgets in your test, use the WidgetTester
 // utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// gestures. You can also use WidgetTester to find child widgets in the widgets
+// tree, read text, and verify that the values of widgets properties are correct.
 
+import 'package:classy_parking/app/classyparking_app.dart';
+import 'package:classy_parking/presentation/screens/main/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:classy_parking/main.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('로그인 화면에 텍스트가 보이는지 확인', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MainScreen(),
+      ),
+    );
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    expect(find.text('로그인 / 회원가입'), findsOneWidget);
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('ClassyParking 로고 이미지가 있는지 확인', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      const MaterialApp(
+        home: MainScreen(),
+      ),
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.byType(Image), findsNWidgets(4)); // logo, title, kakao/apple 아이콘
   });
 }
