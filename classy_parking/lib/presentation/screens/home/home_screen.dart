@@ -1,12 +1,140 @@
+import 'package:classy_parking/core/constants/font.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'home_model.dart';
+import 'home_view_model.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text("This is Home Screen"),
+    return ChangeNotifierProvider(
+      create: (_) => HomeViewModel(),
+      child: Scaffold(
+        backgroundColor: Colors.grey[200],
+        body: Consumer<HomeViewModel>(
+          builder: (context, vm, _) {
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  Text(
+                      "나의 주차 등급",
+                      style: AppFont.size22.copyWith(
+                        fontWeight: FontWeight.w800
+                      )
+                  ),
+
+                  const SizedBox(height: 20),
+                  // 🚦 신호등 영역
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 30),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          CircleAvatar(backgroundColor: Colors.red, radius: 35),
+                          CircleAvatar(backgroundColor: Colors.yellow, radius: 35),
+                          CircleAvatar(backgroundColor: Colors.green, radius: 35),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 30),
+                  _buildMenuRow(vm.getTopMenu()),
+
+                  const SizedBox(height: 16),
+                  _buildMenuRow(vm.getMiddleMenu()),
+
+                  const SizedBox(height: 16),
+                  _buildMenuRow(vm.getBottomMenu()),
+                ],
+              ),
+            );
+          },
+        ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(right: 18),
+          child: SizedBox(
+            width: 150,
+            height: 50,
+            child: TextButton(
+              onPressed: () {
+                // context.push(RoutePath.albumAdd);
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue,
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    '서비스 이용 안내',
+                    style: AppFont.size16.copyWith(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Icon(
+                    Icons.warning,
+                    color: Colors.white,
+                    size: 20,
+                  )
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMenuRow(List<HomeModel> items) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: items
+          .map(
+            (item) => Expanded(
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 8),
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 4,
+                  offset: Offset(0, 2),
+                )
+              ],
+            ),
+            child: Column(
+              children: [
+                Icon(item.icon, size: 32, color: Colors.blue),
+                const SizedBox(height: 8),
+                Text(item.title,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 14)),
+              ],
+            ),
+          ),
+        ),
+      )
+          .toList(),
     );
   }
 }

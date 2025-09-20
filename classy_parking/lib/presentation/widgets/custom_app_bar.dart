@@ -20,7 +20,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       leading: Padding(
         padding: const EdgeInsets.only(left: 10),
         child: IconButton(
-          icon: const Icon(Icons.menu, color: AppColor.mainRed),
+          icon: const Icon(Icons.menu, color: Colors.blue),
           iconSize: 40,
           onPressed: (){},
           // onPressed: () => showMiniAddMenu(context),
@@ -30,7 +30,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           onTap: (){
             // context.go(RoutePath.home);
           },
-          // child: Image.asset('assets/images/classyparking_logo.png', height: 50)),
           child: Text(
             '주차의 품격',
             style: AppFont.size20.copyWith(
