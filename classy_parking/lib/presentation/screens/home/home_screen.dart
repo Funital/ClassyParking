@@ -31,7 +31,7 @@ class HomeScreen extends StatelessWidget {
                   ),
 
                   const SizedBox(height: 20),
-                  // 🚦 신호등 영역
+                  // 신호등 영역
                  const TrafficLight(redColor: Colors.red, yellowColor: Colors.yellow, greenColor: Colors.green),
 
                   const SizedBox(height: 30),
