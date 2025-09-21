@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../core/router/route_path.dart';
+import '../../widgets/traffic_light.dart';
 import 'home_model.dart';
 import 'home_view_model.dart';
 
@@ -31,24 +32,7 @@ class HomeScreen extends StatelessWidget {
 
                   const SizedBox(height: 20),
                   // 🚦 신호등 영역
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
-                      decoration: BoxDecoration(
-                        color: Colors.black,
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          CircleAvatar(backgroundColor: Colors.red, radius: 35),
-                          CircleAvatar(backgroundColor: Colors.yellow, radius: 35),
-                          CircleAvatar(backgroundColor: Colors.green, radius: 35),
-                        ],
-                      ),
-                    ),
-                  ),
+                 const TrafficLight(redColor: Colors.red, yellowColor: Colors.yellow, greenColor: Colors.green),
 
                   const SizedBox(height: 30),
                   _buildMenuRow(context, vm.getTopMenu(context)),
