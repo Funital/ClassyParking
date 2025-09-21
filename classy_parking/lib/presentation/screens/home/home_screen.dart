@@ -1,6 +1,8 @@
 import 'package:classy_parking/core/constants/font.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../../core/router/route_path.dart';
 import 'home_model.dart';
 import 'home_view_model.dart';
 
@@ -68,7 +70,7 @@ class HomeScreen extends StatelessWidget {
             height: 50,
             child: TextButton(
               onPressed: () {
-                // context.push(RoutePath.albumAdd);
+                context.push(RoutePath.home_info);
               },
               style: TextButton.styleFrom(
                 backgroundColor: Colors.blue,
