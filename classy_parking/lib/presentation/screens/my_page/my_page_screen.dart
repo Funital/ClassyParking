@@ -1,3 +1,6 @@
+import 'dart:ui';
+
+import 'package:classy_parking/core/constants/font.dart';
 import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -39,17 +42,51 @@ class MyPageScreen extends StatelessWidget {
                           children: [
                             Row(
                               children: [
-                                Container(
-                                  width: 150,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: Center(
-                                    child: Text(
-                                      model.nickname.isNotEmpty ? model.nickname[0] : '',
-                                      style: const TextStyle(fontSize: 40),
+                                GestureDetector(
+                                  onTap: () {
+                                    showDialog(
+                                      context: context,
+                                      barrierColor: Colors.transparent, // 투명으로 두고
+                                      builder: (context) {
+                                        return GestureDetector(
+                                            onTap: () => Navigator.of(context).pop(),
+                                            child: BackdropFilter(
+                                              filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                                              child: Container(
+                                                color: Colors.white.withValues(alpha: 0.8), // 살짝 어둡게
+                                                child: Center(
+                                                  child: Dialog(
+                                                    backgroundColor: Colors.transparent,
+                                                    child: InteractiveViewer(
+                                                      child: ClipRRect(
+                                                        borderRadius: BorderRadius.circular(12),
+                                                        child: Image.asset(
+                                                          'assets/images/profile.png',
+                                                          fit: BoxFit.contain,
+                                                        ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            ),
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 150,
+                                    height: 150,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: Image.asset(
+                                        'assets/images/profile.png',
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -60,8 +97,8 @@ class MyPageScreen extends StatelessWidget {
                                       redColor: Colors.grey,
                                       yellowColor: Colors.grey,
                                       greenColor: Colors.green,
-                                      radius: 20,
-                                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                                      radius: 25,
+                                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
                                     ),
                                     // 주차 상태
                                     Align(
@@ -112,7 +149,7 @@ class MyPageScreen extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(16),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: Colors.black.withOpacity(0.1),
+                                      color: Colors.black.withValues(alpha: 0.1),
                                       blurRadius: 8,
                                       offset: const Offset(0, 4),
                                     ),
@@ -155,8 +192,8 @@ class MyPageScreen extends StatelessWidget {
             width: 100,
             child: Text(
               label,
-              style: const TextStyle(
-                fontWeight: FontWeight.normal,
+              style: AppFont.size18.copyWith(
+                fontWeight: FontWeight.w700,
                 color: Colors.grey,
               ),
             ),
@@ -164,9 +201,10 @@ class MyPageScreen extends StatelessWidget {
           Expanded(
             child: Text(
               value,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+                style: AppFont.size18.copyWith(
+                  fontWeight: FontWeight.w700,
+                  color: Colors.black,
+                )
             ),
           ),
         ],
@@ -182,10 +220,6 @@ class MyPageScreen extends StatelessWidget {
         onPressed: () {
           // TODO: 업로드 동작 연결
         },
-        icon: Icon(
-          isUploaded ? Icons.check_circle : Icons.upload_file,
-          color: Colors.white,
-        ),
         label: Text(
           isUploaded ? "운전면허증 업로드 완료" : "운전면허증 업로드 필요",
           style: const TextStyle(
@@ -193,6 +227,11 @@ class MyPageScreen extends StatelessWidget {
             color: Colors.white,
             fontSize: 16,
           ),
+        ),
+
+        icon: Icon(
+          isUploaded ? Icons.check_circle : Icons.upload_file,
+          color: Colors.white,
         ),
         style: ElevatedButton.styleFrom(
           backgroundColor: isUploaded ? Colors.blue : Colors.grey,
