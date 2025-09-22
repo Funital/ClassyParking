@@ -21,7 +21,7 @@ class TrafficLight extends StatelessWidget {
     return Padding(
       padding: padding,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
         decoration: BoxDecoration(
           color: Colors.black,
           borderRadius: BorderRadius.circular(16),
@@ -30,7 +30,9 @@ class TrafficLight extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             CircleAvatar(backgroundColor: redColor, radius: radius),
+            const SizedBox(width: 10,),
             CircleAvatar(backgroundColor: yellowColor, radius: radius),
+            const SizedBox(width: 10,),
             CircleAvatar(backgroundColor: greenColor, radius: radius),
           ],
         ),
