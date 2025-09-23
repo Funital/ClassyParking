@@ -6,7 +6,7 @@ import 'core/router/route_path.dart';
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final initialRoute = RoutePath.home;
+  final initialRoute = RoutePath.splash;
 
   runApp(ClassyparkingApp(initialRoute: initialRoute));
 }
