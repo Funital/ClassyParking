@@ -103,7 +103,7 @@ class _MapScreenState extends State<MapScreen> {
           TileLayer(
             urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
             subdomains: const ['a', 'b', 'c'],
-            userAgentPackageName: 'com.funital.classyparking', // ← 앱 패키지명으로 교체
+            userAgentPackageName: 'com.funital.classyparking',
           ),
 
           // 마커 레이어
