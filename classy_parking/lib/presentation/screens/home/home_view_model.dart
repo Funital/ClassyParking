@@ -34,9 +34,11 @@ class HomeViewModel extends ChangeNotifier {
 
   List<HomeModel> getBottomMenu(BuildContext context) => [
     HomeModel(
-      title: "주차장 지도",
+      title: "이용 내역",
       icon: Icons.map,
-      onTap: () {},
+      onTap: () {
+        context.push(RoutePath.bill);
+      },
     ),
     HomeModel(
       title: "주차 모음 영상",

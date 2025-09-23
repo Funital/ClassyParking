@@ -1,9 +1,7 @@
-// main_screen.dart
-import 'package:classy_parking/presentation/screens/my_page/my_page_screen.dart';
+import 'package:classy_parking/presentation/screens/bill/bill_screen.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/custom_tab_bar.dart';
 import '../home/home_screen.dart';
-import '../search/search_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -25,10 +23,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     final screens = [
       const HomeScreen(),
-      const SearchScreen(),
-      const MyPageScreen(),
-      const Center(child: Text("History Tab")),
-      const Center(child: Text("More Tab")),
+      const BillScreen(),
     ];
 
     return Scaffold(

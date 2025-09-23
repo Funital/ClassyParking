@@ -8,4 +8,7 @@ class RoutePath {
   /// myPage
   static const String myPage = '/my_page/my_page_screen';
 
+  /// Bill
+  static const String bill = '/bill/bill_screen';
+
 }
