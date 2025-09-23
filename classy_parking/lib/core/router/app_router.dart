@@ -27,11 +27,13 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.home_video: (context, state) => const VideoScreen(),
   RoutePath.home_info: (context, state) => const InfoScreen(),
   RoutePath.bill: (context, state) => const BillScreen(),
+  RoutePath.map: (context, state) => const MainScreen(),
 };
 
 // 앱바 고정 경로 목록 -> 여기 적으면 앱바 고정됨.
 final List<String> shellRoutes = [
   RoutePath.home,
+  RoutePath.map
   // RoutePath.albumAdd,
   // 필요시 추가
 
