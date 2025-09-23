@@ -14,4 +14,7 @@ class RoutePath {
   /// Map
   static const String map = '/map/map_screen';
 
+  /// Report
+  static const String report = '/report/report_screen';
+
 }

@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/constants/color.dart';
 import '../../../core/constants/font.dart';
 
 
-class HorizontalLabeledTextField extends StatelessWidget {
+class HorizontalLabeledToggle extends StatelessWidget {
   final String title;
   final String hintText;
   final TextEditingController? controller;
-  final ValueChanged<String>? onChanged;
+  final ValueChanged<String?>? onChanged;
+  final List<String> options;
+  final String? selectedValue;
 
-  const HorizontalLabeledTextField({
+  const HorizontalLabeledToggle({
     super.key,
     required this.title,
     required this.hintText,
     this.controller,
     this.onChanged,
+    required this.options,
+    this.selectedValue,
   });
 
   @override
@@ -40,12 +43,10 @@ class HorizontalLabeledTextField extends StatelessWidget {
               border: Border.all(color: Colors.blue, width: 1),
               borderRadius: BorderRadius.circular(30),
             ),
-            child: TextField(
-              controller: controller,
-              onChanged: onChanged,
-              style: AppFont.size16.copyWith(fontWeight: FontWeight.w600),
+            child: DropdownButtonFormField<String>(
               decoration: InputDecoration(
                 isDense: true,
+                border: InputBorder.none,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 10,
                   vertical: 5,
@@ -55,8 +56,18 @@ class HorizontalLabeledTextField extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: Colors.grey,
                 ),
-                border: InputBorder.none,
               ),
+              value: selectedValue,
+              items: options.map((type) {
+                return DropdownMenuItem<String>(
+                  value: type,
+                  child: Text(
+                    type,
+                    style: AppFont.size16.copyWith(fontWeight: FontWeight.w600),
+                  ),
+                );
+              }).toList(),
+              onChanged: onChanged,
             ),
           ),
         ),
