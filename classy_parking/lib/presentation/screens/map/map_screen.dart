@@ -67,6 +67,21 @@ class _MapScreenState extends State<MapScreen> {
     }
   }
 
+  /// 지도 확대
+  void _zoomIn() {
+    final center = _mapController.camera.center;
+    final zoom = _mapController.camera.zoom;
+    _mapController.move(center, zoom + 1);
+  }
+
+  /// 지도 축소
+  void _zoomOut() {
+    final center = _mapController.camera.center;
+    final zoom = _mapController.camera.zoom;
+    _mapController.move(center, zoom - 1);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,10 +141,32 @@ class _MapScreenState extends State<MapScreen> {
       ),
 
       // 현재 위치로 이동 버튼
-      floatingActionButton: FloatingActionButton(
-        onPressed: _recenterMap,
-        tooltip: '현재 위치로 이동',
-        child: const Icon(Icons.my_location),
+      // 현재 위치로 이동, 확대, 축소 버튼들
+      floatingActionButton: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: _recenterMap,
+            tooltip: '현재 위치로 이동',
+            child: const Icon(Icons.my_location),
+            heroTag: 'recenter',
+          ),
+          const SizedBox(height: 12),
+          FloatingActionButton(
+            onPressed: _zoomIn,
+            tooltip: '확대',
+            child: const Icon(Icons.zoom_in),
+            heroTag: 'zoomIn',
+          ),
+          const SizedBox(height: 12),
+          FloatingActionButton(
+            onPressed: _zoomOut,
+            tooltip: '축소',
+            child: const Icon(Icons.zoom_out),
+            heroTag: 'zoomOut',
+          ),
+        ],
       ),
     );
   }
