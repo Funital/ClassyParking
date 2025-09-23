@@ -3,12 +3,16 @@ import 'package:flutter/material.dart';
 class FixedButtonFooter extends StatefulWidget {
   final String text;
   final bool isEnabled;
+  final Color backgroundColor;
+  final IconData? icon;
   final VoidCallback? onPressed;
 
   const FixedButtonFooter({
     super.key,
     required this.text,
     this.isEnabled = true,
+    this.backgroundColor = Colors.red,
+    this.icon,
     this.onPressed,
   });
 
@@ -47,15 +51,17 @@ class _FixedButtonFooterState extends State<FixedButtonFooter> {
             child: Container(
               height: 56,
               decoration: BoxDecoration(
-                color: Colors.red,
+                color: widget.backgroundColor,
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Center(
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(Icons.warning, color: Colors.white),
-                    SizedBox(width: 8),
+                    if (widget.icon != null) ...[
+                      Icon(widget.icon, color: Colors.white),
+                      SizedBox(width: 8),
+                    ],
                     Text(
                       widget.text,
                       style: TextStyle(
