@@ -13,7 +13,9 @@ class HomeViewModel extends ChangeNotifier {
     HomeModel(
       title: "불법주차 신고하기",
       icon: Icons.report_problem,
-      onTap: () {},
+      onTap: () {
+        context.push(RoutePath.report);
+      },
     ),
   ];
 
