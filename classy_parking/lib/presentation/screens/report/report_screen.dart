@@ -88,7 +88,7 @@ class _ReportScreenState extends State<ReportScreen> {
 
           /// 입력 폼
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
                 const SizedBox(height: 25),

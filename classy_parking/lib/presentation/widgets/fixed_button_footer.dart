@@ -23,7 +23,6 @@ class _FixedButtonFooterState extends State<FixedButtonFooter> {
   Widget build(BuildContext context) {
     /// SafeArea 사용
     return SafeArea(
-      minimum: const EdgeInsets.only(left: 30, right: 30),
       child: Align(
         alignment: Alignment.bottomCenter,
         child: GestureDetector(
