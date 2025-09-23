@@ -16,5 +16,6 @@ class RoutePath {
 
   /// Report
   static const String report = '/report/report_screen';
+  static const String report_success = '/report/report_success_screen';
 
 }
