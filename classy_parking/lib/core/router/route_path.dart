@@ -16,6 +16,10 @@ class RoutePath {
   /// Bill
   static const String bill = '/bill/bill_screen';
 
+  /// Parking
+  static const String parking = '/parking/parking_screen';
+
+
   /// Map
   static const String map = '/map/map_screen';
 
