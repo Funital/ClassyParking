@@ -47,5 +47,9 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
     <string>지도를 위해 위치 접근이 필요합니다.</string>
+    <key>NSCameraUsageDescription</key>
+    <string>운전면허증 촬영을 위해 카메라 접근이 필요합니다.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>촬영한 사진을 저장하기 위해 사진 앨범 접근이 필요합니다.</string>
 </dict>
 </plist>

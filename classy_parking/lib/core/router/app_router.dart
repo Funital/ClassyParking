@@ -13,6 +13,8 @@ import 'package:classy_parking/presentation/screens/sign_up/sign_up_screen.dart'
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../presentation/screens/car/car_screen.dart';
+import '../../presentation/screens/car/photo_screen.dart';
 import '../../presentation/screens/main/main_screen.dart';
 import '../../presentation/widgets/custom_app_bar.dart';
 
@@ -33,6 +35,8 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.login: (context, state) => const LoginScreen(),
   RoutePath.agree: (context, state) => const AgreeScreen(),
   RoutePath.signup: (context, state) => const SignUpScreen(),
+  RoutePath.car: (context, state) => const CarScreen(),
+  RoutePath.photo: (context, state) => const PhotoScreen(),
   RoutePath.home: (context, state) => const MainScreen(),
   RoutePath.myPage: (context, state) => const MyPageScreen(),
   RoutePath.home_video: (context, state) => const VideoScreen(),

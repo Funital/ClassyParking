@@ -7,6 +7,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   final initialRoute = RoutePath.splash;
+  // final initialRoute = RoutePath.photo;
 
   runApp(ClassyparkingApp(initialRoute: initialRoute));
 }

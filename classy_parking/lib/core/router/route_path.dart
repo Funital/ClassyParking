@@ -3,6 +3,8 @@ class RoutePath {
   static const String login = '/login/login_screen';
   static const String agree = '/agree/agree_screen';
   static const String signup = '/sign_up/sign_up_screen';
+  static const String car = '/car/car_screen';
+  static const String photo = '/car/photo_screen';
 
   static const String home = '/';
   static const String home_video = '/home/video/video_screen';

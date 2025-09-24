@@ -1,5 +1,8 @@
 import 'package:classy_parking/presentation/screens/sign_up/sigin_up_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../core/router/route_path.dart';
 
 class SignUpViewModel extends ChangeNotifier {
   final TextEditingController nameController = TextEditingController();
@@ -27,7 +30,7 @@ class SignUpViewModel extends ChangeNotifier {
   }
 
   /// 제출 (회원가입)
-  void submit() {
+  void submit(BuildContext context) {
     if (!_isValid) return;
 
     _signUpModel = SignUpModel(
@@ -37,6 +40,7 @@ class SignUpViewModel extends ChangeNotifier {
       confirmPassword: confirmPasswordController.text,
     );
 
+    context.push(RoutePath.car);
     debugPrint("회원가입 완료: ${_signUpModel!.email}");
     notifyListeners();
   }

@@ -1,5 +1,6 @@
 import 'package:classy_parking/presentation/screens/sign_up/sign_up_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 class SignUpScreen extends StatelessWidget {
@@ -10,6 +11,14 @@ class SignUpScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => SignUpViewModel(),
       child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.blue),
+            onPressed: () => context.pop(),
+          ),
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
         backgroundColor: Colors.white,
         body: SafeArea(
           child: Padding(
@@ -130,7 +139,9 @@ class SignUpScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
-                        onPressed: viewModel.isValid ? viewModel.submit : null,
+                        onPressed: viewModel.isValid
+                            ? () => viewModel.submit(context)
+                            : null,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: viewModel.isValid
                               ? Colors.blue
@@ -141,7 +152,7 @@ class SignUpScreen extends StatelessWidget {
                           ),
                         ),
                         child: Text(
-                          "회원가입",
+                          "다음",
                           style: TextStyle(
                             color: viewModel.isValid
                                 ? Colors.white

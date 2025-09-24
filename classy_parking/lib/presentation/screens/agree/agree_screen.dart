@@ -15,8 +15,8 @@ class AgreeScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.brown),
-            onPressed: () => Navigator.pop(context),
+            icon: const Icon(Icons.arrow_back, color: Colors.blue),
+            onPressed: () => context.pop(),
           ),
           backgroundColor: Colors.white,
           elevation: 0,
@@ -104,9 +104,8 @@ class AgreeScreen extends StatelessWidget {
                     ),
                   ),
 
-                  /// 가입 완료 버튼
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.only(bottom: 35),
                     child: SizedBox(
                       width: double.infinity,
                       child: ElevatedButton(
@@ -118,21 +117,23 @@ class AgreeScreen extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.blue,
                           disabledBackgroundColor: Colors.grey.shade400,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(30),
-                          ),
                           padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                        child: Text(
-                            "가입 완료",
-                            style: AppFont.size18.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white
-                            )
+                        child: const Text(
+                          "다음",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,                // sign_up_screen과 동일
+                            fontWeight: FontWeight.bold, // 동일
+                          ),
                         ),
                       ),
                     ),
                   ),
+
                 ],
               ),
             );
