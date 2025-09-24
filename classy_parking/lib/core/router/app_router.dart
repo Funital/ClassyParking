@@ -1,14 +1,20 @@
 import 'package:classy_parking/core/router/route_path.dart';
+import 'package:classy_parking/presentation/screens/agree/agree_screen.dart';
 import 'package:classy_parking/presentation/screens/bill/bill_screen.dart';
 import 'package:classy_parking/presentation/screens/home/info/info_screen.dart';
 import 'package:classy_parking/presentation/screens/home/video/video_screen.dart';
+import 'package:classy_parking/presentation/screens/login/login_screen.dart';
+import 'package:classy_parking/presentation/screens/login/splash_screen.dart';
 import 'package:classy_parking/presentation/screens/map/map_screen.dart';
 import 'package:classy_parking/presentation/screens/my_page/my_page_screen.dart';
 import 'package:classy_parking/presentation/screens/report/report_screen.dart';
 import 'package:classy_parking/presentation/screens/report/report_success_screen.dart';
+import 'package:classy_parking/presentation/screens/sign_up/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../presentation/screens/car/car_screen.dart';
+import '../../presentation/screens/car/photo_screen.dart';
 import '../../presentation/screens/main/main_screen.dart';
 import '../../presentation/widgets/custom_app_bar.dart';
 
@@ -25,6 +31,12 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
 // 경로별 화면 빌더 매핑 -> 여기 작성 필수!
 final Map<String, GoRouterWidgetBuilder> routeBuilders = {
+  RoutePath.splash: (context, state) => const SplashScreen(),
+  RoutePath.login: (context, state) => const LoginScreen(),
+  RoutePath.agree: (context, state) => const AgreeScreen(),
+  RoutePath.signup: (context, state) => const SignUpScreen(),
+  RoutePath.car: (context, state) => const CarScreen(),
+  RoutePath.photo: (context, state) => const PhotoScreen(),
   RoutePath.home: (context, state) => const MainScreen(),
   RoutePath.myPage: (context, state) => const MyPageScreen(),
   RoutePath.home_video: (context, state) => const VideoScreen(),
