@@ -10,14 +10,12 @@ class LoginViewModel extends ChangeNotifier {
 
   /// 로그인 실행
   void login(BuildContext context) {
-    // TODO: 실제 로그인 API 연동
     debugPrint("로그인 실행");
-    context.push(RoutePath.agree);
+    context.push(RoutePath.home);
   }
 
   /// 회원가입 실행
   void signUp(BuildContext context) {
-    // TODO: 회원가입 화면 이동 또는 API 연동
     debugPrint("회원가입 실행");
     context.push(RoutePath.agree);
   }
