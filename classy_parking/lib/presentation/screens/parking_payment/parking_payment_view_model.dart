@@ -1,10 +1,15 @@
 import 'package:classy_parking/presentation/screens/parking_payment/parking_payment_model.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+
+import '../../../core/router/route_path.dart';
 
 class ParkingPaymentViewModel extends ChangeNotifier {
   late ParkingPaymentModel _paymentInfo;
+  String _selectedPayment = "토스페이";
 
   ParkingPaymentModel get paymentInfo => _paymentInfo;
+  String get selectedPayment => _selectedPayment;
 
   ParkingPaymentViewModel() {
     _paymentInfo = ParkingPaymentModel(
@@ -19,8 +24,14 @@ class ParkingPaymentViewModel extends ChangeNotifier {
     );
   }
 
-  void payParkingFee() {
-    // 결제 로직 추가 (ex. API 요청 or Navigator 이동)
+  void selectPayment(String payment) {
+    _selectedPayment = payment;
+    notifyListeners();
+  }
+
+  void payParkingFee(BuildContext context) {
+    context.push(RoutePath.success_payment);
+    debugPrint("결제 수단: $_selectedPayment");
     debugPrint("결제 진행 중...");
   }
 }

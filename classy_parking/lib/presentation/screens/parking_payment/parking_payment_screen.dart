@@ -11,7 +11,7 @@ class ParkingPaymentScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => ParkingPaymentViewModel(),
-      child: const _ParkingPaymentView(), // 내부 실제 UI 분리
+      child: const _ParkingPaymentView(),
     );
   }
 }
@@ -37,30 +37,28 @@ class _ParkingPaymentView extends StatelessWidget {
               colors: [Color(0xFFa8adb5), Color(0xFFedf0f5)],
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 헤더
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      "안양 공영 주차장",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        "안양 공영 주차장",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
 
-              // 상세 카드
-              Expanded(
-                child: Container(
+                Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   padding: const EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -70,25 +68,21 @@ class _ParkingPaymentView extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      // 차량번호
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
                             info.carNumber,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
+                            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                           ),
                           const Icon(Icons.refresh, color: Colors.grey),
                         ],
                       ),
                       const SizedBox(height: 12),
 
-                      // 위치
                       Text(
                         info.location,
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
+                        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                       const Divider(height: 32),
 
@@ -111,8 +105,7 @@ class _ParkingPaymentView extends StatelessWidget {
                           Text(
                             "입차 : ${info.entryTime}\n출차 : ${info.exitTime}",
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 12, color: Colors.grey),
+                            style: const TextStyle(fontSize: 12, color: Colors.grey),
                           ),
                         ],
                       ),
@@ -132,34 +125,78 @@ class _ParkingPaymentView extends StatelessWidget {
                               isBold: true, color: Colors.black),
                         ],
                       ),
+
+                      const Divider(),
+
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "결제 수단",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      Column(
+                        children: [
+                          _buildPaymentOption(
+                            context,
+                            icon: "assets/images/toss_pay.png",
+                            title: "토스페이",
+                            subtitle: "5만원 이상 2천원 선착순 할인 (매일 0시/10시/18시 400명)",
+                          ),
+                          _buildPaymentOption(
+                            context,
+                            icon: "assets/images/naver_pay.png",
+                            title: "네이버페이",
+                            subtitle: "네이버페이 포인트 최대 1.6% 상시 적립",
+                          ),
+                          _buildPaymentOption(
+                            context,
+                            icon: "assets/images/payco.png",
+                            title: "페이코",
+                            subtitle: "PAYCO 포인트 적립 가능",
+                          ),
+                          _buildPaymentOption(
+                            context,
+                            icon: "assets/images/kakao_pay.png",
+                            title: "카카오페이",
+                            subtitle: "간편 결제 및 송금 가능",
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
-              ),
 
-              // 하단 결제 버튼
-              Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: 48,
-                  child: ElevatedButton(
-                    onPressed: viewModel.payParkingFee,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8)),
-                    ),
-                    child: const Text(
-                      "주차요금 결제",
-                      style: TextStyle(
-                          color: Colors.white, fontWeight: FontWeight.bold),
+                // 하단 결제 버튼
+                Padding(
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
+                  child: SizedBox(
+                    width: double.infinity,
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: () => viewModel.payParkingFee(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text(
+                        "주차요금 결제",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
@@ -186,6 +223,71 @@ class _ParkingPaymentView extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildPaymentOption(
+      BuildContext context, {
+        required String icon,
+        required String title,
+        required String subtitle,
+      }) {
+    final viewModel = Provider.of<ParkingPaymentViewModel>(context);
+
+    return GestureDetector(
+      onTap: () => viewModel.selectPayment(title),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 라디오 버튼
+            Radio<String>(
+              value: title,
+              groupValue: viewModel.selectedPayment,
+              onChanged: (value) {
+                if (value != null) viewModel.selectPayment(value);
+              },
+              activeColor: Colors.blueAccent,
+            ),
+
+            // 아이콘 + 텍스트
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Image.asset(
+                        icon,
+                        width: 24,
+                        height: 24,
+                        fit: BoxFit.contain,
+                      ),
+                      const SizedBox(width: 6),
+                      Text(
+                        title,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    subtitle,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
