@@ -32,7 +32,9 @@ class HomeViewModel extends ChangeNotifier {
     HomeModel(
       title: "주차요금 결제",
       icon: Icons.credit_card,
-      onTap: () {},
+      onTap: () {
+        context.push(RoutePath.payment);
+      },
     ),
   ];
 
