@@ -1,7 +1,10 @@
+import 'package:classy_parking/presentation/screens/map/parking_bottom_sheet.dart';
+import 'package:classy_parking/presentation/screens/map/parking_lot_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -13,15 +16,6 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   final MapController _mapController = MapController();
   LatLng? currentPosition;
-
-  // 경기도 예시 주차장 좌표 (원하는 데이터로 대체 가능)
-  final List<LatLng> parkingLocations = [
-    LatLng(37.3947, 127.1115), // 분당
-    LatLng(37.2636, 127.0286), // 수원
-    LatLng(37.3510, 126.7425), // 안산
-    LatLng(37.5670, 127.0095), // 구리
-    LatLng(37.4449, 127.1382), // 성남
-  ];
 
   static const LatLng initialCenter = LatLng(37.5665, 126.9780); // 서울시청
 
@@ -81,92 +75,120 @@ class _MapScreenState extends State<MapScreen> {
     _mapController.move(center, zoom - 1);
   }
 
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("지도"),
-        centerTitle: true,
-      ),
-      body: FlutterMap(
-        mapController: _mapController,
-        options: const MapOptions(
-          initialCenter: initialCenter,
-          initialZoom: 14,
-          interactionOptions: InteractionOptions(
-            flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-          ),
-        ),
-        children: [
-          // OpenStreetMap 타일 레이어
-          TileLayer(
-            urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            subdomains: const ['a', 'b', 'c'],
-            userAgentPackageName: 'com.funital.classyparking',
-          ),
-
-          // 마커 레이어
-          MarkerLayer(
-            markers: [
-              // 내 위치 마커 (빨간색)
-              if (currentPosition != null)
-                Marker(
-                  point: currentPosition!,
-                  width: 40,
-                  height: 40,
-                  child: const Icon(
-                    Icons.my_location,
-                    color: Colors.red,
-                    size: 40,
-                  ),
-                ),
-
-              // 경기도 예시 주차장 마커 (파란색)
-              ...parkingLocations.map(
-                    (loc) => Marker(
-                  point: loc,
-                  width: 36,
-                  height: 36,
-                  child: const Icon(
-                    Icons.local_parking,
-                    color: Colors.blue,
-                    size: 36,
-                  ),
+    return ChangeNotifierProvider(
+      create: (_) => ParkingLotViewModel(),
+      child: Consumer<ParkingLotViewModel>(
+        builder: (context, viewModel, _) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text("지도"),
+              centerTitle: true,
+            ),
+            body: FlutterMap(
+              mapController: _mapController,
+              options: const MapOptions(
+                initialCenter: initialCenter,
+                initialZoom: 14,
+                interactionOptions: InteractionOptions(
+                  flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
                 ),
               ),
-            ],
-          ),
-        ],
-      ),
+              children: [
+                // OpenStreetMap 타일 레이어
+                TileLayer(
+                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  subdomains: const ['a', 'b', 'c'],
+                  userAgentPackageName: 'com.funital.classyparking',
+                ),
 
-      // 현재 위치로 이동 버튼
-      // 현재 위치로 이동, 확대, 축소 버튼들
-      floatingActionButton: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          FloatingActionButton(
-            onPressed: _recenterMap,
-            tooltip: '현재 위치로 이동',
-            child: const Icon(Icons.my_location),
-            heroTag: 'recenter',
-          ),
-          const SizedBox(height: 12),
-          FloatingActionButton(
-            onPressed: _zoomIn,
-            tooltip: '확대',
-            child: const Icon(Icons.zoom_in),
-            heroTag: 'zoomIn',
-          ),
-          const SizedBox(height: 12),
-          FloatingActionButton(
-            onPressed: _zoomOut,
-            tooltip: '축소',
-            child: const Icon(Icons.zoom_out),
-            heroTag: 'zoomOut',
-          ),
-        ],
+                // 마커 레이어
+                MarkerLayer(
+                  markers: [
+                    // 내 위치 마커 (빨간색)
+                    if (currentPosition != null)
+                      Marker(
+                        point: currentPosition!,
+                        width: 40,
+                        height: 40,
+                        child: const Icon(
+                          Icons.my_location,
+                          color: Colors.red,
+                          size: 40,
+                        ),
+                      ),
+
+                    // ViewModel의 주차장 리스트 기반 마커
+                    ...viewModel.parkingLots.map(
+                          (lot) => Marker(
+                        point: lot.location,
+                        width: 36,
+                        height: 36,
+                        child: GestureDetector(
+                          onTap: () {
+                            viewModel.selectLot(lot);
+                            showModalBottomSheet(
+                              context: context,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+                              ),
+                              builder: (BuildContext context) {
+                                return ParkingBottomSheet(
+                                  location: lot.location,
+                                  title: lot.name,
+                                  address: lot.address,
+                                  phone: lot.phone,
+                                  totalSpaces: lot.totalSpaces,
+                                  availableSpaces: lot.availableSpaces,
+                                  feeInfo: lot.feeInfo,
+                                  operationInfo: lot.operationInfo,
+                                );
+                              },
+                            );
+                          },
+                          child: const Icon(
+                            Icons.local_parking,
+                            color: Colors.blue,
+                            size: 36,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+
+            // 현재 위치로 이동, 확대/축소 버튼
+            floatingActionButton: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  onPressed: _recenterMap,
+                  tooltip: '현재 위치로 이동',
+                  child: const Icon(Icons.my_location),
+                  heroTag: 'recenter',
+                ),
+                const SizedBox(height: 12),
+                FloatingActionButton(
+                  onPressed: _zoomIn,
+                  tooltip: '확대',
+                  child: const Icon(Icons.zoom_in),
+                  heroTag: 'zoomIn',
+                ),
+                const SizedBox(height: 12),
+                FloatingActionButton(
+                  onPressed: _zoomOut,
+                  tooltip: '축소',
+                  child: const Icon(Icons.zoom_out),
+                  heroTag: 'zoomOut',
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
