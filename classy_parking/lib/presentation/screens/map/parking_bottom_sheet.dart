@@ -140,16 +140,16 @@ class ParkingBottomSheet extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             // 자세히 보기 Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  // 여기서 상세 페이지 이동 같은 추가 동작 가능
-                },
-                child: const Text("자세히 보기"),
-              ),
-            ),
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       Navigator.pop(context);
+            //       // 여기서 상세 페이지 이동 같은 추가 동작 가능
+            //     },
+            //     child: const Text("자세히 보기"),
+            //   ),
+            // ),
           ],
         ),
       ),

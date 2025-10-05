@@ -7,27 +7,74 @@ class ParkingLotViewModel extends ChangeNotifier {
   // 주차장 리스트
   final List<ParkingLotModel> _parkingLots = [
     ParkingLotModel(
-      location: LatLng(37.5665, 126.9780),
-      name: "서울시청 본청사 주차장",
-      address: "중구 세종대로 110",
-      phone: "02-2133-5981",
-      totalSpaces: 101,
-      availableSpaces: 31,
-      feeInfo: "기본 요금: 1,000원/10분\n추가 요금: 1,000원/10분\n"
-          "경차/저공해차: 50% 할인\n장애인: 80% 할인\n"
-          "국가유공자/고엽제: 80% 할인\n다자녀: 50% 할인",
-      operationInfo: "평일: 09:00~18:00\n토요일: 24시간\n공휴일: 24시간",
+      location: LatLng(37.392707, 126.932324), // ✅ 연성대학교 정문 주차장 위치
+      name: "연성대 내부 주차장",
+      address: "경기도 안양시 만안구 양화로 37번길 34",
+      phone: "",
+      totalSpaces: 566,
+      availableSpaces: 200,
+      feeInfo: "최초 10분 무료 / 30분 1,000원 / 이후 10분당 500원",
+      operationInfo: "24시간",
     ),
     ParkingLotModel(
-      location: LatLng(37.5700, 126.9769),
-      name: "광화문 주차장",
-      address: "서울 종로구 세종대로 175",
-      phone: "02-1234-5678",
+      location: LatLng(37.394971, 126.935873), // ✅ 남부시장 공영주차장 (안양역 근처)
+      name: "남부시장 공영주차장",
+      address: "경기도 안양시 만안구 안양로248번길 13",
+      phone: "",
+      totalSpaces: 189,
+      availableSpaces: 50,
+      feeInfo: "전통시장 이용 시 90분 무료 제공, 이후 요금 적용",
+      operationInfo: "일대 영업시간 / 24시간 여부 확인 필요",
+    ),
+    ParkingLotModel(
+      location: LatLng(37.396437, 126.933967), // ✅ 명학역 2번 출구 앞 노상 주차장
+      name: "명학역 노상공영주차장",
+      address: "경기도 안양시 만안구 덕천로48번길 5",
+      phone: "",
+      totalSpaces: 87,
+      availableSpaces: 30,
+      feeInfo: "09:00 ~ 17:00 / 요금 적용 (10분 단위 혹은 고정 요금)",
+      operationInfo: "월~금 09:00~17:00",
+    ),
+    ParkingLotModel(
+      location: LatLng(37.393824, 126.935638), // ✅ 문예로 공영주차장 (냉천로~만안로 구간)
+      name: "문예 노상공영주차장",
+      address: "경기도 안양시 만안구 문예로 41 일대",
+      phone: "",
+      totalSpaces: 54,
+      availableSpaces: 20,
+      feeInfo: "10:00 ~ 18:00 운영 / 요금 적용",
+      operationInfo: "월~금 10:00~18:00",
+    ),
+    ParkingLotModel(
+      location: LatLng(37.396184, 126.954726), // ✅ 관양동 공영주차장 (시민대로 235)
+      name: "관양동 공영주차장",
+      address: "경기도 안양시 동안구 관양동 시민대로 235",
+      phone: "031-389-5326",
       totalSpaces: 200,
-      availableSpaces: 80,
-      feeInfo: "기본 요금: 1,200원/10분\n추가 요금: 1,200원/10분\n"
-          "경차/저공해차: 50% 할인\n장애인: 80% 할인",
-      operationInfo: "평일: 07:00~22:00\n주말: 09:00~20:00",
+      availableSpaces: 50,
+      feeInfo: "기본 요금: 600원/30분\n추가 요금: 10분당 200원\n유형: 노상/노외",
+      operationInfo: "24시간",
+    ),
+    ParkingLotModel(
+      location: LatLng(37.395444, 126.953402), // ✅ 안양2동 무료주차장 (공원아파트 뒤)
+      name: "안양2동 노외 무료주차장",
+      address: "경기도 안양시 만안구 안양2동 822-21",
+      phone: "",
+      totalSpaces: 23,
+      availableSpaces: 23,
+      feeInfo: "무료",
+      operationInfo: "24시간",
+    ),
+    ParkingLotModel(
+      location: LatLng(37.392939, 126.948983), // ✅ 박달시장 주차장
+      name: "박달시장 노외주차장",
+      address: "경기도 안양시 만안구 박달동 731-9",
+      phone: "",
+      totalSpaces: 100,
+      availableSpaces: 40,
+      feeInfo: "기본 요금: 600원/30분\n추가 요금: 10분당 200원",
+      operationInfo: "08:00 ~ 22:00",
     ),
     // 테스트 케이스 원하는 만큼 추가 가능
   ];
