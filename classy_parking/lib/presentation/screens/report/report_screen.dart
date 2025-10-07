@@ -48,7 +48,6 @@ class _ReportScreenState extends State<ReportScreen> {
               children: [
                 const SizedBox(height: 20),
 
-                /// 📸 이미지 선택 영역
                 Center(
                   child: GestureDetector(
                     onTap: _pickImage,
