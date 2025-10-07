@@ -23,10 +23,10 @@ class HomeViewModel extends ChangeNotifier {
 
   List<HomeModel> getMiddleMenu(BuildContext context) => [
     HomeModel(
-      title: "주차 요금 안내",
-      icon: Icons.attach_money,
+      title: "이용 내역",
+      icon: Icons.map,
       onTap: () {
-
+        context.push(RoutePath.bill);
       },
     ),
     HomeModel(
@@ -40,17 +40,17 @@ class HomeViewModel extends ChangeNotifier {
 
   List<HomeModel> getBottomMenu(BuildContext context) => [
     HomeModel(
-      title: "이용 내역",
-      icon: Icons.map,
-      onTap: () {
-        context.push(RoutePath.bill);
-      },
-    ),
-    HomeModel(
       title: "주차 모음 영상",
       icon: Icons.play_circle_fill,
       onTap: () {
         context.push(RoutePath.home_video);
+      },
+    ),
+    HomeModel(
+      title: "서비스 이용 안내",
+      icon: Icons.warning,
+      onTap: () {
+        context.push(RoutePath.home_info);
       },
     ),
   ];

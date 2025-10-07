@@ -1,8 +1,6 @@
 import 'package:classy_parking/core/constants/font.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../../core/router/route_path.dart';
 import '../../widgets/traffic_light.dart';
 import 'home_model.dart';
 import 'home_view_model.dart';
@@ -46,43 +44,6 @@ class HomeScreen extends StatelessWidget {
               ),
             );
           },
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(right: 18),
-          child: SizedBox(
-            width: 150,
-            height: 50,
-            child: TextButton(
-              onPressed: () {
-                context.push(RoutePath.home_info);
-              },
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.zero,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    '서비스 이용 안내',
-                    style: AppFont.size16.copyWith(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(width: 6),
-                  Icon(
-                    Icons.warning,
-                    color: Colors.white,
-                    size: 20,
-                  )
-                ],
-              ),
-            ),
-          ),
         ),
       ),
     );
