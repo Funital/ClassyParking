@@ -8,6 +8,8 @@ import 'package:classy_parking/presentation/screens/login/splash_screen.dart';
 import 'package:classy_parking/presentation/screens/map/map_screen.dart';
 import 'package:classy_parking/presentation/screens/my_page/my_page_screen.dart';
 import 'package:classy_parking/presentation/screens/parking/parking_screen.dart';
+import 'package:classy_parking/presentation/screens/parking_payment/parking_payment_screen.dart';
+import 'package:classy_parking/presentation/screens/parking_payment/success/payment_success_screen.dart';
 import 'package:classy_parking/presentation/screens/report/report_screen.dart';
 import 'package:classy_parking/presentation/screens/report/report_success_screen.dart';
 import 'package:classy_parking/presentation/screens/sign_up/sign_up_screen.dart';
@@ -47,6 +49,8 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.report: (context, state) => const ReportScreen(),
   RoutePath.report_success: (context, state) => const ReportSuccessScreen(),
   RoutePath.parking: (context, state) => const ParkingScreen(),
+  RoutePath.payment: (context, state) => const ParkingPaymentScreen(),
+  RoutePath.success_payment: (context, state) => const PaymentSuccessScreen(),
 };
 
 // 앱바 고정 경로 목록 -> 여기 적으면 앱바 고정됨.
@@ -66,13 +70,36 @@ GoRouter createAppRouter(String initialRoute) {
       // 앱바 없는 개별 라우트들
       ...routeBuilders.keys
           .where((path) => !shellRoutes.contains(path))
-          .map((path) => GoRoute(path: path, builder: routeBuilders[path]!)),
+          .map((path) {
+        // pageBuilder로 전환
+        return GoRoute(
+          path: path,
+          pageBuilder: (context, state) {
+            final builder = routeBuilders[path]!;
+            if (path == RoutePath.home) {
+              // 홈화면은 애니메이션 제거
+              return const NoTransitionPage(child: MainScreen());
+            }
+            return MaterialPage(child: builder(context, state));
+          },
+        );
+      }),
 
       // 앱바 고정 ShellRoute
       ShellRoute(
         builder: (context, state, child) => ScaffoldWithNavBar(child: child),
         routes: shellRoutes.map((path) {
-          return GoRoute(path: path, builder: routeBuilders[path]!);
+          return GoRoute(
+            path: path,
+            pageBuilder: (context, state) {
+              final builder = routeBuilders[path]!;
+              if (path == RoutePath.home) {
+                // ShellRoute 내부에서도 애니메이션 제거
+                return const NoTransitionPage(child: MainScreen());
+              }
+              return MaterialPage(child: builder(context, state));
+            },
+          );
         }).toList(),
       ),
     ],
