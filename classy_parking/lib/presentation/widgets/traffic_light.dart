@@ -27,16 +27,21 @@ class TrafficLight extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.min, // Row 크기를 자식에 맞게 줄임
+          mainAxisAlignment: MainAxisAlignment.center, // 균등 분배 대신 중앙 정렬
           children: [
-            CircleAvatar(backgroundColor: redColor, radius: radius),
-            const SizedBox(width: 10,),
-            CircleAvatar(backgroundColor: yellowColor, radius: radius),
-            const SizedBox(width: 10,),
-            CircleAvatar(backgroundColor: greenColor, radius: radius),
+            _buildCircle(redColor),
+            const SizedBox(width: 8),
+            _buildCircle(yellowColor),
+            const SizedBox(width: 8),
+            _buildCircle(greenColor),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildCircle(Color color) {
+    return CircleAvatar(backgroundColor: color, radius: radius);
   }
 }

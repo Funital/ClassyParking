@@ -1,3 +1,4 @@
+import 'package:classy_parking/core/constants/font.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../widgets/custom_sub_app_bar.dart';
@@ -19,9 +20,22 @@ class ParkingScreen extends StatelessWidget {
             builder: (context, viewModel, child) {
               return Column(
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    child: Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        '안양 공영 주차장',
+                        style: AppFont.size18.copyWith(
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black
+                        ),
+                      ),
+                    ),
+                  ),
                   /// 층 선택 토글
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: DropdownButton<int>(
                       value: viewModel.selectedFloorIndex,
                       items: List.generate(

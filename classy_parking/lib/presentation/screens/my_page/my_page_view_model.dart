@@ -6,6 +6,8 @@ class MyPageViewModel extends ChangeNotifier {
 
   MyPageModel get myPageModel => _myPageModel;
 
+
+
   MyPageViewModel() {
     _myPageModel = const MyPageModel(
       nickname: 'Health Revolution',
