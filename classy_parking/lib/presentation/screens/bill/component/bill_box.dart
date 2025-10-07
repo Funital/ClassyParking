@@ -95,12 +95,6 @@ class BillBox extends StatelessWidget {
                     color: Colors.black54,
                   ),
                 ),
-                const SizedBox(width: 4),
-                const Icon(
-                  Icons.arrow_forward_ios_rounded,
-                  size: 16,
-                  color: Colors.black54,
-                ),
               ],
             ),
           ),

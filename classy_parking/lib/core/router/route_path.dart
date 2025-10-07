@@ -34,4 +34,7 @@ class RoutePath {
   /// Alarm
   static const String alarm = '/alarm/alarm_screen';
 
+  /// Setting
+  static const String setting = '/setting/setting_screen';
+
 }

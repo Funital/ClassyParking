@@ -3,13 +3,9 @@ import 'my_page_model.dart';
 
 class MyPageViewModel extends ChangeNotifier {
   late MyPageModel _myPageModel;
-  bool _isPushEnabled = true;
-  bool _isMarketingAgreed = false;
 
   MyPageModel get myPageModel => _myPageModel;
 
-  bool get isPushEnabled => _isPushEnabled;
-  bool get isMarketingAgreed => _isMarketingAgreed;
 
 
   MyPageViewModel() {
@@ -49,16 +45,6 @@ class MyPageViewModel extends ChangeNotifier {
       isLicenseUploaded: !_myPageModel.isLicenseUploaded,
       parkingStatus: _myPageModel.parkingStatus,
     );
-    notifyListeners();
-  }
-
-  void togglePushNotification(bool value) {
-    _isPushEnabled = value;
-    notifyListeners();
-  }
-
-  void toggleMarketingAgreement(bool value) {
-    _isMarketingAgreed = value;
     notifyListeners();
   }
 }

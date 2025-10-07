@@ -25,7 +25,7 @@ class _ParkingPaymentView extends StatelessWidget {
     final info = viewModel.paymentInfo;
 
     return Scaffold(
-      appBar: CustomSubAppBar(title: '주차요금 결제 내역'),
+      appBar: CustomSubAppBar(title: '주차요금 결제하기'),
       body: SafeArea(
         top: true,
         bottom: false,

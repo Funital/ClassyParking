@@ -13,6 +13,7 @@ import 'package:classy_parking/presentation/screens/parking_payment/parking_paym
 import 'package:classy_parking/presentation/screens/parking_payment/success/payment_success_screen.dart';
 import 'package:classy_parking/presentation/screens/report/report_screen.dart';
 import 'package:classy_parking/presentation/screens/report/report_success_screen.dart';
+import 'package:classy_parking/presentation/screens/setting/setting_screen.dart';
 import 'package:classy_parking/presentation/screens/sign_up/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -53,6 +54,7 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.payment: (context, state) => const ParkingPaymentScreen(),
   RoutePath.success_payment: (context, state) => const PaymentSuccessScreen(),
   RoutePath.alarm: (context, state) => const AlarmScreen(),
+  RoutePath.setting: (context, state) => const SettingScreen(),
 };
 
 // 앱바 고정 경로 목록 -> 여기 적으면 앱바 고정됨.
