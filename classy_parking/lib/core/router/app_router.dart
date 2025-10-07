@@ -70,13 +70,36 @@ GoRouter createAppRouter(String initialRoute) {
       // 앱바 없는 개별 라우트들
       ...routeBuilders.keys
           .where((path) => !shellRoutes.contains(path))
-          .map((path) => GoRoute(path: path, builder: routeBuilders[path]!)),
+          .map((path) {
+        // pageBuilder로 전환
+        return GoRoute(
+          path: path,
+          pageBuilder: (context, state) {
+            final builder = routeBuilders[path]!;
+            if (path == RoutePath.home) {
+              // 홈화면은 애니메이션 제거
+              return const NoTransitionPage(child: MainScreen());
+            }
+            return MaterialPage(child: builder(context, state));
+          },
+        );
+      }),
 
       // 앱바 고정 ShellRoute
       ShellRoute(
         builder: (context, state, child) => ScaffoldWithNavBar(child: child),
         routes: shellRoutes.map((path) {
-          return GoRoute(path: path, builder: routeBuilders[path]!);
+          return GoRoute(
+            path: path,
+            pageBuilder: (context, state) {
+              final builder = routeBuilders[path]!;
+              if (path == RoutePath.home) {
+                // ShellRoute 내부에서도 애니메이션 제거
+                return const NoTransitionPage(child: MainScreen());
+              }
+              return MaterialPage(child: builder(context, state));
+            },
+          );
         }).toList(),
       ),
     ],
