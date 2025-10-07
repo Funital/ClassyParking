@@ -1,5 +1,6 @@
 import 'package:classy_parking/core/router/route_path.dart';
 import 'package:classy_parking/presentation/screens/agree/agree_screen.dart';
+import 'package:classy_parking/presentation/screens/alarm/alarm_screen.dart';
 import 'package:classy_parking/presentation/screens/bill/bill_screen.dart';
 import 'package:classy_parking/presentation/screens/home/info/info_screen.dart';
 import 'package:classy_parking/presentation/screens/home/video/video_screen.dart';
@@ -51,13 +52,14 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.parking: (context, state) => const ParkingScreen(),
   RoutePath.payment: (context, state) => const ParkingPaymentScreen(),
   RoutePath.success_payment: (context, state) => const PaymentSuccessScreen(),
+  RoutePath.alarm: (context, state) => const AlarmScreen(),
 };
 
 // 앱바 고정 경로 목록 -> 여기 적으면 앱바 고정됨.
 final List<String> shellRoutes = [
   RoutePath.home,
-  RoutePath.map
-  // RoutePath.albumAdd,
+  RoutePath.map,
+  RoutePath.myPage
   // 필요시 추가
 
 ];

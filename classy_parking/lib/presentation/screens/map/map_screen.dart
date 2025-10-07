@@ -82,10 +82,6 @@ class _MapScreenState extends State<MapScreen> {
       child: Consumer<ParkingLotViewModel>(
         builder: (context, viewModel, _) {
           return Scaffold(
-            appBar: AppBar(
-              title: const Text("지도"),
-              centerTitle: true,
-            ),
             body: FlutterMap(
               mapController: _mapController,
               options: const MapOptions(

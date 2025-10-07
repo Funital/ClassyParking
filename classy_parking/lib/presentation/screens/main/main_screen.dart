@@ -1,5 +1,6 @@
 import 'package:classy_parking/presentation/screens/bill/bill_screen.dart';
 import 'package:classy_parking/presentation/screens/map/map_screen.dart';
+import 'package:classy_parking/presentation/screens/my_page/my_page_screen.dart';
 import 'package:flutter/material.dart';
 import '../../widgets/custom_tab_bar.dart';
 import '../home/home_screen.dart';
@@ -25,6 +26,7 @@ class _MainScreenState extends State<MainScreen> {
     final screens = [
       const HomeScreen(),
       const MapScreen(),
+      const MyPageScreen(),
     ];
 
     return Scaffold(

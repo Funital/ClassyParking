@@ -23,13 +23,13 @@ class CustomTabBar extends StatelessWidget {
           icon: Icon(Icons.home),
           label: '홈화면',
         ),
-        // BottomNavigationBarItem(
-        //   icon: Icon(Icons.search),
-        //   label: '검색',
-        // ),
         BottomNavigationBarItem(
           icon: Icon(Icons.map),
           label: '주차장 지도',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle_rounded),
+          label: '마이페이지',
         ),
       ],
     );

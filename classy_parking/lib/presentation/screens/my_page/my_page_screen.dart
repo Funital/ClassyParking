@@ -14,230 +14,218 @@ class MyPageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomSubAppBar(title: '마이페이지',),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
+        child: ChangeNotifierProvider(
+          create: (_) => MyPageViewModel(),
+          child: Consumer<MyPageViewModel>(
+            builder: (context, viewModel, _) {
+              final model = viewModel.myPageModel;
+              return SingleChildScrollView(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
 
-              const SizedBox(height: 20),
-
-              // 내용 카드
-              Expanded(
-                child: ChangeNotifierProvider(
-                  create: (_) => MyPageViewModel(),
-                  child: Consumer<MyPageViewModel>(
-                    builder: (context, viewModel, _) {
-                      final model = viewModel.myPageModel;
-                      return Column(
-                        children: [
-                          Row(
-                            children: [
-                              GestureDetector(
-                                onTap: () {
-                                  showDialog(
-                                    context: context,
-                                    barrierColor: Colors.transparent,
-                                    builder: (context) {
-                                      return GestureDetector(
-                                          onTap: () => Navigator.of(context).pop(),
-                                          child: BackdropFilter(
-                                            filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                                            child: Container(
-                                              color: Colors.white.withValues(alpha: 0.8), // 살짝 어둡게
-                                              child: Center(
-                                                child: Dialog(
-                                                  backgroundColor: Colors.transparent,
-                                                  child: InteractiveViewer(
-                                                    child: ClipRRect(
-                                                      borderRadius: BorderRadius.circular(12),
-                                                      child: Image.asset(
-                                                        'assets/images/profile.png',
-                                                        fit: BoxFit.contain,
-                                                      ),
-                                                  ),
-                                                ),
+                    // 프로필 및 주차 상태
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              barrierColor: Colors.transparent,
+                              builder: (context) {
+                                return GestureDetector(
+                                  onTap: () => Navigator.of(context).pop(),
+                                  child: BackdropFilter(
+                                    filter:
+                                    ImageFilter.blur(sigmaX: 8, sigmaY: 8),
+                                    child: Container(
+                                      color: Colors.white.withValues(alpha: 0.8),
+                                      child: Center(
+                                        child: Dialog(
+                                          backgroundColor: Colors.transparent,
+                                          child: InteractiveViewer(
+                                            child: ClipRRect(
+                                              borderRadius:
+                                              BorderRadius.circular(12),
+                                              child: Image.asset(
+                                                'assets/images/profile.png',
+                                                fit: BoxFit.contain,
                                               ),
                                             ),
                                           ),
-                                          ),
-                                      );
-                                    },
-                                  );
-                                },
-                                child: Container(
-                                  width: 150,
-                                  height: 150,
-                                  decoration: BoxDecoration(
-                                    color: Colors.grey[300],
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(12),
-                                    child: Image.asset(
-                                      'assets/images/profile.png',
-                                      fit: BoxFit.cover,
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(width: 24),
-                              Column(
-                                children: [
-                                  TrafficLight(
-                                    redColor: Colors.grey,
-                                    yellowColor: Colors.grey,
-                                    greenColor: Colors.green,
-                                    radius: 25,
-                                    padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
-                                  ),
-                                  // 주차 상태
-                                  Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const Text(
-                                          '내 주차자리 상태',
-                                          style: TextStyle(color: Colors.grey, fontSize: 12),
-                                        ),
-                                        const SizedBox(height: 4),
-                                        Row(
-                                          children: [
-                                            Container(
-                                              width: 10,
-                                              height: 10,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                color: model.parkingStatus == '사용가능'
-                                                    ? Colors.green
-                                                    : Colors.red,
-                                              ),
-                                            ),
-                                            const SizedBox(width: 8),
-                                            Text(
-                                              model.parkingStatus,
-                                              style: const TextStyle(
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 20),
-
-                          Container(
-                            padding: const EdgeInsets.all(20),
+                                );
+                              },
+                            );
+                          },
+                          child: Container(
+                            width: 150,
+                            height: 150,
                             decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(16),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.3),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 4),
+                              color: Colors.grey[300],
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                'assets/images/profile.png',
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 24),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TrafficLight(
+                              redColor: Colors.grey,
+                              yellowColor: Colors.grey,
+                              greenColor: Colors.green,
+                              radius: 25,
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 4, horizontal: 10),
+                            ),
+                            const SizedBox(height: 8),
+                            const Text(
+                              '내 주차자리 상태',
+                              style:
+                              TextStyle(color: Colors.grey, fontSize: 12),
+                            ),
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Container(
+                                  width: 10,
+                                  height: 10,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: model.parkingStatus == '사용가능'
+                                        ? Colors.green
+                                        : Colors.red,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  model.parkingStatus,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                _infoRow('닉네임', model.nickname),
-                                _infoRow('전화번호', model.phoneNumber),
-                                _infoRow('차종', model.carType),
-                                _infoRow('차 이름', model.carName),
-                                _infoRow('차 번호', model.carNumber),
-                                // const Spacer(),
-                                const SizedBox(height: 20),
-                                _licenseButton(model.isLicenseUploaded),
-                              ],
-                            ),
-                          ),
-                          const SizedBox(height: 20),
+                          ],
+                        ),
+                      ],
+                    ),
 
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '알림',
-                                style: AppFont.size16.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  color: Colors.black,
-                                )
-                              ),
-                              const Divider(thickness: 1, height: 20),
+                    const SizedBox(height: 20),
 
-                              // PUSH 알림
-                              Consumer<MyPageViewModel>(
-                                builder: (context, viewModel, _) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        'PUSH 알림',
-                                        style: AppFont.size16.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black,
-                                        )
-                                      ),
-                                      Switch(
-                                        value: viewModel.isPushEnabled,
-                                        activeColor: Colors.white,
-                                        activeTrackColor: Colors.blue,
-                                        inactiveThumbColor: Colors.blue,
-                                        inactiveTrackColor: Colors.grey.withOpacity(0.4),
-                                        onChanged: (value) {
-                                          viewModel.togglePushNotification(value);
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-
-                              // 마케팅 알림 수신 동의
-                              Consumer<MyPageViewModel>(
-                                builder: (context, viewModel, _) {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '마케팅 알림 수신 동의',
-                                        style: AppFont.size16.copyWith(
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black,
-                                        )
-                                      ),
-                                      Switch(
-                                        value: viewModel.isMarketingAgreed,
-                                        activeColor: Colors.white,
-                                        activeTrackColor: Colors.blue,
-                                        inactiveThumbColor: Colors.blue,
-                                        inactiveTrackColor: Colors.grey.withOpacity(0.4),
-                                        onChanged: (value) {
-                                          viewModel.toggleMarketingAgreement(value);
-                                        },
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
+                    // 정보 카드
+                    Container(
+                      padding: const EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: 0.3),
+                            blurRadius: 8,
+                            offset: const Offset(0, 4),
                           ),
                         ],
-                      );
-                    },
-                  ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          _infoRow('닉네임', model.nickname),
+                          _infoRow('전화번호', model.phoneNumber),
+                          _infoRow('차종', model.carType),
+                          _infoRow('차 이름', model.carName),
+                          _infoRow('차 번호', model.carNumber),
+                          const SizedBox(height: 20),
+                          _licenseButton(model.isLicenseUploaded),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // 알림 설정
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '알림',
+                          style: AppFont.size16.copyWith(
+                            fontWeight: FontWeight.w700,
+                            color: Colors.black,
+                          ),
+                        ),
+                        const Divider(thickness: 1, height: 20),
+
+                        // PUSH 알림
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'PUSH 알림',
+                              style: AppFont.size16.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Switch(
+                              value: viewModel.isPushEnabled,
+                              activeColor: Colors.white,
+                              activeTrackColor: Colors.blue,
+                              inactiveThumbColor: Colors.blue,
+                              inactiveTrackColor:
+                              Colors.grey.withOpacity(0.4),
+                              onChanged: (value) {
+                                viewModel.togglePushNotification(value);
+                              },
+                            ),
+                          ],
+                        ),
+
+                        // 마케팅 알림 수신 동의
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '마케팅 알림 수신 동의',
+                              style: AppFont.size16.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                              ),
+                            ),
+                            Switch(
+                              value: viewModel.isMarketingAgreed,
+                              activeColor: Colors.white,
+                              activeTrackColor: Colors.blue,
+                              inactiveThumbColor: Colors.blue,
+                              inactiveTrackColor:
+                              Colors.grey.withOpacity(0.4),
+                              onChanged: (value) {
+                                viewModel.toggleMarketingAgreement(value);
+                              },
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 30),
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
         ),
       ),
@@ -262,10 +250,10 @@ class MyPageScreen extends StatelessWidget {
           Expanded(
             child: Text(
               value,
-                style: AppFont.size16.copyWith(
-                  fontWeight: FontWeight.w700,
-                  color: Colors.black,
-                )
+              style: AppFont.size16.copyWith(
+                fontWeight: FontWeight.w700,
+                color: Colors.black,
+              ),
             ),
           ),
         ],
@@ -289,7 +277,6 @@ class MyPageScreen extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-
         icon: Icon(
           isUploaded ? Icons.check_circle : Icons.upload_file,
           color: Colors.white,
