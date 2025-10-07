@@ -90,7 +90,7 @@ class MyPageScreen extends StatelessWidget {
                               greenColor: Colors.green,
                               radius: 25,
                               padding: const EdgeInsets.symmetric(
-                                  vertical: 4, horizontal: 10),
+                                  vertical: 4, horizontal: 4),
                             ),
                             const SizedBox(height: 8),
                             const Text(
