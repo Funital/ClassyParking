@@ -6,7 +6,12 @@ import 'parking_view_model.dart';
 import 'parking_model.dart';
 
 class ParkingScreen extends StatelessWidget {
-  const ParkingScreen({super.key});
+  final String title;
+
+  const ParkingScreen({
+    super.key,
+    required this.title,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,7 @@ class ParkingScreen extends StatelessWidget {
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        '안양 공영 주차장',
+                        title,
                         style: AppFont.size18.copyWith(
                           fontWeight: FontWeight.w700,
                           color: Colors.black

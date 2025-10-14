@@ -146,15 +146,17 @@ class _MapScreenState extends State<MapScreen> {
                                         top: Radius.circular(16)),
                                   ),
                                   builder: (BuildContext context) {
-                                    return ParkingBottomSheet(
-                                      location: lot.location,
-                                      title: lot.name,
-                                      address: lot.address,
-                                      phone: lot.phone,
-                                      totalSpaces: lot.totalSpaces,
-                                      availableSpaces: lot.availableSpaces,
-                                      feeInfo: lot.feeInfo,
-                                      operationInfo: lot.operationInfo,
+                                    return FractionallySizedBox(
+                                      child: ParkingBottomSheet(
+                                        location: lot.location,
+                                        title: lot.name,
+                                        address: lot.address,
+                                        phone: lot.phone,
+                                        totalSpaces: lot.totalSpaces,
+                                        availableSpaces: lot.availableSpaces,
+                                        feeInfo: lot.feeInfo,
+                                        operationInfo: lot.operationInfo,
+                                      ),
                                     );
                                   },
                                 );

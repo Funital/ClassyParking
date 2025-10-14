@@ -50,7 +50,9 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.map: (context, state) => const MapScreen(),
   RoutePath.report: (context, state) => const ReportScreen(),
   RoutePath.report_success: (context, state) => const ReportSuccessScreen(),
-  RoutePath.parking: (context, state) => const ParkingScreen(),
+  RoutePath.parking: (context, state) => ParkingScreen(
+    title: state.extra as String,
+  ),
   RoutePath.payment: (context, state) => const ParkingPaymentScreen(),
   RoutePath.success_payment: (context, state) => const PaymentSuccessScreen(),
   RoutePath.alarm: (context, state) => const AlarmScreen(),

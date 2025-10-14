@@ -126,7 +126,7 @@ class ParkingBottomSheet extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  context.push(RoutePath.parking);
+                  context.push(RoutePath.parking, extra: title);
                 },
                 child: const Text("빈자리 찾기"),
               ),
