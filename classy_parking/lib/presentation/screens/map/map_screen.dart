@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
 
 class MapScreen extends StatefulWidget {
@@ -15,6 +16,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   final MapController _mapController = MapController();
+  final TextEditingController _searchController = TextEditingController();
   LatLng? currentPosition;
 
   static const LatLng initialCenter = LatLng(37.5665, 126.9780); // 서울시청
@@ -30,11 +32,9 @@ class _MapScreenState extends State<MapScreen> {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // 위치 서비스 활성화 확인
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) return;
 
-    // 권한 확인 및 요청
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
@@ -42,7 +42,6 @@ class _MapScreenState extends State<MapScreen> {
     }
     if (permission == LocationPermission.deniedForever) return;
 
-    // 현재 위치 가져오기
     final Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
@@ -50,25 +49,43 @@ class _MapScreenState extends State<MapScreen> {
       currentPosition = LatLng(position.latitude, position.longitude);
     });
 
-    // 지도를 현재 위치로 이동
     _mapController.move(currentPosition!, _mapController.camera.zoom);
   }
 
-  /// 현재 위치로 지도 이동
+  /// 검색어로 위치 이동 (예: '안양')
+  Future<void> _searchLocation(String query) async {
+    try {
+      final List<Location> locations = await locationFromAddress(query);
+      if (locations.isNotEmpty) {
+        final LatLng newPosition = LatLng(
+          locations.first.latitude,
+          locations.first.longitude,
+        );
+        _mapController.move(newPosition, 15);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('검색 결과를 찾을 수 없습니다.')),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('검색 중 오류가 발생했습니다: $e')),
+      );
+    }
+  }
+
   void _recenterMap() {
     if (currentPosition != null) {
       _mapController.move(currentPosition!, _mapController.camera.zoom);
     }
   }
 
-  /// 지도 확대
   void _zoomIn() {
     final center = _mapController.camera.center;
     final zoom = _mapController.camera.zoom;
     _mapController.move(center, zoom + 1);
   }
 
-  /// 지도 축소
   void _zoomOut() {
     final center = _mapController.camera.center;
     final zoom = _mapController.camera.zoom;
@@ -82,81 +99,104 @@ class _MapScreenState extends State<MapScreen> {
       child: Consumer<ParkingLotViewModel>(
         builder: (context, viewModel, _) {
           return Scaffold(
-            body: FlutterMap(
-              mapController: _mapController,
-              options: const MapOptions(
-                initialCenter: initialCenter,
-                initialZoom: 14,
-                interactionOptions: InteractionOptions(
-                  flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
-                ),
-              ),
+            body: Stack(
               children: [
-                // OpenStreetMap 타일 레이어
-                TileLayer(
-                  urlTemplate: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  subdomains: const ['a', 'b', 'c'],
-                  userAgentPackageName: 'com.funital.classyparking',
-                ),
-
-                // 마커 레이어
-                MarkerLayer(
-                  markers: [
-                    // 내 위치 마커 (빨간색)
-                    if (currentPosition != null)
-                      Marker(
-                        point: currentPosition!,
-                        width: 40,
-                        height: 40,
-                        child: const Icon(
-                          Icons.my_location,
-                          color: Colors.red,
-                          size: 40,
-                        ),
-                      ),
-
-                    // ViewModel의 주차장 리스트 기반 마커
-                    ...viewModel.parkingLots.map(
-                          (lot) => Marker(
-                        point: lot.location,
-                        width: 36,
-                        height: 36,
-                        child: GestureDetector(
-                          onTap: () {
-                            viewModel.selectLot(lot);
-                            showModalBottomSheet(
-                              context: context,
-                              shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-                              ),
-                              builder: (BuildContext context) {
-                                return ParkingBottomSheet(
-                                  location: lot.location,
-                                  title: lot.name,
-                                  address: lot.address,
-                                  phone: lot.phone,
-                                  totalSpaces: lot.totalSpaces,
-                                  availableSpaces: lot.availableSpaces,
-                                  feeInfo: lot.feeInfo,
-                                  operationInfo: lot.operationInfo,
+                /// 지도 본체
+                FlutterMap(
+                  mapController: _mapController,
+                  options: const MapOptions(
+                    initialCenter: initialCenter,
+                    initialZoom: 14,
+                    interactionOptions: InteractionOptions(
+                      flags: InteractiveFlag.all & ~InteractiveFlag.rotate,
+                    ),
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                      'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                      subdomains: const ['a', 'b', 'c'],
+                      userAgentPackageName: 'com.funital.classyparking',
+                    ),
+                    MarkerLayer(
+                      markers: [
+                        if (currentPosition != null)
+                          Marker(
+                            point: currentPosition!,
+                            width: 40,
+                            height: 40,
+                            child: const Icon(
+                              Icons.my_location,
+                              color: Colors.red,
+                              size: 40,
+                            ),
+                          ),
+                        ...viewModel.parkingLots.map(
+                              (lot) => Marker(
+                            point: lot.location,
+                            width: 36,
+                            height: 36,
+                            child: GestureDetector(
+                              onTap: () {
+                                viewModel.selectLot(lot);
+                                showModalBottomSheet(
+                                  context: context,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                        top: Radius.circular(16)),
+                                  ),
+                                  builder: (BuildContext context) {
+                                    return ParkingBottomSheet(
+                                      location: lot.location,
+                                      title: lot.name,
+                                      address: lot.address,
+                                      phone: lot.phone,
+                                      totalSpaces: lot.totalSpaces,
+                                      availableSpaces: lot.availableSpaces,
+                                      feeInfo: lot.feeInfo,
+                                      operationInfo: lot.operationInfo,
+                                    );
+                                  },
                                 );
                               },
-                            );
-                          },
-                          child: const Icon(
-                            Icons.local_parking,
-                            color: Colors.blue,
-                            size: 36,
+                              child: const Icon(
+                                Icons.local_parking,
+                                color: Colors.blue,
+                                size: 36,
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
                   ],
+                ),
+
+                Positioned(
+                  top: 10,
+                  left: 16,
+                  right: 16,
+                  child: Material(
+                    elevation: 5,
+                    borderRadius: BorderRadius.circular(12),
+                    child: TextField(
+                      controller: _searchController,
+                      textInputAction: TextInputAction.search,
+                      onSubmitted: (value) => _searchLocation(value),
+                      decoration: InputDecoration(
+                        hintText: '위치를 검색하세요 (예: 안양)',
+                        prefixIcon: const Icon(Icons.search),
+                        border: InputBorder.none,
+                        contentPadding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
 
-            // 현재 위치로 이동, 확대/축소 버튼
+            /// 하단 버튼들
             floatingActionButton: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.end,
