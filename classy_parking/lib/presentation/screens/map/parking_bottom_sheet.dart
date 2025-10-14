@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
+
+import '../../../core/router/route_path.dart';
 
 class ParkingBottomSheet extends StatelessWidget {
   final LatLng location;
@@ -117,6 +120,20 @@ class ParkingBottomSheet extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
+
+            // 빈자기 보기 Button
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () {
+                  context.push(RoutePath.parking);
+                },
+                child: const Text("빈자리 찾기"),
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
             // Fee Info
             const Text(
               "요금정보",
@@ -138,18 +155,8 @@ class ParkingBottomSheet extends StatelessWidget {
               operationInfo,
               style: const TextStyle(fontSize: 15, color: Colors.black87),
             ),
-            const SizedBox(height: 24),
-            // 자세히 보기 Button
-            // SizedBox(
-            //   width: double.infinity,
-            //   child: ElevatedButton(
-            //     onPressed: () {
-            //       Navigator.pop(context);
-            //       // 여기서 상세 페이지 이동 같은 추가 동작 가능
-            //     },
-            //     child: const Text("자세히 보기"),
-            //   ),
-            // ),
+
+            const SizedBox(height: 70),
           ],
         ),
       ),

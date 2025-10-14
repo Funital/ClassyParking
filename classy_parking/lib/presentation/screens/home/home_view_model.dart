@@ -9,7 +9,7 @@ class HomeViewModel extends ChangeNotifier {
       title: "빈자리 찾기",
       icon: Icons.directions_car,
       onTap: () {
-        context.push(RoutePath.parking);
+        // context.push(RoutePath.parking);
       },
     ),
     HomeModel(

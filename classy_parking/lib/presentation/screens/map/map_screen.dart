@@ -184,7 +184,7 @@ class _MapScreenState extends State<MapScreen> {
                       textInputAction: TextInputAction.search,
                       onSubmitted: (value) => _searchLocation(value),
                       decoration: InputDecoration(
-                        hintText: '위치를 검색하세요 (예: 안양)',
+                        hintText: '위치를 검색하세요 (예: 안양시)',
                         prefixIcon: const Icon(Icons.search),
                         border: InputBorder.none,
                         contentPadding:
