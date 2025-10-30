@@ -24,9 +24,10 @@ jobs:
         run: flutter pub get
 
       # 4. Flutter 웹 앱 빌드
-      # GitHub Pages 서브 경로에 맞게 --base-href 설정 (매우 중요)
-      - name: ClassyParking
-        run: flutter build web --release --base-href "/${{ ClassyParking }}/"
+      # 에러 해결을 위해 레포지토리 이름 'ClassyParking'을 하드코딩하여 --base-href 설정 (매우 중요)
+      - name: 🏗️ Build Web App
+        # 만약 레포지토리 이름이 'ClassyParking'이 아니라면, 이 부분을 실제 레포지토리 이름으로 변경해야 합니다.
+        run: flutter build web --release --base-href "/ClassyParking/"
 
       # 5. 빌드 결과물을 GitHub Pages에 배포
       - name: 🚀 Deploy to GitHub Pages
