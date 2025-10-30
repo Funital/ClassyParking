@@ -43,5 +43,5 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           # ⬇️ 배포 경로도 서브 디렉토리에 맞게 변경
-          publish_dir: ./my_flutter_app/build/web # ⬅️ 프로젝트 폴더 이름을 포함하여 경로 수정
+          publish_dir: ./classy_parking/build/web # ⬅️ 프로젝트 폴더 이름을 포함하여 경로 수정
           # publish_branch: gh-pages # 배포할 브랜치 (기본값)
