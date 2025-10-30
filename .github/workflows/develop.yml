@@ -1,22 +1,37 @@
-name: Build and deploy flutter web app
+name: Deploy Flutter Web to GitHub Pages
 
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "develop" ] # develop 브랜치에 푸시될 때 실행되도록 설정
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
+    
     steps:
-      - uses: actions/checkout@v3
-      - uses: subosito/flutter-action@v2
+      # 1. 레포지토리 코드 가져오기
+      - name: 📦 Checkout Repository
+        uses: actions/checkout@v4
+        
+      # 2. Flutter 환경 설정 (필수)
+      - name: ☕ Set up Flutter SDK
+        uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
-      - run: flutter pub get
-      - run: flutter config --enable-web
-      - run: flutter build web --base-href "/${{ ClassyParking }}/"
-      - run: git config user.name github-actions
-      - run: git config user.email github-actions@github.com
-      - run: git --work-tree build/web add --all
-      - run: git commit -m "Automatic deployment by github-actions"
-      - run: git push origin HEAD:gh_pages --force
+          channel: 'stable' # 안정적인 채널 사용
+
+      # 3. 프로젝트 의존성 설치
+      - name: 🧩 Get Dependencies
+        run: flutter pub get
+
+      # 4. Flutter 웹 앱 빌드
+      # GitHub Pages 서브 경로에 맞게 --base-href 설정 (매우 중요)
+      - name: ClassyParking
+        run: flutter build web --release --base-href "/${{ ClassyParking }}/"
+
+      # 5. 빌드 결과물을 GitHub Pages에 배포
+      - name: 🚀 Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build/web  # Flutter 빌드 결과물 경로
+          # publish_branch: gh-pages # 배포할 브랜치 (기본값)
