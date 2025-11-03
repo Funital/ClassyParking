@@ -37,4 +37,7 @@ class RoutePath {
   /// Setting
   static const String setting = '/setting/setting_screen';
 
+  /// Register
+  static const String register = '/register/register_screen';
+
 }

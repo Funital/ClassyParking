@@ -6,10 +6,10 @@ import 'home_model.dart';
 class HomeViewModel extends ChangeNotifier {
   List<HomeModel> getTopMenu(BuildContext context) => [
     HomeModel(
-      title: "빈자리 찾기",
+      title: "주차공간 등록하기",
       icon: Icons.directions_car,
       onTap: () {
-        // context.push(RoutePath.parking);
+        context.push(RoutePath.register);
       },
     ),
     HomeModel(
