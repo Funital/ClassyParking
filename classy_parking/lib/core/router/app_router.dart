@@ -22,6 +22,7 @@ import 'package:go_router/go_router.dart';
 import '../../presentation/screens/car/car_screen.dart';
 import '../../presentation/screens/car/photo_screen.dart';
 import '../../presentation/screens/main/main_screen.dart';
+import '../../presentation/screens/my_page/info/mypage_info_screen.dart';
 import '../../presentation/widgets/custom_app_bar.dart';
 
 // 앱바 고정 UI 레퍼
@@ -60,6 +61,7 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.setting: (context, state) => const SettingScreen(),
 
   RoutePath.register: (context, state) => const RegisterScreen(),
+  RoutePath.myPage_info: (context, state) => const MypageInfoScreen()
 };
 
 // 앱바 고정 경로 목록 -> 여기 적으면 앱바 고정됨.
