@@ -4,14 +4,18 @@ import 'dart:async';
 import 'package:classy_parking/core/router/route_path.dart';
 import 'package:classy_parking/presentation/screens/report/report_model.dart';
 import 'package:flutter/material.dart';
-
-import 'package:go_router/go_router.dart'; // go_router 사용 가정
+import 'package:go_router/go_router.dart';
 
 class ReportViewModel extends ChangeNotifier {
+  // 싱글톤 패턴으로 전역 인스턴스 관리
+  static final ReportViewModel _instance = ReportViewModel._internal();
+  factory ReportViewModel() => _instance;
+
+  ReportViewModel._internal();
+
   ReportModel _model = ReportModel();
   ReportModel get model => _model;
 
-  // 1차 신고 후 10초 타이머
   Timer? _reportTimer;
   static const int requiredDelaySeconds = 10;
 
@@ -61,10 +65,8 @@ class ReportViewModel extends ChangeNotifier {
 
     try {
       if (_model.currentStep == ReportStep.initial) {
-        // --- A. 1차 신고 처리 ---
         await _processFirstReport(context);
       } else if (_model.currentStep == ReportStep.firstReport) {
-        // --- B. 2차 신고 처리 ---
         await _processSecondReport(context);
       }
     } finally {
@@ -73,27 +75,25 @@ class ReportViewModel extends ChangeNotifier {
     }
   }
 
-  // 1차 신고 처리 (알림창 띄우기)
+  // 1차 신고 처리
   Future<void> _processFirstReport(BuildContext context) async {
-    // 서버에 1차 신고 정보를 전송하거나 저장하는 로직 (선택 사항)
     await Future.delayed(const Duration(milliseconds: 500));
 
-    // 1차 신고 성공 및 상태 업데이트
     _model = _model.copyWith(
       currentStep: ReportStep.firstReport,
       firstReportTime: DateTime.now(),
-      buttonText: '2차 신고 진행 (10초 후)', // 임시 텍스트
+      buttonText: '2차 신고 진행 (10초 후)',
     );
     notifyListeners();
 
-    // 10초 알림창 띄우기
-    await _showSecondReportAlert(context);
-
-    // 10초 타이머 시작 (버튼 텍스트 업데이트)
+    // 10초 타이머 시작
     _startReportTimer();
+
+    // 알림창 띄우기
+    await _showSecondReportAlert(context);
   }
 
-  // 10초 대기 알림창 (오류 수정 완료)
+  // 10초 대기 알림창
   Future<void> _showSecondReportAlert(BuildContext context) async {
     return showDialog<void>(
       context: context,
@@ -109,8 +109,9 @@ class ReportViewModel extends ChangeNotifier {
             TextButton(
               child: const Text('확인'),
               onPressed: () {
-                // 💡 수정: 팝업창만 닫고 현재 화면에 머물러 타이머가 진행되도록 수정
-                Navigator.of(context).pop();
+                Navigator.of(context).pop(); // 팝업만 닫기
+                // 홈화면으로 이동 (선택사항)
+                context.go('/'); // 또는 context.pop() 사용
               },
             ),
           ],
@@ -119,17 +120,17 @@ class ReportViewModel extends ChangeNotifier {
     );
   }
 
-  // 10초 타이머 시작 및 버튼 텍스트 업데이트
+  // 10초 타이머 시작
   void _startReportTimer() {
     int remainingSeconds = requiredDelaySeconds;
 
-    _reportTimer?.cancel(); // 이전 타이머 취소
+    _reportTimer?.cancel();
 
     _reportTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (remainingSeconds == 0) {
         timer.cancel();
         _model = _model.copyWith(
-          buttonText: '2차 신고 진행하기', // 10초 후 활성화
+          buttonText: '2차 신고 진행하기',
         );
       } else {
         _model = _model.copyWith(
@@ -141,27 +142,31 @@ class ReportViewModel extends ChangeNotifier {
     });
   }
 
-  // 2차 신고 처리 (성공 화면으로 이동)
+  // 2차 신고 처리
   Future<void> _processSecondReport(BuildContext context) async {
-    // 1. 시간 간격 검사
     final elapsed = DateTime.now().difference(_model.firstReportTime!).inSeconds;
     if (elapsed < requiredDelaySeconds) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('아직 ${requiredDelaySeconds - elapsed}초 남았습니다. 잠시 후 다시 시도해주세요.')),
+        SnackBar(content: Text('아직 ${requiredDelaySeconds - elapsed}초 남았습니다.')),
       );
       return;
     }
 
-    // 2. 서버에 최종 신고 데이터 전송 (성공 로직)
     _model = _model.copyWith(currentStep: ReportStep.secondReport);
     notifyListeners();
 
-    await Future.delayed(const Duration(milliseconds: 500)); // 서버 처리 시뮬레이션
+    await Future.delayed(const Duration(milliseconds: 500));
 
-    // 성공 화면으로 이동
     context.push(RoutePath.report_success);
 
     // 상태 초기화
+    resetReport();
+  }
+
+  // 신고 완료 후 상태 초기화 (필요시 호출)
+  void resetReport() {
+    _reportTimer?.cancel();
     _model = ReportModel();
+    notifyListeners();
   }
 }
