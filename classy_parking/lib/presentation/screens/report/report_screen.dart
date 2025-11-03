@@ -1,3 +1,5 @@
+// lib/screens/report_screen.dart (수정된 최종 코드)
+
 import 'dart:io';
 import 'package:classy_parking/core/constants/font.dart';
 import 'package:classy_parking/core/router/route_path.dart';
@@ -5,141 +7,210 @@ import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../widgets/fixed_button_footer.dart';
+import 'package:provider/provider.dart';
+
 import '../../widgets/text/horizonatal_labeled_toggle.dart';
 import '../../widgets/text/horizontal_labeled_text_field.dart';
 
-class ReportScreen extends StatefulWidget {
+import 'report_view_model.dart';
+import 'report_model.dart';
+
+class ReportScreen extends StatelessWidget {
   const ReportScreen({super.key});
 
-  @override
-  State<ReportScreen> createState() => _ReportScreenState();
-}
-
-class _ReportScreenState extends State<ReportScreen> {
-  File? _selectedImage;
-
-  Future<void> _pickImage() async {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      setState(() {
-        _selectedImage = File(pickedFile.path);
-      });
-    }
-  }
+  // 하단 버튼의 예상 높이 (Safe Area 미포함)
+  static const double _kFooterHeight = 90.0; // 버튼 높이 55 + 상하 패딩 30
 
   @override
   Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => ReportViewModel(),
+      child: Consumer<ReportViewModel>(
+        builder: (context, viewModel, child) {
+          return Scaffold(
+            appBar: const CustomSubAppBar(title: '차량 신고하기'),
+            resizeToAvoidBottomInset: true,
+            // body에 Stack을 사용하여 스크롤 영역과 고정 영역을 분리
+            body: Stack(
+              children: [
+                // 1. 스크롤 가능한 콘텐츠
+                // 하단 Safe Area 처리를 Footer에 위임하기 위해 bottom: false 설정
+                SafeArea(
+                  bottom: false,
+                  child: _buildContent(context, viewModel),
+                ),
+                // 2. 고정된 하단 버튼
+                _buildFooter(context, viewModel),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  // --- 메인 콘텐츠 위젯 (하단 패딩 추가) ---
+  Widget _buildContent(BuildContext context, ReportViewModel viewModel) {
+    final model = viewModel.model;
     final List<String> violationTypes = ['불법 주차', '소화전 앞 주차', '장애인 구역 위반'];
 
-    return Scaffold(
-      appBar: CustomSubAppBar(title: '차량 신고하기'),
-      resizeToAvoidBottomInset: true, // 키보드 자동 밀림 허용
-      body: SafeArea(
-        // 화면 전체를 GestureDetector로 감싸서 아무 곳 터치 시 키보드 닫기
-        child: GestureDetector(
-          onTap: () => FocusScope.of(context).unfocus(),
-          behavior: HitTestBehavior.translucent, // 투명 영역에서도 터치 감지
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Column(
-              children: [
-                Center(
-                  child: GestureDetector(
-                    onTap: _pickImage,
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      width: 200,
-                      height: 200,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Center(
-                        child: _selectedImage != null
-                            ? ClipRRect(
-                          borderRadius: BorderRadius.circular(30),
-                          child: Image.file(
-                            _selectedImage!,
-                            width: 200,
-                            height: 200,
-                            fit: BoxFit.cover,
-                          ),
-                        )
-                            : Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(Icons.camera_alt,
-                                color: Colors.blue, size: 60),
-                            const SizedBox(height: 10),
-                            Text(
-                              '사진 촬영',
-                              style: AppFont.size22.copyWith(
-                                fontWeight: FontWeight.w700,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+    Future<void> pickImage() async {
+      final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        // viewModel.updateImage(File(pickedFile.path).path);
+      }
+    }
 
-                const SizedBox(height: 30),
+    return SingleChildScrollView(
+      // 하단에 고정된 푸터를 위한 충분한 공간 확보
+      padding: const EdgeInsets.only(
+          left: 20, right: 20, top: 20, bottom: _kFooterHeight),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildImageAttachment(model.imagePath, pickImage),
+          const SizedBox(height: 30),
+          _buildReportFields(context, viewModel, violationTypes),
+        ],
+      ),
+    );
+  }
 
-                /// 입력 폼
-                Column(
-                  children: [
-                    HorizontalLabeledTextField(
-                        title: '차량 번호', hintText: '123가 1123'),
-                    const SizedBox(height: 25),
-                    HorizontalLabeledTextField(title: '위치', hintText: '안양'),
-                    const SizedBox(height: 25),
-                    HorizontalLabeledToggle(
-                      title: '위반 유형',
-                      hintText: '선택',
-                      options: violationTypes,
-                      selectedValue: null,
-                      onChanged: (value) {},
-                    ),
-                    const SizedBox(height: 25),
+  // --- 이미지 첨부 위젯 정의 ---
+  Widget _buildImageAttachment(String? imagePath, Function() onPickImage) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          '사진 첨부',
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 15.0),
+        GestureDetector(
+          onTap: onPickImage,
+          child: Container(
+            height: 150,
+            decoration: BoxDecoration(
+              color: Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: Colors.grey.shade300),
+            ),
+            child: imagePath != null
+                ? Image.file(File(imagePath!), fit: BoxFit.cover)
+                : const Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.camera_alt, color: Colors.grey, size: 40),
+                  SizedBox(height: 8),
+                  Text('사진 첨부하기 (선택)', style: TextStyle(color: Colors.grey)),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
-                    /// 📝 메모 입력
-                    Container(
-                      height: 200,
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      child: const TextField(
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintText: '메모 (선택)',
-                        ),
-                        maxLines: null,
-                        expands: true,
-                      ),
-                    ),
-                    const SizedBox(height: 25),
-                  ],
-                ),
+  // --- 신고 입력 필드 위젯 정의 ---
+  Widget _buildReportFields(BuildContext context, ReportViewModel viewModel, List<String> violationTypes) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // 🚗 차량 번호
+        HorizontalLabeledTextField(
+          title: '차량 번호',
+          hintText: '차량 번호 입력 (예: 123가 4567)',
+          onChanged: viewModel.updateCarNumber,
+          initialValue: viewModel.model.carNumber,
+        ),
+        const SizedBox(height: 25),
 
-                const SizedBox(height: 40),
+        // 📍 위치
+        HorizontalLabeledTextField(
+          title: '위치',
+          hintText: '위치 입력 (예: 주차장 A동 1층)',
+          onChanged: viewModel.updateLocation,
+          initialValue: viewModel.model.locationAddress,
+        ),
+        const SizedBox(height: 25),
 
-                /// 신고하기 버튼
-                FixedButtonFooter(
-                  text: '신고하기',
-                  backgroundColor: Colors.red,
-                  icon: Icons.warning,
-                  onPressed: () {
-                    FocusScope.of(context).unfocus(); // 키보드 닫기
-                    context.push(RoutePath.report_success);
-                  },
-                ),
-              ],
+        /// 🚨 위반 유형
+        HorizontalLabeledToggle(
+          title: '위반 유형',
+          hintText: '위반 유형을 선택하세요.',
+          options: violationTypes,
+          selectedValue: viewModel.model.violationType.isNotEmpty ? viewModel.model.violationType : null,
+          onChanged: (value) => viewModel.updateViolationType(value!),
+        ),
+        const SizedBox(height: 25),
+
+        /// 📝 메모 입력
+        Container(
+          height: 200,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(10),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: TextField(
+            onChanged: viewModel.updateMemo,
+            decoration: const InputDecoration(
+              border: InputBorder.none,
+              hintText: '메모 (선택)',
+            ),
+            maxLines: null,
+            expands: true,
+          ),
+        ),
+        const SizedBox(height: 25),
+      ],
+    );
+  }
+
+  // --- 하단 신고하기 버튼 위젯 (Safe Area에 고정 및 흰색 배경 처리) ---
+  Widget _buildFooter(BuildContext context, ReportViewModel viewModel) {
+    final model = viewModel.model;
+    bool isFirstReportAwaiting = model.currentStep == ReportStep.firstReport;
+    bool isTimerActive = isFirstReportAwaiting && model.buttonText.contains('초');
+    bool isSecondReportReady = isFirstReportAwaiting && !isTimerActive;
+
+    bool isButtonEnabled = model.isSubmitting == false &&
+        (model.currentStep == ReportStep.initial || isSecondReportReady);
+
+    final double safeAreaBottom = MediaQuery.of(context).padding.bottom;
+
+    return Align(
+      alignment: Alignment.bottomCenter,
+      child: Container(
+        width: double.infinity,
+        color: Colors.white,
+        padding: EdgeInsets.only(
+          left: 20.0,
+          right: 20.0,
+          top: 15.0,
+          bottom: safeAreaBottom + 15.0,
+        ),
+        child: SizedBox(
+          height: 55,
+          width: double.infinity,
+          child: ElevatedButton.icon(
+            onPressed: isButtonEnabled
+                ? () => viewModel.handleReportSubmission(context)
+                : null,
+            style: ElevatedButton.styleFrom(
+              backgroundColor: isButtonEnabled ? Colors.red : Colors.grey.shade400, // 비활성화 색상 조정
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              elevation: 0,
+            ),
+            icon: isButtonEnabled
+                ? const Icon(Icons.warning, size: 24)
+                : const Icon(Icons.lock, size: 24),
+            label: Text(
+              model.buttonText,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
           ),
         ),
