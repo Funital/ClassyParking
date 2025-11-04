@@ -124,7 +124,7 @@ class PhotoScreen extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              context.push(RoutePath.home);
+                              context.push(RoutePath.home_video);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.blue,
