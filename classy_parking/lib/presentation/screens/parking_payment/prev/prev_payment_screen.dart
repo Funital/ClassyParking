@@ -105,65 +105,72 @@ class PrevPaymentScreen extends StatelessWidget {
             const SizedBox(width: 8),
           ],
         ),
-        body: Consumer<PrevPaymentViewModel>(
-          builder: (context, vm, _) {
-            // 1. 주차장 상품 목록 표시 (주차장이 선택된 경우)
-            if (vm.isProductListVisible && vm.products != null) {
-              // Stack을 사용하여 스크롤 가능한 목록 위에 고정된 버튼을 배치
-              return Stack(
-                children: [
-                  SingleChildScrollView(
-                    // 하단에 예약하기 버튼 공간 확보를 위한 패딩 추가
-                    padding: const EdgeInsets.only(bottom: _kReserveButtonHeight),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // 주차장 상세 정보 섹션 (선택된 상세 정보 사용)
-                        _buildParkingInfo(context, vm.selectedParkingDetail!),
-                        const Divider(height: 1, thickness: 1, color: Color(0xFFE0E0E0)),
-
-                        // 할인 배너 섹션
-                        _buildDiscountBanner(),
-
-                        // 상품 목록
-                        ...List.generate(vm.products!.length, (index) {
-                          return _buildProductItem(
-                            context,
-                            vm.products![index],
-                            index, // 현재 항목의 인덱스 전달
-                            vm,
-                          );
-                        }),
-                        const SizedBox(height: 50),
-                      ],
-                    ),
-                  ),
-
-                  // 고정된 예약하기 버튼
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: _buildReserveButton(context, vm),
-                  ),
-                ],
-              );
-            }
-
-            // 2. 검색 결과 리스트 표시
-            if (vm.searchList.isNotEmpty) {
-              return ListView.builder(
-                itemCount: vm.searchList.length,
-                itemBuilder: (context, index) {
-                  final item = vm.searchList[index];
-                  return _buildSearchItem(context, item, vm);
-                },
-              );
-            }
-
-            // 3. 초기 화면 (검색 결과/상품 목록이 없을 때)
-            return const Center(
-              child: Text("주차장 이름을 검색해주세요."),
-            );
+        // [수정된 부분: GestureDetector로 body를 감싸 키보드 닫기 기능 추가]
+        body: GestureDetector(
+          onTap: () {
+            // 현재 포커스를 제거 (키보드 닫기)
+            FocusScope.of(context).unfocus();
           },
+          child: Consumer<PrevPaymentViewModel>(
+            builder: (context, vm, _) {
+              // 1. 주차장 상품 목록 표시 (주차장이 선택된 경우)
+              if (vm.isProductListVisible && vm.products != null) {
+                // Stack을 사용하여 스크롤 가능한 목록 위에 고정된 버튼을 배치
+                return Stack(
+                  children: [
+                    SingleChildScrollView(
+                      // 하단에 예약하기 버튼 공간 확보를 위한 패딩 추가
+                      padding: const EdgeInsets.only(bottom: _kReserveButtonHeight),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          // 주차장 상세 정보 섹션 (선택된 상세 정보 사용)
+                          _buildParkingInfo(context, vm.selectedParkingDetail!),
+                          const Divider(height: 1, thickness: 1, color: Color(0xFFE0E0E0)),
+
+                          // 할인 배너 섹션
+                          _buildDiscountBanner(),
+
+                          // 상품 목록
+                          ...List.generate(vm.products!.length, (index) {
+                            return _buildProductItem(
+                              context,
+                              vm.products![index],
+                              index, // 현재 항목의 인덱스 전달
+                              vm,
+                            );
+                          }),
+                          const SizedBox(height: 50),
+                        ],
+                      ),
+                    ),
+
+                    // 고정된 예약하기 버튼
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: _buildReserveButton(context, vm),
+                    ),
+                  ],
+                );
+              }
+
+              // 2. 검색 결과 리스트 표시
+              if (vm.searchList.isNotEmpty) {
+                return ListView.builder(
+                  itemCount: vm.searchList.length,
+                  itemBuilder: (context, index) {
+                    final item = vm.searchList[index];
+                    return _buildSearchItem(context, item, vm);
+                  },
+                );
+              }
+
+              // 3. 초기 화면 (검색 결과/상품 목록이 없을 때)
+              return const Center(
+                child: Text("주차장 이름을 검색해주세요."),
+              );
+            },
+          ),
         ),
       ),
     );
