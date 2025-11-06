@@ -1,3 +1,4 @@
+// map_screen.dart
 import 'package:classy_parking/presentation/screens/map/parking_bottom_sheet.dart';
 import 'package:classy_parking/presentation/screens/map/parking_lot_view_model.dart';
 import 'package:flutter/material.dart';
@@ -139,31 +140,43 @@ class _MapScreenState extends State<MapScreen> {
                             child: GestureDetector(
                               onTap: () {
                                 viewModel.selectLot(lot);
+                                // **바텀 시트 수정: DraggableScrollableSheet 적용 (높이 조절 가능)**
                                 showModalBottomSheet(
                                   context: context,
+                                  isScrollControlled: true, // 필수 설정
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
                                         top: Radius.circular(16)),
                                   ),
                                   builder: (BuildContext context) {
-                                    return FractionallySizedBox(
-                                      child: ParkingBottomSheet(
-                                        location: lot.location,
-                                        title: lot.name,
-                                        address: lot.address,
-                                        phone: lot.phone,
-                                        totalSpaces: lot.totalSpaces,
-                                        availableSpaces: lot.availableSpaces,
-                                        feeInfo: lot.feeInfo,
-                                        operationInfo: lot.operationInfo,
-                                      ),
+                                    return DraggableScrollableSheet(
+                                      initialChildSize: 0.35, // 초기 높이 (화면의 35%)
+                                      minChildSize: 0.2,    // 최소 높이
+                                      maxChildSize: 0.9,    // 최대 높이
+                                      expand: false,
+                                      builder: (context, scrollController) {
+                                        return SingleChildScrollView(
+                                          controller: scrollController,
+                                          child: ParkingBottomSheet(
+                                            location: lot.location,
+                                            title: lot.name,
+                                            address: lot.address,
+                                            phone: lot.phone,
+                                            totalSpaces: lot.totalSpaces,
+                                            availableSpaces: lot.availableSpaces,
+                                            feeInfo: lot.feeInfo,
+                                            operationInfo: lot.operationInfo,
+                                          ),
+                                        );
+                                      },
                                     );
                                   },
                                 );
                               },
-                              child: const Icon(
+                              child: Icon(
                                 Icons.local_parking,
-                                color: Colors.blue,
+                                // **마커 색상 적용**
+                                color: lot.markerColor,
                                 size: 36,
                               ),
                             ),

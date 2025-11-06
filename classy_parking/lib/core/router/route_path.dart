@@ -13,6 +13,8 @@ class RoutePath {
   /// myPage
   static const String myPage = '/my_page/my_page_screen';
   static const String myPage_info = '/my_page/info/mypage_info_screen';
+  static const String myPark = '/my_page/park/my_park_screen';
+  static const String park_manage = '/my_page/manage/my_parking_manage_screen';
 
   /// Bill
   static const String bill = '/bill/bill_screen';
@@ -43,5 +45,7 @@ class RoutePath {
 
   /// Register
   static const String register = '/register/register_screen';
+
+  /// Mypage
 
 }

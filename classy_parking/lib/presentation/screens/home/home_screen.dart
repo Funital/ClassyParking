@@ -33,9 +33,9 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   // 1. 그라데이션 헤더와 등급 시각화 영역
                   _CustomHeader(
-                    userName: "OOO", // 사용자 이름을 ViewModel에서 받아오는 것이 좋으나, 임시로 하드코딩
-                    grade: "GRACE",
-                    score: 85,
+                    userName: "사랑", // 사용자 이름을 ViewModel에서 받아오는 것이 좋으나, 임시로 하드코딩
+                    grade: "포인트",
+                    score: 250,
                   ),
 
                   // 2. 핵심 액션 버튼 (Top Menu)
@@ -147,10 +147,10 @@ class _CustomHeader extends StatelessWidget {
         children: [
           // 사용자 인사말
           Text(
-            '$userName님의 점수는!',
+            '$userName님의 현재 포인트는',
             style: AppFont.size16.copyWith(
-              color: Colors.black54,
-              fontWeight: FontWeight.w500,
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
             ),
           ),
           const SizedBox(height: 20),
@@ -168,10 +168,10 @@ class _CustomHeader extends StatelessWidget {
                     width: 180,
                     height: 180,
                     child: CircularProgressIndicator(
-                      value: score / 100, // 점수를 0.0 ~ 1.0으로 변환
+                      value: score / 500, // 점수를 0.0 ~ 1.0으로 변환
                       strokeWidth: 15,
                       backgroundColor: Colors.white.withOpacity(0.5),
-                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF1E88E5)), // 파란색
+                      valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFFc3eabb)), // 파란색
                     ),
                   ),
                   Column(
@@ -185,7 +185,7 @@ class _CustomHeader extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        '${score}점',
+                        '${score}P',
                         style: AppFont.size36.copyWith(
                           fontWeight: FontWeight.w900,
                           color: Colors.black,

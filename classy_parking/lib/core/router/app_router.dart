@@ -7,7 +7,9 @@ import 'package:classy_parking/presentation/screens/home/video/video_screen.dart
 import 'package:classy_parking/presentation/screens/login/login_screen.dart';
 import 'package:classy_parking/presentation/screens/login/splash_screen.dart';
 import 'package:classy_parking/presentation/screens/map/map_screen.dart';
+import 'package:classy_parking/presentation/screens/my_page/manage/my_parkinig_manage_screen.dart';
 import 'package:classy_parking/presentation/screens/my_page/my_page_screen.dart';
+import 'package:classy_parking/presentation/screens/my_page/park/my_park_screen.dart';
 import 'package:classy_parking/presentation/screens/parking/parking_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/category/payment_category_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/parking_payment_screen.dart';
@@ -67,7 +69,9 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.setting: (context, state) => const SettingScreen(),
 
   RoutePath.register: (context, state) => const RegisterScreen(),
-  RoutePath.myPage_info: (context, state) => const MypageInfoScreen()
+  RoutePath.myPage_info: (context, state) => const MypageInfoScreen(),
+  RoutePath.myPark: (context, state) => const MyParkScreen(),
+  RoutePath.park_manage: (context, state) => const MyParkinigManageScreen(),
 };
 
 // 앱바 고정 경로 목록 -> 여기 적으면 앱바 고정됨.

@@ -79,6 +79,8 @@ class MyPageViewModel extends ChangeNotifier {
     print('푸시 알림 상태 변경: $newValue');
   }
 
+
+
   // 로그아웃 로직
   void logout() {
     // TODO: 인증 토큰 삭제, 상태 초기화, 로그인 화면으로 이동
