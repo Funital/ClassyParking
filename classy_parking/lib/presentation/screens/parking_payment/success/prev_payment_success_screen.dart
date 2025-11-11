@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/router/route_path.dart';
 
-class PaymentSuccessScreen extends StatefulWidget {
-  const PaymentSuccessScreen({super.key});
+class PrevPaymentSuccessScreen extends StatefulWidget {
+  const PrevPaymentSuccessScreen({super.key});
 
   @override
-  State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
+  State<PrevPaymentSuccessScreen> createState() => _PrevPaymentSuccessScreenState();
 }
 
-class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
+class _PrevPaymentSuccessScreenState extends State<PrevPaymentSuccessScreen> {
   @override
   void initState() {
     super.initState();
@@ -35,7 +35,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                       size: 120, color: Colors.blue),
                   const SizedBox(height: 20),
                   const Text(
-                    "결제를 완료했습니다!",
+                    "예약을 완료했습니다!",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),

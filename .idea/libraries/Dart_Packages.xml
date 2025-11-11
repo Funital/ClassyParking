@@ -303,6 +303,34 @@
             </list>
           </value>
         </entry>
+        <entry key="geocoding">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geocoding-3.0.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="geocoding_android">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geocoding_android-3.3.1/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="geocoding_ios">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geocoding_ios-3.1.0/lib" />
+            </list>
+          </value>
+        </entry>
+        <entry key="geocoding_platform_interface">
+          <value>
+            <list>
+              <option value="$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geocoding_platform_interface-3.2.0/lib" />
+            </list>
+          </value>
+        </entry>
         <entry key="geolocator">
           <value>
             <list>
@@ -983,6 +1011,10 @@
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/flutter_plugin_android_lifecycle-2.0.30/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/flutter_web_auth_2-4.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/flutter_web_auth_2_platform_interface-4.1.0/lib" />
+      <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geocoding-3.0.0/lib" />
+      <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geocoding_android-3.3.1/lib" />
+      <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geocoding_ios-3.1.0/lib" />
+      <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geocoding_platform_interface-3.2.0/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geolocator-11.1.0/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geolocator_android-4.6.2/lib" />
       <root url="file://$PROJECT_DIR$/../.pub-cache/hosted/pub.dev/geolocator_apple-2.3.13/lib" />

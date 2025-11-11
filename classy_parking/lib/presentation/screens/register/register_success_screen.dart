@@ -1,23 +1,28 @@
-import 'package:classy_parking/core/constants/color.dart';
+import 'package:classy_parking/core/router/route_path.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../../core/router/route_path.dart';
 
-class PaymentSuccessScreen extends StatefulWidget {
-  const PaymentSuccessScreen({super.key});
+import '../../widgets/fixed_button_footer.dart';
+
+class RegisterSuccessScreen extends StatefulWidget {
+  const RegisterSuccessScreen({super.key});
 
   @override
-  State<PaymentSuccessScreen> createState() => _PaymentSuccessScreenState();
+  State<RegisterSuccessScreen> createState() => _RegisterSuccessScreenState();
 }
 
-class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
+class _RegisterSuccessScreenState extends State<RegisterSuccessScreen> {
+  bool _navigated = false; // 중복 이동 방지
+
   @override
   void initState() {
     super.initState();
+
+    // ✅ 2초 후 홈 화면으로 이동
     Future.delayed(const Duration(seconds: 2), () {
-      if (mounted) {
-        context.go(RoutePath.home);
-      }
+      if (!mounted || _navigated) return; // 위젯이 이미 dispose된 경우 방지
+      _navigated = true;
+      context.go(RoutePath.home); // 홈 화면으로 즉시 교체 이동
     });
   }
 
@@ -35,7 +40,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                       size: 120, color: Colors.blue),
                   const SizedBox(height: 20),
                   const Text(
-                    "결제를 완료했습니다!",
+                    "등록을 완료합니다",
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),

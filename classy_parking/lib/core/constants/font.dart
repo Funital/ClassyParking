@@ -50,6 +50,12 @@ class AppFont {
     height: 1.5,
   );
 
+  static const TextStyle size36 = TextStyle(
+    fontFamily: family,
+    fontSize: 36,
+    height: 1.5,
+  );
+
   static const TextStyle size44 = TextStyle(
     fontFamily: family,
     fontSize: 44,

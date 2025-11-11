@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import '../../widgets/custom_bottom_button.dart';
 import 'photo_view_model.dart';
 
 class PhotoScreen extends StatelessWidget {
@@ -24,6 +25,12 @@ class PhotoScreen extends StatelessWidget {
           elevation: 0,
         ),
         backgroundColor: Colors.white,
+        bottomNavigationBar: Consumer<PhotoViewModel>(
+          builder: (context, viewModel, child) => CustomBottomButton(
+            text: "회원가입 완료하기",
+            onPressed: () => context.push(RoutePath.home_video),
+          ),
+        ),
         body: SafeArea(
           child: Consumer<PhotoViewModel>(
             builder: (context, viewModel, child) {
@@ -111,39 +118,6 @@ class PhotoScreen extends StatelessWidget {
                             ),
                             const SizedBox(height: 20),
                           ],
-                        ),
-                      ),
-
-                      /// 하단 버튼 고정
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 20,
-                          right: 20,
-                        ),
-                        child: SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              context.push(RoutePath.home);
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 40,
-                                vertical: 14,
-                              ),
-                            ),
-                            child: const Text(
-                              "회원가입 완료하기",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black87,
-                              ),
-                            ),
-                          ),
                         ),
                       ),
                     ],
