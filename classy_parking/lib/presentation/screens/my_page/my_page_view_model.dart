@@ -18,30 +18,13 @@ class MyPageViewModel extends ChangeNotifier {
   MyPageModel get model => _model;
 
   // // 푸시 알림 설정 토글
-  // void togglePushNotification(bool newValue) {
-  //   _model.isPushNotificationEnabled = newValue;
-  //   notifyListeners();
-  //
-  //   // 실제 서버/로컬 설정 업데이트 로직이 여기에 들어갑니다.
-  //   print('푸시 알림 상태 변경: $newValue');
-  // }
-  bool _isPushEnabled = true;
-  bool _isMarketingAgreed = false;
-
-  bool get isPushEnabled => _isPushEnabled;
-  bool get isMarketingAgreed => _isMarketingAgreed;
-
-  void togglePushNotification(bool value) {
-    _isPushEnabled = value;
+  void togglePushNotification(bool newValue) {
+    _model.isPushNotificationEnabled = newValue;
     notifyListeners();
+
+    // 실제 서버/로컬 설정 업데이트 로직이 여기에 들어갑니다.
+    print('푸시 알림 상태 변경: $newValue');
   }
-
-  void toggleMarketingAgreement(bool value) {
-    _isMarketingAgreed = value;
-    notifyListeners();
-  }
-
-
 
   // 로그아웃 로직
   void logout() {
