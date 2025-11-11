@@ -7,6 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constants/color.dart';
 import '../../widgets/custom_bottom_button.dart';
+import '../../widgets/custom_sub_app_bar.dart';
 import 'photo_view_model.dart';
 
 class PhotoScreen extends StatelessWidget {
@@ -17,14 +18,7 @@ class PhotoScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => PhotoViewModel(),
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColor.main),
-            onPressed: () => context.pop(),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
+        appBar: CustomSubAppBar(title: ''),
         backgroundColor: Colors.white,
         bottomNavigationBar: Consumer<PhotoViewModel>(
           builder: (context, viewModel, child) => CustomBottomButton(

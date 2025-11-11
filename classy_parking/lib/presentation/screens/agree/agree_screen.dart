@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../core/constants/color.dart';
 import '../../widgets/custom_bottom_button.dart';
+import '../../widgets/custom_sub_app_bar.dart';
 import 'agree_view_model.dart';
 
 class AgreeScreen extends StatelessWidget {
@@ -15,14 +16,7 @@ class AgreeScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => AgreeViewModel(),
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back, color: AppColor.main),
-            onPressed: () => context.pop(),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
+        appBar: CustomSubAppBar(title: ''),
         bottomNavigationBar: Consumer<AgreeViewModel>(
           builder: (context, viewModel, child) => CustomBottomButton(
             text: "다음",

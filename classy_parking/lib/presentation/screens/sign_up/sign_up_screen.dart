@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../core/constants/color.dart';
 import '../../../core/router/route_path.dart';
 import '../../widgets/custom_bottom_button.dart';
+import '../../widgets/custom_sub_app_bar.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -16,14 +17,7 @@ class SignUpScreen extends StatelessWidget {
       create: (_) => SignUpViewModel(),
       child: Scaffold(
         resizeToAvoidBottomInset: false, // 키보드가 올라와도 화면 전체 밀리지 않음
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: AppColor.main),
-            onPressed: () => context.pop(),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
+        appBar: CustomSubAppBar(title: ''),
         bottomNavigationBar: Consumer<SignUpViewModel>(
           builder: (context, viewModel, child) => CustomBottomButton(
             text: "다음",

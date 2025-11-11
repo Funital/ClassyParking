@@ -1,3 +1,4 @@
+import 'package:classy_parking/core/constants/color.dart';
 import 'package:classy_parking/core/router/route_path.dart';
 import 'package:classy_parking/presentation/screens/home/video/video_view_model.dart';
 import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
@@ -39,8 +40,8 @@ class VideoScreen extends StatelessWidget {
                   Center(
                     child: Column(
                       children: [
-                        const Icon(Icons.directions_car,
-                            size: 50, color: Colors.blue),
+                        Icon(Icons.directions_car,
+                            size: 50, color: AppColor.main),
                         const SizedBox(height: 8),
                         Text(
                           "주차교육영상",
@@ -114,7 +115,7 @@ class VideoScreen extends StatelessWidget {
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:
-                                        isWatched ? Colors.green.shade600 : Colors.blue,
+                                        isWatched ? Colors.green.shade600 : AppColor.main,
                                         shape: RoundedRectangleBorder(
                                           borderRadius: BorderRadius.circular(8),
                                         ),

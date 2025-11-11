@@ -24,7 +24,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColor.main,
+      backgroundColor: AppColor.main1,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -33,7 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
               "편한 주차의 시작",
               style: AppFont.size22.copyWith(
                 fontWeight: FontWeight.w800,
-                color: Colors.black
+                color: Colors.white
               )
             ),
             SizedBox(height: 10),
@@ -41,14 +41,14 @@ class _SplashScreenState extends State<SplashScreen> {
               "주차의 품격",
                 style: AppFont.size44.copyWith(
                     fontWeight: FontWeight.w800,
-                    color: Colors.black
+                    color: Colors.white
                 )
             ),
             SizedBox(height: 100),
             Icon(
               Icons.directions_car,
               size: 150,
-              color: Colors.black,
+              color: Colors.white,
             ),
           ],
         ),

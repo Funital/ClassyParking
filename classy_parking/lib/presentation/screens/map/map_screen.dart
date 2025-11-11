@@ -8,6 +8,8 @@ import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/color.dart';
+
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
 
@@ -219,21 +221,24 @@ class _MapScreenState extends State<MapScreen> {
                 FloatingActionButton(
                   onPressed: _recenterMap,
                   tooltip: '현재 위치로 이동',
-                  child: const Icon(Icons.my_location),
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.my_location, color: AppColor.main,),
                   heroTag: 'recenter',
                 ),
                 const SizedBox(height: 12),
                 FloatingActionButton(
                   onPressed: _zoomIn,
+                  backgroundColor: Colors.white,
                   tooltip: '확대',
-                  child: const Icon(Icons.zoom_in),
+                  child: const Icon(Icons.zoom_in, color: AppColor.main),
                   heroTag: 'zoomIn',
                 ),
                 const SizedBox(height: 12),
                 FloatingActionButton(
                   onPressed: _zoomOut,
+                  backgroundColor: Colors.white,
                   tooltip: '축소',
-                  child: const Icon(Icons.zoom_out),
+                  child: const Icon(Icons.zoom_out, color: AppColor.main),
                   heroTag: 'zoomOut',
                 ),
               ],

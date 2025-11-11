@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../../core/constants/color.dart';
 import '../../../core/router/route_path.dart';
 import '../../widgets/custom_bottom_button.dart';
+import '../../widgets/custom_sub_app_bar.dart';
 import 'car_view_model.dart';
 
 class CarScreen extends StatelessWidget {
@@ -17,14 +18,7 @@ class CarScreen extends StatelessWidget {
         builder: (context, viewModel, child) {
           return Scaffold(
             resizeToAvoidBottomInset: false, // 키보드가 올라와도 레이아웃 밀리지 않음
-            appBar: AppBar(
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: AppColor.main),
-                onPressed: () => context.pop(),
-              ),
-              backgroundColor: Colors.white,
-              elevation: 0,
-            ),
+            appBar: CustomSubAppBar(title: ''),
             backgroundColor: Colors.white,
             bottomNavigationBar: Consumer<CarViewModel>(
               builder: (context, viewModel, child) => CustomBottomButton(
