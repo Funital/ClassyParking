@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constants/color.dart';
 import '../../widgets/custom_bottom_button.dart';
 import 'photo_view_model.dart';
 
@@ -18,7 +19,7 @@ class PhotoScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.blue),
+            icon: const Icon(Icons.arrow_back, color: AppColor.main),
             onPressed: () => context.pop(),
           ),
           backgroundColor: Colors.white,
@@ -86,7 +87,7 @@ class PhotoScreen extends StatelessWidget {
                                     Icon(
                                       Icons.camera_alt,
                                       size: 80,
-                                      color: Colors.blue.shade400,
+                                      color: AppColor.main,
                                     ),
                                     const SizedBox(height: 16),
                                     const Text(
@@ -111,7 +112,7 @@ class PhotoScreen extends StatelessWidget {
                                 "직접 입력하기",
                                 style: TextStyle(
                                   decoration: TextDecoration.underline,
-                                  color: Colors.blue,
+                                  color: AppColor.main,
                                   fontSize: 16,
                                 ),
                               ),

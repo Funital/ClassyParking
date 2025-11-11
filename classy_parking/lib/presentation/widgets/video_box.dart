@@ -1,6 +1,8 @@
 import 'package:classy_parking/core/constants/font.dart';
 import 'package:flutter/material.dart';
 
+import '../../core/constants/color.dart';
+
 class VideoBox extends StatelessWidget {
   final String title;
   final String duration;
@@ -67,7 +69,7 @@ class VideoBox extends StatelessWidget {
                   child: Text(
                     '시청하기',
                     style: AppFont.size14.copyWith(
-                        color: Colors.blue,
+                        color: AppColor.main,
                         fontWeight: FontWeight.w600,
                         decoration: TextDecoration.underline,
                     ),
@@ -80,7 +82,7 @@ class VideoBox extends StatelessWidget {
           const Icon(
             Icons.play_circle,
             size: 40,
-            color: Colors.blue,
+            color: AppColor.main,
           ),
         ],
       ),

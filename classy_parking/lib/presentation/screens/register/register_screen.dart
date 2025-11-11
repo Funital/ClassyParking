@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart'; // LatLng 사용을 위해 추가 (필요 없을 수도 있지만 안전하게 유지)
 
+import '../../../core/constants/color.dart';
 import '../../../core/router/route_path.dart';
 
 final MapController _registerMapController = MapController();
@@ -116,7 +117,7 @@ class RegisterScreen extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 45),
-              backgroundColor: Colors.blue,
+              backgroundColor: AppColor.main,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
             ),
@@ -138,8 +139,8 @@ class RegisterScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 45),
-                  backgroundColor: Colors.blue.shade100,
-                  foregroundColor: Colors.blue,
+                  // backgroundColor: Colors.blue.shade100,
+                  foregroundColor: AppColor.main,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
                 ),
                 child: const Text("주소 재검색", style: TextStyle(fontSize: 16.0)),
@@ -205,14 +206,14 @@ class RegisterScreen extends StatelessWidget {
                       width: 50,
                       height: 50,
                       child: Draggable( // Draggable 위젯을 사용하여 핀 드래그 구현
-                        feedback: const Icon(Icons.location_on, color: Colors.blue, size: 50),
+                        feedback: const Icon(Icons.location_on, color: AppColor.main, size: 50),
                         childWhenDragging: Container(),
                         data: viewModel.parkingPosition,
                         onDragEnd: (details) {
                           // 여기서는 간단히 지도 중앙을 새로운 핀 위치로 업데이트
                           viewModel.updateParkingPosition(_registerMapController.camera.center);
                         },
-                        child: const Icon(Icons.location_on, color: Colors.blue, size: 40),
+                        child: const Icon(Icons.location_on, color: AppColor.main, size: 40),
                       ),
                     ),
                   ],
@@ -265,7 +266,7 @@ class RegisterScreen extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(double.infinity, 50),
           // ⭐ 수정: 버튼 활성화 여부에 따라 색상 변경
-          backgroundColor: isButtonEnabled ? Colors.blue : Colors.grey,
+          backgroundColor: isButtonEnabled ? AppColor.main : Colors.grey,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),

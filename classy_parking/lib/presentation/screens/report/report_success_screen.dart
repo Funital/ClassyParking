@@ -2,6 +2,7 @@ import 'package:classy_parking/core/router/route_path.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+import '../../../core/constants/color.dart';
 import '../../widgets/fixed_button_footer.dart';
 
 class ReportSuccessScreen extends StatefulWidget {
@@ -37,7 +38,7 @@ class _ReportSuccessScreenState extends State<ReportSuccessScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.check_circle_outline,
-                      size: 120, color: Colors.blue),
+                      size: 120, color: AppColor.main),
                   const SizedBox(height: 20),
                   const Text(
                     "신고가 정상적으로\n접수되었습니다",

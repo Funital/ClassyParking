@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/color.dart';
 import 'info/mypage_info_screen.dart';
 import 'my_page_view_model.dart';
 
@@ -73,7 +74,7 @@ class MyPageScreen extends StatelessWidget {
               Switch.adaptive(
                 value: viewModel.model.isPushNotificationEnabled,
                 onChanged: viewModel.togglePushNotification,
-                activeColor: Colors.teal,
+                activeColor: AppColor.main,
               ),
             ],
           ),
@@ -87,7 +88,7 @@ class MyPageScreen extends StatelessWidget {
               Switch.adaptive(
                 value: viewModel.model.isPushNotificationEnabled,
                 onChanged: viewModel.togglePushNotification,
-                activeColor: Colors.teal,
+                activeColor: AppColor.main,
               ),
             ],
           ),

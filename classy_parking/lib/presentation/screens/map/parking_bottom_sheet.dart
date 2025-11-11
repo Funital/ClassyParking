@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 
+import '../../../core/constants/color.dart';
 import '../../../core/router/route_path.dart';
 
 // StatefulWidget으로 변경하여 찜하기 상태를 관리합니다.
@@ -139,7 +140,7 @@ class _ParkingBottomSheetState extends State<ParkingBottomSheet> {
                   child: Container(
                     padding: const EdgeInsets.symmetric(vertical: 16),
                     decoration: BoxDecoration(
-                      color: Colors.lightBlueAccent,
+                      color: AppColor.main,
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Column(

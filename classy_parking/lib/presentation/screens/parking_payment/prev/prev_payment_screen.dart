@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../../../core/constants/color.dart';
 import '../../../../core/router/route_path.dart';
 import '../../../widgets/custom_bottom_button.dart';
 import 'prev_payment_model.dart';
@@ -107,7 +108,7 @@ class PrevPaymentScreen extends StatelessWidget {
               icon: Stack(
                 children: [
                   const Icon(
-                      Icons.directions_car, color: Colors.blueAccent, size: 28),
+                      Icons.directions_car, color: AppColor.main, size: 28),
                   Positioned(
                     right: 0,
                     top: 0,
@@ -298,8 +299,8 @@ class PrevPaymentScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
-        children: const [
-          Icon(Icons.star, color: Color(0xFF3333FF), size: 18), // M 아이콘 대신 별 사용
+        children: [
+          Icon(Icons.star, color: AppColor.main, size: 18), // M 아이콘 대신 별 사용
           SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -389,9 +390,9 @@ class PrevPaymentScreen extends StatelessWidget {
               height: 30,
               decoration: BoxDecoration(
                 // 선택 상태에 따라 테두리 색상과 배경색 변경
-                color: isSelected ? Colors.blue : Colors.white,
+                color: isSelected ? AppColor.main : Colors.white,
                 border: Border.all(
-                  color: isSelected ? Colors.blue : Colors.grey[300]!,
+                  color: isSelected ? AppColor.main : Colors.grey[300]!,
                   width: 1.5,
                 ),
                 borderRadius: BorderRadius.circular(20),

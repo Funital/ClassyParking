@@ -1,6 +1,7 @@
 import 'package:classy_parking/core/constants/font.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constants/color.dart';
 import '../../widgets/custom_sub_app_bar.dart';
 import 'parking_view_model.dart';
 import 'parking_model.dart';
@@ -82,13 +83,13 @@ class ParkingScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               border: Border.all(
                                 color: spot.isSelected
-                                    ? Colors.blue
+                                    ? AppColor.main
                                     : Colors.grey.shade400,
                               ),
                               color: spot.isOccupied
                                   ? Colors.grey.shade300
                                   : spot.isSelected
-                                  ? Colors.blue.shade100
+                                  ? AppColor.main
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -117,7 +118,7 @@ class ParkingScreen extends StatelessWidget {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: AppColor.main,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
                           ),

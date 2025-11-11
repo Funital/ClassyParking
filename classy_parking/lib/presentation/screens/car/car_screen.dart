@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constants/color.dart';
 import '../../../core/router/route_path.dart';
 import '../../widgets/custom_bottom_button.dart';
 import 'car_view_model.dart';
@@ -18,7 +19,7 @@ class CarScreen extends StatelessWidget {
             resizeToAvoidBottomInset: false, // 키보드가 올라와도 레이아웃 밀리지 않음
             appBar: AppBar(
               leading: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.blue),
+                icon: const Icon(Icons.arrow_back, color: AppColor.main),
                 onPressed: () => context.pop(),
               ),
               backgroundColor: Colors.white,

@@ -12,4 +12,6 @@ class AppColor {
   static const Color lightCyan = Color(0xFFDFF3F8);
 
   static const Color kakaoBg = Color(0xFFFEE500);
+
+  static const Color main = Color(0xFFA1CAF1);
 }

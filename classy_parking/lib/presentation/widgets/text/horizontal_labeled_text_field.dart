@@ -78,7 +78,7 @@ class _HorizontalLabeledTextFieldState extends State<HorizontalLabeledTextField>
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.blue, width: 1),
+              border: Border.all(color: AppColor.main, width: 1),
               borderRadius: BorderRadius.circular(30),
             ),
             child: TextField(
