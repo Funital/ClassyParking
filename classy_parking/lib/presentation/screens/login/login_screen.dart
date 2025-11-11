@@ -46,19 +46,19 @@ class LoginScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 80),
+                const SizedBox(height: 40),
 
                 /// E-Mail 입력
                 const Padding(
                   padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('E-Mail'),
+                    child: Text('이메일'),
                   ),
                 ),
                 TextField(
                   decoration: const InputDecoration(
-                    hintText: 'yourname@example.com',
+                    hintText: 'your@example.com',
                     hintStyle: TextStyle(color: Color(0xFFB0B0B0)),
                     contentPadding: EdgeInsets.symmetric(vertical: 0),
                     isDense: true,
@@ -78,7 +78,7 @@ class LoginScreen extends StatelessWidget {
                   padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Password'),
+                    child: Text('비밀번호'),
                   ),
                 ),
                 const _PasswordField(), // 비밀번호 필드 재사용
@@ -91,15 +91,15 @@ class LoginScreen extends StatelessWidget {
                     viewModel.login(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF64B5F6), // 이미지의 파란색 계열
-                    elevation: 0,
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
-                    minimumSize: const Size.fromHeight(55),
                   ),
                   child: const Text(
-                    'Login',
+                    '로그인',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
