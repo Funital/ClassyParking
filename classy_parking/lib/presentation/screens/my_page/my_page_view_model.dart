@@ -1,56 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'my_page_model.dart';
-//
-// class MyPageViewModel extends ChangeNotifier {
-//   late MyPageModel _myPageModel;
-//
-//   MyPageModel get myPageModel => _myPageModel;
-//
-//
-//
-//   MyPageViewModel() {
-//     _myPageModel = const MyPageModel(
-//       nickname: 'Health Revolution',
-//       phoneNumber: '010-1234-5678',
-//       carType: '카니발',
-//       carName: '사랑',
-//       carNumber: '12가 3456',
-//       isLicenseUploaded: true,
-//       parkingStatus: '사용가능',
-//     );
-//   }
-//
-//   // 예: 닉네임 업데이트 함수
-//   void updateNickname(String newName) {
-//     _myPageModel = MyPageModel(
-//       nickname: newName,
-//       phoneNumber: _myPageModel.phoneNumber,
-//       carType: _myPageModel.carType,
-//       carName: _myPageModel.carName,
-//       carNumber: _myPageModel.carNumber,
-//       isLicenseUploaded: _myPageModel.isLicenseUploaded,
-//       parkingStatus: _myPageModel.parkingStatus,
-//     );
-//     notifyListeners();
-//   }
-//
-//   // 운전면허증 업로드 상태 변경
-//   void toggleLicenseStatus() {
-//     _myPageModel = MyPageModel(
-//       nickname: _myPageModel.nickname,
-//       phoneNumber: _myPageModel.phoneNumber,
-//       carType: _myPageModel.carType,
-//       carName: _myPageModel.carName,
-//       carNumber: _myPageModel.carNumber,
-//       isLicenseUploaded: !_myPageModel.isLicenseUploaded,
-//       parkingStatus: _myPageModel.parkingStatus,
-//     );
-//     notifyListeners();
-//   }
-// }
-
-// lib/viewmodels/my_page_view_model.dart
-
 import 'package:flutter/foundation.dart';
 
 import 'my_page_model.dart';
@@ -70,13 +17,28 @@ class MyPageViewModel extends ChangeNotifier {
 
   MyPageModel get model => _model;
 
-  // 푸시 알림 설정 토글
-  void togglePushNotification(bool newValue) {
-    _model.isPushNotificationEnabled = newValue;
-    notifyListeners();
+  // // 푸시 알림 설정 토글
+  // void togglePushNotification(bool newValue) {
+  //   _model.isPushNotificationEnabled = newValue;
+  //   notifyListeners();
+  //
+  //   // 실제 서버/로컬 설정 업데이트 로직이 여기에 들어갑니다.
+  //   print('푸시 알림 상태 변경: $newValue');
+  // }
+  bool _isPushEnabled = true;
+  bool _isMarketingAgreed = false;
 
-    // 실제 서버/로컬 설정 업데이트 로직이 여기에 들어갑니다.
-    print('푸시 알림 상태 변경: $newValue');
+  bool get isPushEnabled => _isPushEnabled;
+  bool get isMarketingAgreed => _isMarketingAgreed;
+
+  void togglePushNotification(bool value) {
+    _isPushEnabled = value;
+    notifyListeners();
+  }
+
+  void toggleMarketingAgreement(bool value) {
+    _isMarketingAgreed = value;
+    notifyListeners();
   }
 
 

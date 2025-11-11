@@ -60,31 +60,39 @@ class MyPageScreen extends StatelessWidget {
   // 2. 푸시 알림 설정
   Widget _buildPushNotificationSetting(MyPageViewModel viewModel) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Column(
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Text(
-                "푸시 알림 설정",
+                "PUSH 알림",
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
-              const SizedBox(height: 4),
-              Text(
-                "매일 오전 11시에 알림을 보내드려요",
-                style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+              Switch.adaptive(
+                value: viewModel.model.isPushNotificationEnabled,
+                onChanged: viewModel.togglePushNotification,
+                activeColor: Colors.teal,
               ),
             ],
           ),
-          Switch.adaptive(
-            value: viewModel.model.isPushNotificationEnabled,
-            onChanged: viewModel.togglePushNotification,
-            activeColor: Colors.teal,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "마케팅 알림 수신 동의",
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              ),
+              Switch.adaptive(
+                value: viewModel.model.isPushNotificationEnabled,
+                onChanged: viewModel.togglePushNotification,
+                activeColor: Colors.teal,
+              ),
+            ],
           ),
         ],
-      ),
+      )
     );
   }
 
