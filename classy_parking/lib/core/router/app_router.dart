@@ -17,6 +17,7 @@ import 'package:classy_parking/presentation/screens/parking_payment/prev/prev_pa
 import 'package:classy_parking/presentation/screens/parking_payment/success/payment_success_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/success/prev_payment_success_screen.dart';
 import 'package:classy_parking/presentation/screens/register/register_screen.dart';
+import 'package:classy_parking/presentation/screens/register/register_success_screen.dart';
 import 'package:classy_parking/presentation/screens/report/report_screen.dart';
 import 'package:classy_parking/presentation/screens/report/report_success_screen.dart';
 import 'package:classy_parking/presentation/screens/setting/setting_screen.dart';
@@ -69,7 +70,7 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.setting: (context, state) => const SettingScreen(),
 
   RoutePath.register: (context, state) => const RegisterScreen(),
-  RoutePath.success_register: (context, state) => const ReportSuccessScreen(),
+  RoutePath.success_register: (context, state) => const RegisterSuccessScreen(),
   RoutePath.myPage_info: (context, state) => const MypageInfoScreen(),
   RoutePath.myPark: (context, state) => const MyParkScreen(),
   RoutePath.park_manage: (context, state) => const MyParkinigManageScreen(),
