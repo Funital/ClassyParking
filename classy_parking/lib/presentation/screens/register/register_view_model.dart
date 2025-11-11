@@ -16,7 +16,7 @@ class RegisterViewModel extends ChangeNotifier {
 
   // --- 지도 및 위치 정보 관리 ---
 
-  // 지도 중앙 위치 (MapOptions의 initialCenter나 move에 사용됨) <<< 이 부분이 추가되었습니다.
+  // 지도 중앙 위치 (MapOptions의 initialCenter나 move에 사용됨)
   LatLng _mapCenter = const LatLng(37.5665, 126.9780);
 
   LatLng get mapCenter => _mapCenter;
@@ -30,7 +30,11 @@ class RegisterViewModel extends ChangeNotifier {
   void updateParkingPosition(LatLng newPosition) {
     _parkingPosition = newPosition;
     _mapCenter = newPosition; // 핀이 움직이면 지도 중심도 업데이트합니다.
-    // TODO: 모델에 위경도 값도 저장해야 합니다. (예: _model.latitude = newPosition.latitude;)
+
+    // ⭐ 수정: 모델에 위경도 값도 저장
+    _model.latitude = newPosition.latitude;
+    _model.longitude = newPosition.longitude;
+
     notifyListeners();
   }
 
@@ -39,7 +43,7 @@ class RegisterViewModel extends ChangeNotifier {
     try {
       if (query.isEmpty) return;
 
-      final List<Location> locations = await locationFromAddress(query);
+      final List<Location> locations = await locationFromAddress(query); // <-- ⭐ 실제 검색어 사용
 
       if (locations.isNotEmpty) {
         final Location firstLocation = locations.first;
@@ -48,8 +52,10 @@ class RegisterViewModel extends ChangeNotifier {
           firstLocation.longitude,
         );
 
-        // 모델에 검색된 주소 저장
-        _model.address = query;
+        // 모델에 검색된 주소 및 위경도 저장
+        _model.address = query; // <-- ⭐ 검색어(예: "안양역")를 주소로 저장
+        _model.latitude = newPosition.latitude;
+        _model.longitude = newPosition.longitude;
 
         // 맵 핀 위치 및 지도 중심 위치 업데이트
         _parkingPosition = newPosition;
@@ -94,14 +100,16 @@ class RegisterViewModel extends ChangeNotifier {
   bool isStepValid() {
     switch (_currentStep) {
       case 1:
-      // 핀 위치가 초기 기본값(37.5665, 126.9780)이 아니어야 유효하다고 가정
+      // ⭐ 수정: 1단계 유효성 검사 로직 (필수 필드 및 위경도 확인)
         return _model.parkingName.isNotEmpty &&
             _model.address.isNotEmpty &&
             _model.totalSpaces.isNotEmpty &&
-            _parkingPosition != const LatLng(37.5665, 126.9780);
+            _model.latitude != null &&
+            _model.longitude != null &&
+            // 초기 기본값(서울 시청)이 아닌지 확인 (주소 검색 또는 핀 이동이 완료되었는지 확인)
+            !(_model.latitude == 37.5665 && _model.longitude == 126.9780);
       case 2:
       // TODO: 2단계 유효성 검사 로직 추가 (예: 요금 정보가 올바르게 입력되었는지)
-      // return _model.baseFee != null && _model.operationHours.isNotEmpty;
         return true;
       case 3:
       // TODO: 3단계 유효성 검사 로직 추가
@@ -119,13 +127,16 @@ class RegisterViewModel extends ChangeNotifier {
 
   void updateParkingName(String name) {
     _model.parkingName = name;
+    notifyListeners(); // ⭐ 추가: 유효성 검사를 위해 변경 시마다 호출
   }
 
   void updateDetailAddress(String detail) {
     _model.detailAddress = detail;
+    notifyListeners(); // ⭐ 추가: 유효성 검사를 위해 변경 시마다 호출
   }
 
   void updateTotalSpaces(String spaces) {
     _model.totalSpaces = spaces;
+    notifyListeners(); // ⭐ 추가: 유효성 검사를 위해 변경 시마다 호출
   }
 }

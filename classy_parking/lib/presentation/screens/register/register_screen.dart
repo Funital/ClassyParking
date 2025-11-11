@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart'; // LatLng 사용을 위해 추가 (필요 없을 수도 있지만 안전하게 유지)
 
 import '../../../core/router/route_path.dart';
 
@@ -32,6 +33,50 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
+  // 1. 주소 검색 팝업을 띄우고 결과를 ViewModel에 전달하는 함수
+  void _showAddressSearchDialog(BuildContext context, RegisterViewModel viewModel) {
+    String searchKeyword = '';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('주소 검색'),
+          content: TextField(
+            autofocus: true,
+            decoration: const InputDecoration(
+              hintText: "예: 안양역, 서울시청",
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              searchKeyword = value;
+            },
+            onSubmitted: (value) => Navigator.of(context).pop(value), // 엔터키로도 검색 가능
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('취소'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(searchKeyword),
+              child: const Text('검색'),
+            ),
+          ],
+        );
+      },
+    ).then((result) async {
+      // 팝업이 닫힌 후, 검색 결과(result)가 문자열이고 비어있지 않은 경우
+      if (result != null && result is String && result.isNotEmpty) {
+        // 검색어를 ViewModel의 searchAddress에 전달하여 실제 검색 수행
+        await viewModel.searchAddress(result);
+
+        // 검색 후 지도를 새 위치로 이동
+        _registerMapController.move(viewModel.mapCenter, 15.0);
+      }
+    });
+  }
+
   // 2. 1단계 본문 내용 구성 (FlutterMap 적용)
   Widget _buildStepOneContent(BuildContext context, RegisterViewModel viewModel) {
     return Column(
@@ -45,7 +90,7 @@ class RegisterScreen extends StatelessWidget {
         ),
         const SizedBox(height: 15.0),
 
-        // (주차장 이름 입력 필드 - 생략 없이 기존 코드 유지)
+        // (주차장 이름 입력 필드)
         const Text("주차장 이름", style: TextStyle(color: Colors.grey)),
         TextFormField(
           initialValue: viewModel.model.parkingName,
@@ -60,22 +105,48 @@ class RegisterScreen extends StatelessWidget {
 
         // 주소
         const Text("주소", style: TextStyle(color: Colors.grey)),
-        ElevatedButton(
-          onPressed: () async {
-            // TODO: 주소 검색 UI/팝업을 띄우고 결과를 받아와야 함.
-            // 임시로 더미 주소 검색을 호출 (ViewModel에 LatLng 업데이트 로직 필요)
-            await viewModel.searchAddress("서울특별시 강남구 테헤란로 132");
-            // 검색 후 지도를 새 위치로 이동
-            _registerMapController.move(viewModel.mapCenter, 15.0);
-          },
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, 45),
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+
+        // ⭐ 수정: 주소 검색 여부에 따른 조건부 UI
+        if (viewModel.model.address.isEmpty)
+        // 주소 검색 버튼
+          ElevatedButton(
+            onPressed: () {
+              // ⭐ 수정: 팝업을 띄워 실제 검색어를 받도록 변경
+              _showAddressSearchDialog(context, viewModel);
+            },
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(double.infinity, 45),
+              backgroundColor: Colors.blue,
+              foregroundColor: Colors.white,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+            ),
+            child: const Text("주소 검색", style: TextStyle(fontSize: 16.0)),
+          )
+        else
+        // 검색된 주소와 재검색 버튼
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("도로명 주소 (검색 결과)", style: TextStyle(color: Colors.black)),
+              Text(viewModel.model.address, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+              const SizedBox(height: 10.0),
+
+              ElevatedButton(
+                onPressed: () {
+                  // ⭐ 수정: 팝업을 띄워 실제 검색어를 받도록 변경
+                  _showAddressSearchDialog(context, viewModel);
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 45),
+                  backgroundColor: Colors.blue.shade100,
+                  foregroundColor: Colors.blue,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                ),
+                child: const Text("주소 재검색", style: TextStyle(fontSize: 16.0)),
+              ),
+            ],
           ),
-          child: const Text("주소 검색", style: TextStyle(fontSize: 16.0)),
-        ),
+
         const SizedBox(height: 15.0),
 
         // 상세 주소 (검색 결과가 있으면 표시)
@@ -85,9 +156,6 @@ class RegisterScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("도로명 주소 (검색 결과)", style: TextStyle(color: Colors.black)),
-                Text(viewModel.model.address, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                const SizedBox(height: 10.0),
                 const Text("상세 주소", style: TextStyle(color: Colors.grey)),
                 TextFormField(
                   initialValue: viewModel.model.detailAddress,
@@ -141,12 +209,7 @@ class RegisterScreen extends StatelessWidget {
                         childWhenDragging: Container(),
                         data: viewModel.parkingPosition,
                         onDragEnd: (details) {
-                          // 지도 뷰포트 좌표를 LatLng으로 변환하는 로직 필요
-                          // 단순 예시: 화면 중앙 위치를 핀의 새 위치로 가정하거나,
-                          // Dragging 위치를 직접 LatLng으로 변환해야 합니다. (더 복잡한 로직 필요)
-                          // 간단하게는 MapOptions의 onTap을 사용하거나, Custom Marker 사용이 더 일반적입니다.
-
-                          // 여기서는 간단히 지도 중앙을 새로운 핀 위치로 업데이트하는 로직을 가정
+                          // 여기서는 간단히 지도 중앙을 새로운 핀 위치로 업데이트
                           viewModel.updateParkingPosition(_registerMapController.camera.center);
                         },
                         child: const Icon(Icons.location_on, color: Colors.blue, size: 40),
@@ -160,7 +223,7 @@ class RegisterScreen extends StatelessWidget {
         ),
         const SizedBox(height: 30.0),
 
-        // (주차장 종류 헤더 및 총 주차 가능 면수 입력 필드 - 기존 코드 유지)
+        // (주차장 종류 헤더 및 총 주차 가능 면수 입력 필드)
         const Text(
           "주차장 종류",
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
@@ -186,6 +249,9 @@ class RegisterScreen extends StatelessWidget {
 
   // 3. 하단 "다음 단계" 버튼 (기존 코드 유지)
   Widget _buildBottomButton(BuildContext context, RegisterViewModel viewModel) {
+    // ⭐ 수정: isStepValid()를 사용하여 버튼 활성화/비활성화
+    final bool isButtonEnabled = viewModel.isStepValid();
+
     return Padding(
       padding: EdgeInsets.only(
         left: 20,
@@ -194,15 +260,17 @@ class RegisterScreen extends StatelessWidget {
         top: 10,
       ),
       child: ElevatedButton(
-        onPressed: () => viewModel.goToHome(context),
+        // ⭐ 수정: 유효성 검사를 통과했을 때만 onPressed 함수 실행
+        onPressed: isButtonEnabled ? () => viewModel.goToHome(context) : null,
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(double.infinity, 50),
-          backgroundColor: Colors.blue,
+          // ⭐ 수정: 버튼 활성화 여부에 따라 색상 변경
+          backgroundColor: isButtonEnabled ? Colors.blue : Colors.grey,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
         child: const Text(
-          "등록하기",
+          "다음 단계",
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
       ),
