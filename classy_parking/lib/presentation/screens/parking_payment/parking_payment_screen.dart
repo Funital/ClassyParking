@@ -2,6 +2,7 @@ import 'package:classy_parking/presentation/screens/parking_payment/parking_paym
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../widgets/custom_bottom_button.dart';
 import '../../widgets/custom_sub_app_bar.dart';
 
 class ParkingPaymentScreen extends StatelessWidget {
@@ -26,6 +27,12 @@ class _ParkingPaymentView extends StatelessWidget {
 
     return Scaffold(
       appBar: CustomSubAppBar(title: '주차요금 결제하기'),
+      bottomNavigationBar: Consumer<ParkingPaymentViewModel>(
+        builder: (context, viewModel, child) => CustomBottomButton(
+          text: "결제하기",
+          onPressed: () => viewModel.payParkingFee(context),
+        ),
+      ),
       body: SafeArea(
         top: true,
         bottom: false,
@@ -170,29 +177,6 @@ class _ParkingPaymentView extends StatelessWidget {
                         ],
                       ),
                     ],
-                  ),
-                ),
-
-                // 하단 결제 버튼
-                Padding(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 50),
-                  child: SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: () => viewModel.payParkingFee(context),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8)),
-                      ),
-                      child: const Text(
-                        "주차요금 결제",
-                        style: TextStyle(
-                            color: Colors.white, fontWeight: FontWeight.bold),
-                      ),
-                    ),
                   ),
                 ),
               ],

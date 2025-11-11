@@ -190,7 +190,7 @@ class RegisterScreen extends StatelessWidget {
       padding: EdgeInsets.only(
         left: 20,
         right: 20,
-        bottom: 20 + MediaQuery.of(context).padding.bottom,
+        bottom: 10 + MediaQuery.of(context).padding.bottom,
         top: 10,
       ),
       child: ElevatedButton(

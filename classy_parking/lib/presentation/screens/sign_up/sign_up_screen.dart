@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/router/route_path.dart';
+import '../../widgets/custom_bottom_button.dart';
+
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
@@ -19,6 +22,18 @@ class SignUpScreen extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           elevation: 0,
+        ),
+        bottomNavigationBar: Consumer<SignUpViewModel>(
+          builder: (context, viewModel, child) => CustomBottomButton(
+            text: "다음",
+            enabled: viewModel.isValid,
+            onPressed: viewModel.isValid
+                ? () {
+              FocusScope.of(context).unfocus(); // 키보드 닫기
+              viewModel.submit(context);
+            }
+                : null,
+          ),
         ),
         backgroundColor: Colors.white,
         body: SafeArea(
@@ -137,46 +152,6 @@ class SignUpScreen extends StatelessWidget {
                 },
               ),
             ),
-          ),
-        ),
-
-        /// 하단 고정 버튼
-        bottomNavigationBar: SafeArea(
-          top: false,
-          minimum: const EdgeInsets.all(20.0),
-          child: Consumer<SignUpViewModel>(
-            builder: (context, viewModel, _) {
-              return SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: viewModel.isValid
-                      ? () {
-                    FocusScope.of(context).unfocus(); // 키보드 닫기
-                    viewModel.submit(context);
-                  }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: viewModel.isValid
-                        ? Colors.blue
-                        : Colors.grey.shade300,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: Text(
-                    "다음",
-                    style: TextStyle(
-                      color: viewModel.isValid
-                          ? Colors.white
-                          : Colors.grey.shade600,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              );
-            },
           ),
         ),
       ),

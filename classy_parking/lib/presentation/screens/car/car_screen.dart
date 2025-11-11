@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../core/router/route_path.dart';
+import '../../widgets/custom_bottom_button.dart';
 import 'car_view_model.dart';
 
 class CarScreen extends StatelessWidget {
@@ -24,6 +25,18 @@ class CarScreen extends StatelessWidget {
               elevation: 0,
             ),
             backgroundColor: Colors.white,
+            bottomNavigationBar: Consumer<CarViewModel>(
+              builder: (context, viewModel, child) => CustomBottomButton(
+                text: "다음",
+                enabled: viewModel.isRequiredChecked,
+                onPressed: viewModel.isRequiredChecked
+                    ? () {
+                  FocusScope.of(context).unfocus(); // 키보드 닫기
+                  context.push(RoutePath.photo);
+                }
+                    : null,
+              ),
+            ),
 
             // GestureDetector로 감싸서 아무 곳 터치 시 키보드 닫기
             body: SafeArea(
@@ -55,39 +68,6 @@ class CarScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 100), // 버튼과의 간격 확보
                       ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-
-            // 버튼을 bottomNavigationBar로 옮겨 항상 하단 고정
-            bottomNavigationBar: SafeArea(
-              top: false,
-              minimum: const EdgeInsets.all(20.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: viewModel.isRequiredChecked
-                      ? () {
-                    FocusScope.of(context).unfocus(); // 키보드 닫기
-                    context.push(RoutePath.photo);
-                  }
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    disabledBackgroundColor: Colors.grey.shade400,
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    "다음",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),

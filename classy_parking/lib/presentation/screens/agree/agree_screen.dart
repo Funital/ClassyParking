@@ -3,6 +3,7 @@ import 'package:classy_parking/core/router/route_path.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../widgets/custom_bottom_button.dart';
 import 'agree_view_model.dart';
 
 class AgreeScreen extends StatelessWidget {
@@ -20,6 +21,13 @@ class AgreeScreen extends StatelessWidget {
           ),
           backgroundColor: Colors.white,
           elevation: 0,
+        ),
+        bottomNavigationBar: Consumer<AgreeViewModel>(
+          builder: (context, viewModel, child) => CustomBottomButton(
+            text: "다음",
+            enabled: viewModel.isRequiredChecked,
+            onPressed: () => context.push(RoutePath.signup),
+          ),
         ),
         body: Consumer<AgreeViewModel>(
           builder: (context, viewModel, child) {
@@ -103,37 +111,6 @@ class AgreeScreen extends StatelessWidget {
                       },
                     ),
                   ),
-
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 35),
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: viewModel.isRequiredChecked
-                            ? () {
-                          context.push(RoutePath.signup);
-                        }
-                            : null,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
-                          disabledBackgroundColor: Colors.grey.shade400,
-                          padding: const EdgeInsets.symmetric(vertical: 16),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        child: const Text(
-                          "다음",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,                // sign_up_screen과 동일
-                            fontWeight: FontWeight.bold, // 동일
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-
                 ],
               ),
             );

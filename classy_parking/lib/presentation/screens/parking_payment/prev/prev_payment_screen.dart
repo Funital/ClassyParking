@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/router/route_path.dart';
+import '../../../widgets/custom_bottom_button.dart';
 import 'prev_payment_model.dart';
 import 'prev_payment_view_model.dart';
 
@@ -19,6 +20,27 @@ class PrevPaymentScreen extends StatelessWidget {
       create: (_) => PrevPaymentViewModel(),
       child: Scaffold(
         backgroundColor: Colors.white,
+        bottomNavigationBar: Consumer<PrevPaymentViewModel>(
+          builder: (context, viewModel, child) {
+            final isEnabled = viewModel.isReserveButtonEnabled;
+
+            return CustomBottomButton(
+              text: '예약하기',
+              onPressed: isEnabled
+                  ? () {
+                // 선택된 상품 정보 출력 또는 다음 화면 이동 로직
+                final selectedProduct = viewModel.products![viewModel
+                    .selectedIndex!];
+                print("--- 예약하기 버튼 활성화 ---");
+                print("선택된 상품: ${selectedProduct.title}(${selectedProduct
+                    .dayOfWeek}), ${selectedProduct.price}원");
+                // TODO: 예약/결제 로직 실행
+                context.push(RoutePath.success_prev_payment);
+              }
+                  : null,
+            );
+          },
+        ),
         appBar: AppBar(
           backgroundColor: Colors.white,
           elevation: 0,
@@ -65,7 +87,8 @@ class PrevPaymentScreen extends StatelessWidget {
                   // 검색 로직 연결
                   onChanged: vm.searchParking,
                   decoration: const InputDecoration(
-                    hintText: "주차장을 검색하세요", // 검색 유도 힌트
+                    hintText: "주차장을 검색하세요",
+                    // 검색 유도 힌트
                     border: InputBorder.none,
                     isDense: true,
                     contentPadding: EdgeInsets.only(top: 8),
@@ -83,7 +106,8 @@ class PrevPaymentScreen extends StatelessWidget {
             IconButton(
               icon: Stack(
                 children: [
-                  const Icon(Icons.directions_car, color: Colors.blueAccent, size: 28),
+                  const Icon(
+                      Icons.directions_car, color: Colors.blueAccent, size: 28),
                   Positioned(
                     right: 0,
                     top: 0,
@@ -120,13 +144,16 @@ class PrevPaymentScreen extends StatelessWidget {
                   children: [
                     SingleChildScrollView(
                       // 하단에 예약하기 버튼 공간 확보를 위한 패딩 추가
-                      padding: const EdgeInsets.only(bottom: _kReserveButtonHeight),
+                      padding: const EdgeInsets.only(
+                          bottom: _kReserveButtonHeight),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // 주차장 상세 정보 섹션 (선택된 상세 정보 사용)
                           _buildParkingInfo(context, vm.selectedParkingDetail!),
-                          const Divider(height: 1, thickness: 1, color: Color(0xFFE0E0E0)),
+                          const Divider(height: 1,
+                              thickness: 1,
+                              color: Color(0xFFE0E0E0)),
 
                           // 할인 배너 섹션
                           _buildDiscountBanner(),
@@ -143,12 +170,6 @@ class PrevPaymentScreen extends StatelessWidget {
                           const SizedBox(height: 50),
                         ],
                       ),
-                    ),
-
-                    // 고정된 예약하기 버튼
-                    Align(
-                      alignment: Alignment.bottomCenter,
-                      child: _buildReserveButton(context, vm),
                     ),
                   ],
                 );
@@ -177,13 +198,15 @@ class PrevPaymentScreen extends StatelessWidget {
   }
 
   // **새로 추가된 검색 결과 항목 위젯**
-  Widget _buildSearchItem(BuildContext context, ParkingSearchModel item, PrevPaymentViewModel vm) {
+  Widget _buildSearchItem(BuildContext context, ParkingSearchModel item,
+      PrevPaymentViewModel vm) {
     return InkWell(
       onTap: () => vm.selectParking(item, context),
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: const BoxDecoration(
-          border: Border(bottom: BorderSide(color: Color(0xFFF5F5F5), width: 1)),
+          border: Border(
+              bottom: BorderSide(color: Color(0xFFF5F5F5), width: 1)),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -231,7 +254,8 @@ class PrevPaymentScreen extends StatelessWidget {
                         color: Colors.black,
                       ),
                     ),
-                    const Icon(Icons.chevron_right, size: 20, color: Colors.black54),
+                    const Icon(
+                        Icons.chevron_right, size: 20, color: Colors.black54),
                   ],
                 ),
                 const SizedBox(height: 4),
@@ -294,12 +318,10 @@ class PrevPaymentScreen extends StatelessWidget {
   }
 
   // 주차 상품 항목 위젯 수정: index와 vm을 받아 선택 상태를 처리
-  Widget _buildProductItem(
-      BuildContext context,
+  Widget _buildProductItem(BuildContext context,
       ParkingProductModel product,
       int index,
-      PrevPaymentViewModel vm,
-      ) {
+      PrevPaymentViewModel vm,) {
     // ViewModel에서 현재 항목이 선택되었는지 확인
     final isSelected = vm.selectedIndex == index;
     final isWeekend = product.dayOfWeek == "토" || product.dayOfWeek == "일";
@@ -309,7 +331,8 @@ class PrevPaymentScreen extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 18.0),
         decoration: BoxDecoration(
-          color: isSelected ? const Color(0xFFF0F5FF) : Colors.white, // 선택된 항목 배경색 변경
+          color: isSelected ? const Color(0xFFF0F5FF) : Colors.white,
+          // 선택된 항목 배경색 변경
           border: const Border(
             bottom: BorderSide(color: Color(0xFFF5F5F5), width: 1),
           ),
@@ -381,60 +404,6 @@ class PrevPaymentScreen extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  // **새로 추가된 예약하기 버튼 위젯**
-  Widget _buildReserveButton(BuildContext context, PrevPaymentViewModel vm) {
-    final isEnabled = vm.isReserveButtonEnabled;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
-      // 버튼이 스크린 하단에 고정될 때 SafeArea를 고려하여 하단 패딩 추가
-      decoration: BoxDecoration(
-        color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, -5),
-          ),
-        ],
-      ),
-      child: SafeArea(
-        top: false,
-        child: SizedBox(
-          width: double.infinity,
-          height: 50,
-          child: ElevatedButton(
-            onPressed: isEnabled
-                ? () {
-              // 선택된 상품 정보 출력 또는 다음 화면 이동 로직
-              final selectedProduct = vm.products![vm.selectedIndex!];
-              print("--- 예약하기 버튼 활성화 ---");
-              print("선택된 상품: ${selectedProduct.title}(${selectedProduct.dayOfWeek}), ${selectedProduct.price}원");
-              // TODO: 예약/결제 로직 실행
-              context.push(RoutePath.success_prev_payment);
-            }
-                : null, // isEnabled가 false일 때 null을 할당하여 버튼 비활성화
-            style: ElevatedButton.styleFrom(
-              backgroundColor: isEnabled ? Colors.blue : Colors.white,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10),
-              ),
-              elevation: 0,
-            ),
-            child: const Text(
-              '예약하기',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
         ),
       ),
     );

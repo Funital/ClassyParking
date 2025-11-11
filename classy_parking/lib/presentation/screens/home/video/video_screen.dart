@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/constants/font.dart';
+import '../../../widgets/custom_bottom_button.dart';
 import '../../../widgets/video_box.dart';
 
 class VideoScreen extends StatelessWidget {
@@ -18,39 +19,14 @@ class VideoScreen extends StatelessWidget {
       child: Scaffold(
         appBar: CustomSubAppBar(title: '주차 교육 영상'),
         backgroundColor: Colors.white,
-
-        // ✅ 하단 버튼
         bottomNavigationBar: Consumer<VideoViewModel>(
-          builder: (context, videoViewModel, _) {
-            final allWatched = videoViewModel.allWatched;
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 30),
-              child: SizedBox(
-                width: double.infinity,
-                height: 50,
-                child: ElevatedButton(
-                  onPressed: allWatched
-                      ? () => context.push(RoutePath.home)
-                      : null,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor:
-                    allWatched ? Colors.blue : Colors.grey.shade400,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                  ),
-                  child: const Text(
-                    '주차 앱 시작하기',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-              ),
-            );
-          },
+          builder: (context, viewModel, child) => CustomBottomButton(
+            text: "시작하기",
+            enabled: viewModel.allWatched,
+              onPressed: viewModel.allWatched
+                  ? () => context.push(RoutePath.home)
+                  : null
+          ),
         ),
 
         // ✅ 영상 리스트

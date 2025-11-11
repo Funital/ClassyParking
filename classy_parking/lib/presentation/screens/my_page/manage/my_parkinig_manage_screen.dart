@@ -6,6 +6,7 @@ import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../widgets/custom_bottom_button.dart';
 import 'my_parking_manage_model.dart';
 
 
@@ -104,6 +105,19 @@ class MyParkinigManageScreen extends StatelessWidget {
         builder: (context, viewModel, child) {
           return Scaffold(
             appBar: CustomSubAppBar(title: '내 주차장'),
+            bottomNavigationBar: Consumer<MyParkingManageViewModel>(
+              builder: (context, viewModel, child) => CustomBottomButton(
+                text: "저장하기",
+                // enabled: viewModel.saveAvailability,
+                onPressed: () async {
+                  await viewModel.saveAvailability();
+                  // 저장 완료 피드백 (스낵바)
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('주차장 이용 가능 시간이 성공적으로 저장되었습니다.')),
+                  );
+                },
+              ),
+            ),
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -158,33 +172,6 @@ class MyParkinigManageScreen extends StatelessWidget {
                   ),
                 ),
               ],
-            ),
-
-            // 5. 하단 고정 저장 버튼
-            bottomNavigationBar: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: SizedBox(
-                height: 50,
-                child: ElevatedButton.icon(
-                  onPressed: () async {
-                    await viewModel.saveAvailability();
-                    // 저장 완료 피드백 (스낵바)
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('✅ 주차장 이용 가능 시간이 성공적으로 저장되었습니다.')),
-                    );
-                  },
-                  icon: const Icon(Icons.save),
-                  label: const Text(
-                    '저장하기',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue,
-                    foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                  ),
-                ),
-              ),
             ),
           );
         },
