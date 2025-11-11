@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // 상태 관리를 위해 Provider 추가
 import 'login_view_model.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -6,134 +7,144 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ViewModel을 Provider로 관리하는 것이 일반적이지만,
+    // 현재 파일 구조상 StatelessWidget 내에서 인스턴스화합니다.
+    // 상태 변화를 추적하지 않는 간단한 View Model이므로 일단 이렇게 유지합니다.
     final viewModel = LoginViewModel();
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      // ⭐️ 속성을 Scaffold의 인자로 옮깁니다. (해결)
       resizeToAvoidBottomInset: false, // 키보드 올라올 때 레이아웃 변경 X
+
+      // 이미지의 흐릿한 그라데이션 배경을 비슷하게 구현
       body: SafeArea(
         child: GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(), // 아무 곳 터치 시 키보드 닫기
           behavior: HitTestBehavior.translucent,
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 32),
+            padding: const EdgeInsets.symmetric(horizontal: 40),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SizedBox(height: 60),
-                const Center(
-                  child: Text(
-                    '주차의 품격',
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
-                    ),
+                const SizedBox(height: 100),
+                // 이미지 상단의 로고 대체 (임시로 Text 위젯 사용)
+                Padding(
+                  padding: EdgeInsets.only(bottom: 50),
+                  child: Image.asset(
+                    'assets/images/logo.png', // 원하는 실제 로고 파일 경로로 교체하세요
+                    width: 120,
+                    height: 120,
+                    fit: BoxFit.contain,
                   ),
                 ),
-                const SizedBox(height: 8),
-                Image.asset(
-                  'assets/images/logo.png',
-                  height: 150,
-                ),
-                const SizedBox(height: 40),
 
-                /// 이메일 입력
+                const Text(
+                  '주차의 품격',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black,
+                  ),
+                ),
+                const SizedBox(height: 80),
+
+                /// E-Mail 입력
+                const Padding(
+                  padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('E-Mail'),
+                  ),
+                ),
                 TextField(
                   decoration: const InputDecoration(
-                    hintText: '이메일을 입력하세요',
-                    border: OutlineInputBorder(),
+                    hintText: 'yourname@example.com',
+                    hintStyle: TextStyle(color: Color(0xFFB0B0B0)),
+                    contentPadding: EdgeInsets.symmetric(vertical: 0),
+                    isDense: true,
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFFE0E0E0), width: 1.5),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: Color(0xFF64B5F6), width: 1.5),
+                    ),
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 30),
 
                 /// 비밀번호 입력
-                const _PasswordField(),
-                const SizedBox(height: 16),
+                const Padding(
+                  padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text('Password'),
+                  ),
+                ),
+                const _PasswordField(), // 비밀번호 필드 재사용
+                const SizedBox(height: 80),
 
-                /// 로그인 유지 + 비밀번호 찾기
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: false,
-                          onChanged: (_) {},
-                        ),
-                        const Text('로그인 유지'),
-                      ],
+                /// 로그인 버튼
+                ElevatedButton(
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    viewModel.login(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF64B5F6), // 이미지의 파란색 계열
+                    elevation: 0,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text('비밀번호 찾기'),
+                    minimumSize: const Size.fromHeight(55),
+                  ),
+                  child: const Text(
+                    'Login',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 50), // 하단 간격 확보
+
+                /// 회원가입 텍스트 링크
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "아직 계정이 없으신가요? ",
+                      style: TextStyle(color: Color(0xFF8D8D8D)),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).unfocus();
+                        viewModel.signUp(context);
+                      },
+                      child: const Text(
+                        '회원가입',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF64B5F6), // 파란색
+                          decoration: TextDecoration.none, // 밑줄 제거
+                        ),
+                      ),
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 120), // 버튼과 간격 확보
+                const SizedBox(height: 50), // 하단 여백
               ],
             ),
           ),
         ),
       ),
-
-      /// 하단 버튼을 bottomNavigationBar 로 고정
-      bottomNavigationBar: SafeArea(
-        top: false,
-        minimum: const EdgeInsets.all(24),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                FocusScope.of(context).unfocus();
-                viewModel.login(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.yellow,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                minimumSize: const Size.fromHeight(48),
-              ),
-              child: const Text(
-                '로그인',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black,
-                ),
-              ),
-            ),
-            const SizedBox(height: 12),
-            ElevatedButton(
-              onPressed: () {
-                FocusScope.of(context).unfocus();
-                viewModel.signUp(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                minimumSize: const Size.fromHeight(48),
-              ),
-              child: const Text(
-                '회원가입',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      // bottomNavigationBar 제거
     );
   }
 }
 
-/// 비밀번호 입력 필드 분리
+/// 비밀번호 입력 필드 분리 (UnderlineInputBorder로 수정)
 class _PasswordField extends StatefulWidget {
   const _PasswordField({super.key});
 
@@ -142,23 +153,24 @@ class _PasswordField extends StatefulWidget {
 }
 
 class _PasswordFieldState extends State<_PasswordField> {
-  bool obscureText = true;
-
+  // 이미지에 눈 아이콘이 없으므로 일단 제거하고 일반 텍스트 필드로 변경했습니다.
+  // 만약 기능을 유지하고 싶다면 TextField 위젯 내부에 `obscureText: true` 만 남겨둡니다.
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      obscureText: obscureText,
+    return const TextField(
+      obscureText: true, // 비밀번호 숨김
       decoration: InputDecoration(
-        hintText: '비밀번호를 입력하세요',
-        border: const OutlineInputBorder(),
-        suffixIcon: IconButton(
-          icon: Icon(obscureText ? Icons.visibility_off : Icons.visibility),
-          onPressed: () {
-            setState(() {
-              obscureText = !obscureText;
-            });
-          },
+        hintText: 'yourpassword',
+        hintStyle: TextStyle(color: Color(0xFFB0B0B0)),
+        contentPadding: EdgeInsets.symmetric(vertical: 0),
+        isDense: true,
+        enabledBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFFE0E0E0), width: 1.5),
         ),
+        focusedBorder: UnderlineInputBorder(
+          borderSide: BorderSide(color: Color(0xFF64B5F6), width: 1.5),
+        ),
+        // suffixIcon 제거
       ),
     );
   }
