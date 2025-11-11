@@ -161,22 +161,22 @@ class _ParkingBottomSheetState extends State<ParkingBottomSheet> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
-
-            // 빈자기 보기 Button
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // context.push(RoutePath.parking, extra: title);
-                  // TODO: GoRouter를 사용하여 해당 주차장으로 예약 페이지 이동
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('${widget.title} 예약 페이지로 이동!')),
-                  );
-                },
-                child: const Text("빈자리 찾기"),
-              ),
-            ),
+            // const SizedBox(height: 20),
+            //
+            // // 빈자기 보기 Button
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: ElevatedButton(
+            //     onPressed: () {
+            //       // context.push(RoutePath.parking, extra: title);
+            //       // TODO: GoRouter를 사용하여 해당 주차장으로 예약 페이지 이동
+            //       ScaffoldMessenger.of(context).showSnackBar(
+            //         SnackBar(content: Text('${widget.title} 예약 페이지로 이동!')),
+            //       );
+            //     },
+            //     child: const Text("빈자리 찾기"),
+            //   ),
+            // ),
 
             const SizedBox(height: 20),
 

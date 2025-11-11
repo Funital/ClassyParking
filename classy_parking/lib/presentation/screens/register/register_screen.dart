@@ -105,7 +105,7 @@ class RegisterScreen extends StatelessWidget {
         const SizedBox(height: 25.0),
 
         // 주소
-        const Text("주소", style: TextStyle(color: Colors.grey)),
+        const Text("주소", style: TextStyle(color: Colors.white)),
 
         // ⭐ 수정: 주소 검색 여부에 따른 조건부 UI
         if (viewModel.model.address.isEmpty)
@@ -139,7 +139,7 @@ class RegisterScreen extends StatelessWidget {
                 },
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 45),
-                  // backgroundColor: Colors.blue.shade100,
+                  backgroundColor: Colors.white60,
                   foregroundColor: AppColor.main,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
                 ),

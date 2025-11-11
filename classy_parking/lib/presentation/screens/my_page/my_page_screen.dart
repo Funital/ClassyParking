@@ -86,8 +86,8 @@ class MyPageScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               Switch.adaptive(
-                value: viewModel.model.isPushNotificationEnabled,
-                onChanged: viewModel.togglePushNotification,
+                value: viewModel.model.isPushMarketingEnabled,
+                onChanged: viewModel.togglePushMarketingNotification,
                 activeColor: AppColor.main,
               ),
             ],
