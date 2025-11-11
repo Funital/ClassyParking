@@ -21,8 +21,8 @@ const RESOURCES = {"flutter.js": "888483df48293866f9f41d3d9274a779",
 "assets/assets/images/classyparking_logo.png": "0f62cb243129fb5fc97540cebf80faed",
 "assets/assets/images/profile.png": "35a4dde46ae8b0039f2a0e43f67347ff",
 "assets/assets/fonts/Koulen-Regular.ttf": "ab810ff609031f784159e0b30a87bd3e",
-"assets/fonts/MaterialIcons-Regular.otf": "b2aeed538656e537ddab66852ba01999",
-"assets/NOTICES": "5c1a3bf6b44a8e8785315a8919b258f7",
+"assets/fonts/MaterialIcons-Regular.otf": "658724b3261f4457071b972614b87239",
+"assets/NOTICES": "2fc511a582b4718bb01a5eb36946f9d2",
 "assets/packages/cupertino_icons/assets/CupertinoIcons.ttf": "33b7d9392238c04c131b6ce224e13711",
 "assets/packages/flutter_map/lib/assets/flutter_map_logo.png": "208d63cc917af9713fc9572bd5c09362",
 "assets/packages/wechat_assets_picker/assets/icon/indicator-live-photos.png": "a96d2373c82eb49440e29d2fcbd21d37",
@@ -42,9 +42,9 @@ const RESOURCES = {"flutter.js": "888483df48293866f9f41d3d9274a779",
 "canvaskit/canvaskit.js.symbols": "58832fbed59e00d2190aa295c4d70360",
 "canvaskit/skwasm.js.symbols": "0088242d10d7e7d6d2649d1fe1bda7c1",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
-"flutter_bootstrap.js": "c7ce537e657153a5b6f4736c5de03c0a",
+"flutter_bootstrap.js": "a88c6c8adf268ce39ee5de41d60f370b",
 "version.json": "2b4c31884c87b9d7ff7e8a8f9d8bebf7",
-"main.dart.js": "6cdd71f02980b47bc0c0b13af224ee91"};
+"main.dart.js": "dd242c3411d0dcbc5a2049144970ac80"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",
