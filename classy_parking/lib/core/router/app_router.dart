@@ -69,6 +69,7 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.setting: (context, state) => const SettingScreen(),
 
   RoutePath.register: (context, state) => const RegisterScreen(),
+  RoutePath.success_register: (context, state) => const ReportSuccessScreen(),
   RoutePath.myPage_info: (context, state) => const MypageInfoScreen(),
   RoutePath.myPark: (context, state) => const MyParkScreen(),
   RoutePath.park_manage: (context, state) => const MyParkinigManageScreen(),

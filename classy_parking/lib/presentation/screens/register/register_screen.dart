@@ -1,17 +1,14 @@
-// lib/screens/register_screen.dart (수정된 최종 코드)
-
 import 'package:classy_parking/presentation/screens/register/register_view_model.dart';
 import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-// 지도 라이브러리 임포트 추가
+
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:geocoding/geocoding.dart'; // 주소 검색을 위해 필요 (ViewModel에서 사용)
 
-// MapController를 사용하여 지도의 시점을 제어할 수 있습니다.
+import '../../../core/router/route_path.dart';
+
 final MapController _registerMapController = MapController();
-
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
@@ -26,7 +23,7 @@ class RegisterScreen extends StatelessWidget {
             appBar: const CustomSubAppBar(title: '주차장 등록하기'),
             body: SingleChildScrollView(
               padding: const EdgeInsets.all(20.0),
-              child: _buildCurrentStepContent(context, viewModel),
+              child: _buildStepOneContent(context, viewModel),
             ),
             bottomNavigationBar: _buildBottomButton(context, viewModel),
           );
@@ -35,57 +32,11 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
-  // 현재 단계에 따른 콘텐츠 분기
-  Widget _buildCurrentStepContent(BuildContext context, RegisterViewModel viewModel) {
-    switch (viewModel.currentStep) {
-      case 1:
-        return _buildStepOneContent(context, viewModel);
-    // case 2: return _buildStepTwoContent(context, viewModel);
-    // case 3: return _buildStepThreeContent(context, viewModel);
-      default:
-        return const Center(child: Text("등록 과정을 시작하세요."));
-    }
-  }
-
-
-  // 1. 단계 진행 상태 표시기
-  Widget _buildStepIndicator(RegisterViewModel viewModel) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: List.generate(viewModel.totalSteps, (index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              child: Container(
-                width: 8.0,
-                height: 8.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: index < viewModel.currentStep
-                      ? Colors.blue
-                      : Colors.grey.shade300,
-                ),
-              ),
-            );
-          }),
-        ),
-        const SizedBox(height: 5.0),
-        Text(
-          "${viewModel.currentStep}/${viewModel.totalSteps}단계",
-          style: TextStyle(fontSize: 14.0, color: Colors.grey.shade600),
-        ),
-        const SizedBox(height: 20.0),
-      ],
-    );
-  }
-
   // 2. 1단계 본문 내용 구성 (FlutterMap 적용)
   Widget _buildStepOneContent(BuildContext context, RegisterViewModel viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildStepIndicator(viewModel),
 
         // 1. 기본 정보 헤더
         const Text(
@@ -243,7 +194,7 @@ class RegisterScreen extends StatelessWidget {
         top: 10,
       ),
       child: ElevatedButton(
-        onPressed: viewModel.isStepValid() ? viewModel.goToNextStep : null,
+        onPressed: () => viewModel.goToHome(context),
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(double.infinity, 50),
           backgroundColor: Colors.blue,
@@ -251,7 +202,7 @@ class RegisterScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
         child: const Text(
-          "다음 단계",
+          "등록하기",
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
       ),

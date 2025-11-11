@@ -2,8 +2,12 @@
 
 import 'package:classy_parking/presentation/screens/register/register_model.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart';
+
+import '../../../core/router/route_path.dart';
 
 class RegisterViewModel extends ChangeNotifier {
   RegisterModel _model = RegisterModel();
@@ -14,10 +18,12 @@ class RegisterViewModel extends ChangeNotifier {
 
   // 지도 중앙 위치 (MapOptions의 initialCenter나 move에 사용됨) <<< 이 부분이 추가되었습니다.
   LatLng _mapCenter = const LatLng(37.5665, 126.9780);
+
   LatLng get mapCenter => _mapCenter;
 
   // 주차장 핀 위치 (초기값은 서울 시청 등 기본 위치로 설정)
   LatLng _parkingPosition = const LatLng(37.5665, 126.9780);
+
   LatLng get parkingPosition => _parkingPosition;
 
   // 핀 드래그 종료 시 좌표 업데이트
@@ -70,15 +76,9 @@ class RegisterViewModel extends ChangeNotifier {
   int get currentStep => _currentStep;
 
   // 다음 단계로 이동
-  void goToNextStep() {
+  void goToHome(BuildContext context) {
     if (isStepValid()) {
-      if (_currentStep < totalSteps) {
-        _currentStep++;
-        notifyListeners();
-      }
-      print('다음 단계로 이동: $_currentStep');
-    } else {
-      print('유효성 검사 실패! 현재 단계에 필수 입력 값이 부족합니다.');
+      context.push(RoutePath.success_register);
     }
   }
 
@@ -128,18 +128,4 @@ class RegisterViewModel extends ChangeNotifier {
   void updateTotalSpaces(String spaces) {
     _model.totalSpaces = spaces;
   }
-
-
-// --- 2단계 입력 필드 업데이트 (추가) ---
-/* // RegisterModel에 2단계 필드가 추가되었다면 사용합니다.
-  void updateBaseFee(String fee) {
-    _model.baseFee = int.tryParse(fee);
-    notifyListeners();
-  }
-
-  void updateBaseTime(String time) {
-    _model.baseTime = int.tryParse(time);
-    notifyListeners();
-  }
-  */
 }

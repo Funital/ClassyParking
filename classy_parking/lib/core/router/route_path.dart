@@ -45,6 +45,7 @@ class RoutePath {
 
   /// Register
   static const String register = '/register/register_screen';
+  static const String success_register = '/register/register_success_screen';
 
   /// Mypage
 
