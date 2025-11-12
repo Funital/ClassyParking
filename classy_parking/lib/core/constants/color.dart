@@ -13,6 +13,7 @@ class AppColor {
 
   static const Color kakaoBg = Color(0xFFFEE500);
 
-  static const Color main = Color(0xFF7392AC);
+  static const Color main = Color(0xFF1E88E5);
+  // static const Color main = Color(0xFF7392AC);
   static const Color main1 = Color(0xFF1A2A40);
 }

@@ -5,6 +5,7 @@ import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/constants/font.dart';
 import '../../../widgets/custom_bottom_button.dart';
@@ -25,7 +26,7 @@ class VideoScreen extends StatelessWidget {
             text: "시작하기",
             enabled: viewModel.allWatched,
               onPressed: viewModel.allWatched
-                  ? () => context.push(RoutePath.home)
+                  ? () => context.go(RoutePath.home)
                   : null
           ),
         ),
@@ -110,8 +111,16 @@ class VideoScreen extends StatelessWidget {
                                       ),
                                     ),
                                     ElevatedButton(
-                                      onPressed: () {
-                                        videoViewModel.markAsWatched(index);
+                                      onPressed: () async {
+                                        if (!isWatched) {
+                                          final Uri url = Uri.parse(video.url);
+                                          if (await canLaunchUrl(url)) {
+                                            await launchUrl(url, mode: LaunchMode.externalApplication);
+                                            videoViewModel.markAsWatched(index);
+                                          }
+                                        } else {
+                                          videoViewModel.markAsWatched(index);
+                                        }
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor:

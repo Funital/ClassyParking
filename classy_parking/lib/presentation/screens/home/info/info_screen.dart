@@ -1,3 +1,4 @@
+import 'package:classy_parking/core/constants/color.dart';
 import 'package:classy_parking/core/constants/font.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class InfoScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Icon(Icons.directions_car,
-                            size: 50, color: Colors.blue),
+                            size: 50, color: AppColor.main),
                         SizedBox(height: 8),
                         Text(
                           "서비스 이용 안내",
