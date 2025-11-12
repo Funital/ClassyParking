@@ -271,7 +271,7 @@ class RegisterScreen extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
         child: const Text(
-          "다음 단계",
+          "등록하기",
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
       ),

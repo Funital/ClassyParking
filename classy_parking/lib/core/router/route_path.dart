@@ -47,6 +47,8 @@ class RoutePath {
   static const String register = '/register/register_screen';
   static const String success_register = '/register/register_success_screen';
 
-  /// Mypage
+  /// prove
+  static const String prove = '/prove/prove_screen';
+  static const String prove_success = '/prove/prove_success_screen';
 
 }

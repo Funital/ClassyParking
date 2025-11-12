@@ -43,12 +43,13 @@ class HomeViewModel extends ChangeNotifier {
 
   List<HomeModel> getBottomMenu(BuildContext context) => [
     HomeModel(
-      title: "주차 모음 영상",
-      icon: Icons.play_circle_outline, // 새로운 아이콘
+      title: "입출차 인증",
+      icon: Icons.camera_alt, // 새로운 아이콘
       onTap: () {
-        context.push(RoutePath.home_video);
+        context.push(RoutePath.prove);
       },
     ),
+
     HomeModel(
       title: "서비스 이용 안내",
       icon: Icons.info_outline, // 새로운 아이콘

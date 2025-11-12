@@ -104,6 +104,7 @@ class MyPageScreen extends StatelessWidget {
       '내 정보',
       '내 주차장',
       '즐겨찾기',
+      '주차영상 모음',
       '문의하기',
       '서비스 이용약관',
       '개인정보처리방침',
@@ -141,6 +142,9 @@ class MyPageScreen extends StatelessWidget {
                 }
                 else if (title == '즐겨찾기') {
                   context.push(RoutePath.myPark);
+                }
+                else if (title == '주차영상 모음') {
+                  context.push(RoutePath.home_video);
                 }
                 else {
                   viewModel.navigateTo(title);
