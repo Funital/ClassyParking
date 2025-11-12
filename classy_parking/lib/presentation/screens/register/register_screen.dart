@@ -96,7 +96,7 @@ class RegisterScreen extends StatelessWidget {
         TextFormField(
           initialValue: viewModel.model.parkingName,
           decoration: const InputDecoration(
-            hintText: "예: 강남역 2번 출구 민영 주차장",
+            hintText: "예: 안양역 2번 출구 민영 주차장",
             contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
             border: OutlineInputBorder(),
           ),

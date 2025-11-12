@@ -35,6 +35,7 @@ class RoutePath {
   static const String success_payment = '/parking_payment/success/payment_success_screen';
   static const String payment_category = '/parking_payment/category/payment_category_screen';
   static const String prev_payment = '/parking_payment/prev/prev_payment_screen';
+  static const String prev_pay = '/parking_payment/prev/prev_pay_screen';
   static const String success_prev_payment = '/parking_payment/success/prev_payment_success_screen';
 
   /// Alarm

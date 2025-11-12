@@ -30,13 +30,25 @@ class PrevPaymentScreen extends StatelessWidget {
               onPressed: isEnabled
                   ? () {
                 // 선택된 상품 정보 출력 또는 다음 화면 이동 로직
+                final selectedParking = viewModel.selectedParkingDetail!;
                 final selectedProduct = viewModel.products![viewModel
                     .selectedIndex!];
                 print("--- 예약하기 버튼 활성화 ---");
                 print("선택된 상품: ${selectedProduct.title}(${selectedProduct
                     .dayOfWeek}), ${selectedProduct.price}원");
+                final Map<String, dynamic> paymentData = {
+                  'parkingName': selectedParking.parkingName,
+                  'productTitle': "${selectedProduct.title}(${selectedProduct.dayOfWeek})",
+                  'availableTime': selectedProduct.availableTime,
+                  'selectedFee': selectedProduct.price,
+                };
+
                 // TODO: 예약/결제 로직 실행
-                context.push(RoutePath.success_prev_payment);
+                // GoRouter의 extra를 통해 데이터 전달
+                context.push(
+                  RoutePath.prev_pay, // 실제 경로는 결제 화면 경로로 수정 필요
+                  extra: paymentData,
+                );
               }
                   : null,
             );

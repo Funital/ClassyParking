@@ -13,6 +13,7 @@ import 'package:classy_parking/presentation/screens/my_page/park/my_park_screen.
 import 'package:classy_parking/presentation/screens/parking/parking_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/category/payment_category_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/parking_payment_screen.dart';
+import 'package:classy_parking/presentation/screens/parking_payment/prev/prev_pay_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/prev/prev_payment_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/success/payment_success_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/success/prev_payment_success_screen.dart';
@@ -67,6 +68,7 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.success_payment: (context, state) => const PaymentSuccessScreen(),
   RoutePath.payment_category: (context, state) => const PaymentCategoryScreen(),
   RoutePath.prev_payment: (context, state) => const PrevPaymentScreen(),
+  RoutePath.prev_pay: (context, state) => const PrevPayScreen(),
   RoutePath.success_prev_payment: (context, state) => const PrevPaymentSuccessScreen(),
   RoutePath.alarm: (context, state) => const AlarmScreen(),
   RoutePath.setting: (context, state) => const SettingScreen(),

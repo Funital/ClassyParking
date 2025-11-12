@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'my_parking_manage_model.dart';
 
 class MyParkingManageViewModel extends ChangeNotifier {
-  final String parkingAddress = '서울시 강남구 테헤란로 123';
+  final String parkingAddress = '만안구청 뒤편 개인주차장';
 
   // 🕒 시간대별 이용 가능 상태 리스트
   List<ParkTimeSlot> _timeSlots = [];
