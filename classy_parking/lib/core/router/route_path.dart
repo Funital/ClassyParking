@@ -38,6 +38,8 @@ class RoutePath {
   static const String prev_pay = '/parking_payment/prev/prev_pay_screen';
   static const String success_prev_payment = '/parking_payment/success/prev_payment_success_screen';
 
+  static const String navi = '/parking_payment/navi/navi_screen';
+
   /// Alarm
   static const String alarm = '/alarm/alarm_screen';
 

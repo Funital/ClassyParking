@@ -16,7 +16,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        context.go(RoutePath.home);
+        context.push(RoutePath.navi);
       }
     });
   }
