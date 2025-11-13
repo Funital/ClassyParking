@@ -27,7 +27,7 @@ class PrivateParkingBottomSheet extends StatelessWidget {
     // 2. 상태에 따른 UI 요소 정의
     final Color statusColor = isAvailable ? Colors.green.shade700 : Colors.red.shade700;
     final Color backgroundColor = isAvailable ? Colors.green.shade100 : Colors.red.shade100;
-    final String statusText = isAvailable ? "즉시 주차 가능 (1자리 남음)" : "현재 만차";
+    final String statusText = isAvailable ? "즉시 주차 가능 (1자리 남음)" : "현재 만차(출차 10분전)";
     final IconData statusIcon = isAvailable ? Icons.check_circle_outline : Icons.cancel_outlined;
     final String availableText = isAvailable ? "1" : "0";
 

@@ -7,6 +7,7 @@ class RegisterModel {
   String detailAddress;
   String parkingType;
   String totalSpaces;
+  String? imagePath;
 
   // 지도 좌표 추가 (핀의 최종 위치)
   double? latitude;
@@ -39,6 +40,7 @@ class RegisterModel {
     this.totalSpaces = '',
     this.latitude,
     this.longitude,
+    this.imagePath,
 
     // 2단계 초기값
     this.operationHours = '',

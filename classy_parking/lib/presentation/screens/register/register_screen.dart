@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:classy_parking/presentation/screens/register/register_view_model.dart';
 import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_map/flutter_map.dart';
@@ -83,12 +86,8 @@ class RegisterScreen extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _buildImagePickerSection(context, viewModel),
 
-        // 1. 기본 정보 헤더
-        const Text(
-          "1. 기본 정보",
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-        ),
         const SizedBox(height: 15.0),
 
         // (주차장 이름 입력 필드)
@@ -117,9 +116,13 @@ class RegisterScreen extends StatelessWidget {
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 45),
-              backgroundColor: AppColor.main,
-              foregroundColor: Colors.white,
+              backgroundColor: Colors.white,
+              foregroundColor: AppColor.main,
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+              side: BorderSide(
+                color: AppColor.main,   // ← ⭐ 원하는 borderColor
+                width: 1,             // ← ⭐ 두께 조절 가능
+              ),
             ),
             child: const Text("주소 검색", style: TextStyle(fontSize: 16.0)),
           )
@@ -275,6 +278,85 @@ class RegisterScreen extends StatelessWidget {
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
       ),
+    );
+  }
+  // ⭐ 추가: 이미지 선택 및 미리보기 위젯 구현
+  Widget _buildImagePickerSection(BuildContext context, RegisterViewModel viewModel) {
+    final String? imagePath = viewModel.model.imagePath;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "주차장 대표 사진 등록",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 15.0),
+        // 이미지 미리보기 또는 기본 메시지
+        Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(8.0),
+            border: imagePath != null ? null : Border.all(
+                color: Colors.grey.shade400, width: 1),
+          ),
+          child: imagePath != null
+              ? ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image.file(
+              File(imagePath), // ⭐ File 위젯 사용을 위해 'dart:io' import 필요
+              fit: BoxFit.cover,
+            ),
+          )
+              : const Center(
+            child: Text(
+                '등록할 사진을 선택해 주세요', style: TextStyle(color: Colors.black)),
+          ),
+        ),
+        const SizedBox(height: 15.0),
+
+        // 사진 선택/촬영 버튼
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: () => viewModel.pickImage(ImageSource.camera),
+                icon: const Icon(Icons.camera_alt),
+                label: const Text("사진 촬영"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 45),
+                  backgroundColor: Colors.white,
+                  foregroundColor: AppColor.main,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0)),
+                  side: BorderSide(
+                    color: AppColor.main,   // ← ⭐ 원하는 borderColor
+                    width: 1,             // ← ⭐ 두께 조절 가능
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: () => viewModel.pickImage(ImageSource.gallery),
+                icon: const Icon(Icons.photo_library),
+                label: const Text("이미지 선택"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 45),
+                  backgroundColor: AppColor.main,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0)),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

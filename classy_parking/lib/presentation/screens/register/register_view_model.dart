@@ -4,6 +4,7 @@ import 'package:classy_parking/presentation/screens/register/register_model.dart
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -26,6 +27,8 @@ class RegisterViewModel extends ChangeNotifier {
 
   LatLng get parkingPosition => _parkingPosition;
 
+  final ImagePicker _picker = ImagePicker();
+
   // 핀 드래그 종료 시 좌표 업데이트
   void updateParkingPosition(LatLng newPosition) {
     _parkingPosition = newPosition;
@@ -36,6 +39,23 @@ class RegisterViewModel extends ChangeNotifier {
     _model.longitude = newPosition.longitude;
 
     notifyListeners();
+  }
+
+  Future<void> pickImage(ImageSource source) async {
+    try {
+      final XFile? pickedFile = await _picker.pickImage(source: source);
+
+      if (pickedFile != null) {
+        // 모델에 파일 경로 저장
+        _model.imagePath = pickedFile.path;
+        notifyListeners();
+        print('이미지 선택 성공: ${_model.imagePath}');
+      } else {
+        print('이미지 선택 취소됨.');
+      }
+    } catch (e) {
+      print('이미지 선택 중 오류 발생: $e');
+    }
   }
 
   // 주소 검색 버튼 액션 (비동기 함수로 수정)
@@ -106,6 +126,7 @@ class RegisterViewModel extends ChangeNotifier {
             _model.totalSpaces.isNotEmpty &&
             _model.latitude != null &&
             _model.longitude != null &&
+            _model.imagePath != null &&
             // 초기 기본값(서울 시청)이 아닌지 확인 (주소 검색 또는 핀 이동이 완료되었는지 확인)
             !(_model.latitude == 37.5665 && _model.longitude == 126.9780);
       case 2:
