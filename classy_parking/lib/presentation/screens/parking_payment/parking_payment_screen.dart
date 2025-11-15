@@ -2,6 +2,7 @@ import 'package:classy_parking/presentation/screens/parking_payment/parking_paym
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/color.dart';
 import '../../widgets/custom_bottom_button.dart';
 import '../../widgets/custom_sub_app_bar.dart';
 
@@ -233,7 +234,7 @@ class _ParkingPaymentView extends StatelessWidget {
               onChanged: (value) {
                 if (value != null) viewModel.selectPayment(value);
               },
-              activeColor: Colors.blueAccent,
+              activeColor: AppColor.main,
             ),
 
             // 아이콘 + 텍스트

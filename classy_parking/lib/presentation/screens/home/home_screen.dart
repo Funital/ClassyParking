@@ -225,7 +225,7 @@ class _ActionCard extends StatelessWidget {
       onTap: item.onTap,
       borderRadius: BorderRadius.circular(15),
       child: Container(
-        height: 80,
+        height: 50,
         padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
           color: backgroundColor,

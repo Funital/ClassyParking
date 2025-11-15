@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/constants/color.dart';
+
 class CustomBottomButton extends StatelessWidget {
   final String text;
   final VoidCallback? onPressed;
@@ -25,7 +27,7 @@ class CustomBottomButton extends StatelessWidget {
         onPressed: enabled ? onPressed : null,
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(double.infinity, 50),
-          backgroundColor: enabled ? Colors.blue : Colors.grey,
+          backgroundColor: enabled ? AppColor.main : Colors.grey,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0),

@@ -6,10 +6,10 @@ import 'info_model.dart';
 class InfoViewModel extends ChangeNotifier {
   // 초기 닉네임 설정 (예: 기존 사용자 닉네임)
   InfoModel _model = InfoModel(
-    currentNickname: 'hellosoongsil1234',
+    currentNickname: '사랑',
     validationMessage: '2~8글자를 입력해 주세요.',
     phoneNumber: '010-1234-5678',
-    email: 'hellosoongsil@example.com',
+    email: 'salove0518@naver.com',
     carNumber: '123가 4567',
     carModel: '현대 쏘나타',
   );

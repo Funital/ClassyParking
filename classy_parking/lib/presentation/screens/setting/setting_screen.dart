@@ -2,6 +2,7 @@ import 'package:classy_parking/presentation/screens/setting/setting_view_model.d
 import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constants/color.dart';
 import '../../../core/constants/font.dart';
 
 class SettingScreen extends StatelessWidget {
@@ -51,8 +52,8 @@ class SettingScreen extends StatelessWidget {
                             Switch(
                               value: viewModel.isPushEnabled,
                               activeColor: Colors.white,
-                              activeTrackColor: Colors.blue,
-                              inactiveThumbColor: Colors.blue,
+                              activeTrackColor: AppColor.main,
+                              inactiveThumbColor: AppColor.main,
                               inactiveTrackColor:
                               Colors.grey.withOpacity(0.4),
                               onChanged: (value) {
@@ -76,8 +77,8 @@ class SettingScreen extends StatelessWidget {
                             Switch(
                               value: viewModel.isMarketingAgreed,
                               activeColor: Colors.white,
-                              activeTrackColor: Colors.blue,
-                              inactiveThumbColor: Colors.blue,
+                              activeTrackColor: AppColor.main,
+                              inactiveThumbColor: AppColor.main,
                               inactiveTrackColor:
                               Colors.grey.withOpacity(0.4),
                               onChanged: (value) {
@@ -127,7 +128,7 @@ class SettingScreen extends StatelessWidget {
                             ),
                           ),
                           trailing: const Icon(Icons.chevron_right,
-                              color: Colors.blue),
+                              color: AppColor.main),
                           onTap: () {
                             // TODO: 문의 페이지로 이동
                           },
@@ -142,7 +143,7 @@ class SettingScreen extends StatelessWidget {
                             ),
                           ),
                           trailing: const Icon(Icons.chevron_right,
-                              color: Colors.blue),
+                              color: AppColor.main),
                           onTap: () {
                             // TODO: 로그아웃 로직
                           },
@@ -158,7 +159,7 @@ class SettingScreen extends StatelessWidget {
                             ),
                           ),
                           trailing: const Icon(Icons.chevron_right,
-                              color: Colors.blue),
+                              color: AppColor.main),
                           onTap: () {
                             // TODO: 계정 탈퇴 로직
                           },

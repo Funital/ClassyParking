@@ -3,7 +3,9 @@ import 'package:classy_parking/core/router/route_path.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../../core/constants/color.dart';
 import '../../widgets/custom_bottom_button.dart';
+import '../../widgets/custom_sub_app_bar.dart';
 import 'agree_view_model.dart';
 
 class AgreeScreen extends StatelessWidget {
@@ -14,14 +16,7 @@ class AgreeScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (_) => AgreeViewModel(),
       child: Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.blue),
-            onPressed: () => context.pop(),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
+        appBar: CustomSubAppBar(title: ''),
         bottomNavigationBar: Consumer<AgreeViewModel>(
           builder: (context, viewModel, child) => CustomBottomButton(
             text: "다음",
@@ -54,7 +49,7 @@ class AgreeScreen extends StatelessWidget {
                         onChanged: (value) {
                           viewModel.toggleAll(value ?? false);
                         },
-                        activeColor: Colors.blue,
+                        activeColor: AppColor.main,
                       ),
                       const Text(
                         "전체 동의",
@@ -80,7 +75,7 @@ class AgreeScreen extends StatelessWidget {
                               viewModel.toggleAgreement(
                                   index, value ?? false);
                             },
-                            activeColor: Colors.blue,
+                            activeColor: AppColor.main,
                           ),
                           title: Text.rich(
                             TextSpan(

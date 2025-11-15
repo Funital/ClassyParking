@@ -1,3 +1,4 @@
+import 'package:classy_parking/core/constants/color.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart'; // 상태 관리를 위해 Provider 추가
 import 'login_view_model.dart';
@@ -46,19 +47,19 @@ class LoginScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 80),
+                const SizedBox(height: 40),
 
                 /// E-Mail 입력
                 const Padding(
                   padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('E-Mail'),
+                    child: Text('이메일'),
                   ),
                 ),
                 TextField(
                   decoration: const InputDecoration(
-                    hintText: 'yourname@example.com',
+                    hintText: 'your@example.com',
                     hintStyle: TextStyle(color: Color(0xFFB0B0B0)),
                     contentPadding: EdgeInsets.symmetric(vertical: 0),
                     isDense: true,
@@ -66,7 +67,7 @@ class LoginScreen extends StatelessWidget {
                       borderSide: BorderSide(color: Color(0xFFE0E0E0), width: 1.5),
                     ),
                     focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xFF64B5F6), width: 1.5),
+                      borderSide: BorderSide(color: AppColor.main, width: 1.5),
                     ),
                   ),
                   keyboardType: TextInputType.emailAddress,
@@ -78,7 +79,7 @@ class LoginScreen extends StatelessWidget {
                   padding: EdgeInsets.only(left: 4.0, bottom: 4.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text('Password'),
+                    child: Text('비밀번호'),
                   ),
                 ),
                 const _PasswordField(), // 비밀번호 필드 재사용
@@ -91,15 +92,15 @@ class LoginScreen extends StatelessWidget {
                     viewModel.login(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF64B5F6), // 이미지의 파란색 계열
-                    elevation: 0,
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: AppColor.main,
+                    foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
-                    minimumSize: const Size.fromHeight(55),
                   ),
                   child: const Text(
-                    'Login',
+                    '로그인',
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -126,7 +127,7 @@ class LoginScreen extends StatelessWidget {
                         '회원가입',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: Color(0xFF64B5F6), // 파란색
+                          color: AppColor.main, // 파란색
                           decoration: TextDecoration.none, // 밑줄 제거
                         ),
                       ),
@@ -157,7 +158,7 @@ class _PasswordFieldState extends State<_PasswordField> {
   // 만약 기능을 유지하고 싶다면 TextField 위젯 내부에 `obscureText: true` 만 남겨둡니다.
   @override
   Widget build(BuildContext context) {
-    return const TextField(
+    return TextField(
       obscureText: true, // 비밀번호 숨김
       decoration: InputDecoration(
         hintText: 'yourpassword',
@@ -168,7 +169,7 @@ class _PasswordFieldState extends State<_PasswordField> {
           borderSide: BorderSide(color: Color(0xFFE0E0E0), width: 1.5),
         ),
         focusedBorder: UnderlineInputBorder(
-          borderSide: BorderSide(color: Color(0xFF64B5F6), width: 1.5),
+          borderSide: BorderSide(color: AppColor.main, width: 1.5),
         ),
         // suffixIcon 제거
       ),

@@ -13,7 +13,7 @@ class ParkingPaymentViewModel extends ChangeNotifier {
 
   ParkingPaymentViewModel() {
     _paymentInfo = ParkingPaymentModel(
-      carNumber: "10소 1234",
+      carNumber: "123가 4567",
       location: "B3층 C구역 25번",
       parkingTime: "2시간 45분",
       entryTime: "2025.10.05 10:00",

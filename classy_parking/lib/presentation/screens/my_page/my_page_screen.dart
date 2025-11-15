@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/color.dart';
 import 'info/mypage_info_screen.dart';
 import 'my_page_view_model.dart';
 
@@ -73,7 +74,7 @@ class MyPageScreen extends StatelessWidget {
               Switch.adaptive(
                 value: viewModel.model.isPushNotificationEnabled,
                 onChanged: viewModel.togglePushNotification,
-                activeColor: Colors.teal,
+                activeColor: AppColor.main,
               ),
             ],
           ),
@@ -85,9 +86,9 @@ class MyPageScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
               ),
               Switch.adaptive(
-                value: viewModel.model.isPushNotificationEnabled,
-                onChanged: viewModel.togglePushNotification,
-                activeColor: Colors.teal,
+                value: viewModel.model.isPushMarketingEnabled,
+                onChanged: viewModel.togglePushMarketingNotification,
+                activeColor: AppColor.main,
               ),
             ],
           ),
@@ -103,6 +104,7 @@ class MyPageScreen extends StatelessWidget {
       '내 정보',
       '내 주차장',
       '즐겨찾기',
+      '주차영상 모음',
       '문의하기',
       '서비스 이용약관',
       '개인정보처리방침',
@@ -140,6 +142,9 @@ class MyPageScreen extends StatelessWidget {
                 }
                 else if (title == '즐겨찾기') {
                   context.push(RoutePath.myPark);
+                }
+                else if (title == '주차영상 모음') {
+                  context.push(RoutePath.home_video);
                 }
                 else {
                   viewModel.navigateTo(title);

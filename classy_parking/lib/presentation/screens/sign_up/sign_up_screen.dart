@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/constants/color.dart';
 import '../../../core/router/route_path.dart';
 import '../../widgets/custom_bottom_button.dart';
+import '../../widgets/custom_sub_app_bar.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -15,14 +17,7 @@ class SignUpScreen extends StatelessWidget {
       create: (_) => SignUpViewModel(),
       child: Scaffold(
         resizeToAvoidBottomInset: false, // 키보드가 올라와도 화면 전체 밀리지 않음
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, color: Colors.blue),
-            onPressed: () => context.pop(),
-          ),
-          backgroundColor: Colors.white,
-          elevation: 0,
-        ),
+        appBar: CustomSubAppBar(title: ''),
         bottomNavigationBar: Consumer<SignUpViewModel>(
           builder: (context, viewModel, child) => CustomBottomButton(
             text: "다음",
@@ -73,7 +68,7 @@ class SignUpScreen extends StatelessWidget {
                           decoration: const InputDecoration(
                             hintText: "이름 입력",
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: AppColor.main),
                             ),
                           ),
                           onChanged: (_) => viewModel.validate(),
@@ -94,7 +89,7 @@ class SignUpScreen extends StatelessWidget {
                           decoration: const InputDecoration(
                             hintText: "이메일 주소 입력",
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: AppColor.main),
                             ),
                           ),
                           keyboardType: TextInputType.emailAddress,
@@ -117,7 +112,7 @@ class SignUpScreen extends StatelessWidget {
                           decoration: const InputDecoration(
                             hintText: "비밀번호 (영문, 숫자, 특수문자)",
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: AppColor.main),
                             ),
                           ),
                           onChanged: (_) => viewModel.validate(),
@@ -139,7 +134,7 @@ class SignUpScreen extends StatelessWidget {
                           decoration: const InputDecoration(
                             hintText: "비밀번호 확인",
                             focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: BorderSide(color: AppColor.main),
                             ),
                           ),
                           onChanged: (_) => viewModel.validate(),

@@ -6,6 +6,7 @@ import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../../../core/constants/color.dart';
 import '../../../widgets/custom_bottom_button.dart';
 import 'my_parking_manage_model.dart';
 
@@ -64,7 +65,7 @@ class MyParkinigManageScreen extends StatelessWidget {
                 },
               ),
               ElevatedButton(
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
+                style: ElevatedButton.styleFrom(backgroundColor: AppColor.main),
                 child: const Text('확인', style: TextStyle(color: Colors.white)),
                 onPressed: () {
                   // 다이얼로그의 임시 선택 상태를 ViewModel의 실제 상태에 반영
@@ -133,7 +134,7 @@ class MyParkinigManageScreen extends StatelessWidget {
 
                 // 2. 시간 설정 항목 (다이얼로그 트리거)
                 ListTile(
-                  leading: const Icon(Icons.schedule, color: Colors.blue),
+                  leading: Icon(Icons.schedule, color: AppColor.main),
                   title: const Text('주차 공간 이용 가능 시간 설정'),
                   // 요약된 시간 표시
                   subtitle: Text(_getSummaryTime(viewModel.timeSlots)),

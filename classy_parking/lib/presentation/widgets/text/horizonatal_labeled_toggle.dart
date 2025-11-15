@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/color.dart';
 import '../../../core/constants/font.dart';
 
 
@@ -40,7 +41,7 @@ class HorizontalLabeledToggle extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 8),
             decoration: BoxDecoration(
-              border: Border.all(color: Colors.blue, width: 1),
+              border: Border.all(color: AppColor.main, width: 1),
               borderRadius: BorderRadius.circular(30),
             ),
             child: DropdownButtonFormField<String>(

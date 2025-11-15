@@ -7,6 +7,7 @@ class MyPageModel {
   final bool isLicenseUploaded;
   final String parkingStatus;
   bool isPushNotificationEnabled;
+  bool isPushMarketingEnabled;
 
   MyPageModel({
     required this.nickname,
@@ -17,6 +18,7 @@ class MyPageModel {
     required this.isLicenseUploaded,
     required this.parkingStatus,
     this.isPushNotificationEnabled = true,
+    this.isPushMarketingEnabled = true
   });
 }
 // lib/models/my_page_model.dart

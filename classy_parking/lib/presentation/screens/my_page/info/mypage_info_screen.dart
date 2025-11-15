@@ -128,7 +128,7 @@ class MypageInfoScreen extends StatelessWidget {
                 ? null
                 : () => viewModel.checkNicknameDuplication(),
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.teal,
+              backgroundColor: AppColor.main,
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),

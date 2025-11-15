@@ -16,7 +16,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
-        context.go(RoutePath.home);
+        context.push(RoutePath.navi);
       }
     });
   }
@@ -32,7 +32,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   const Icon(Icons.check_circle_outline,
-                      size: 120, color: Colors.blue),
+                      size: 120, color: AppColor.main),
                   const SizedBox(height: 20),
                   const Text(
                     "결제를 완료했습니다!",

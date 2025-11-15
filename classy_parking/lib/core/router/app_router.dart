@@ -12,10 +12,14 @@ import 'package:classy_parking/presentation/screens/my_page/my_page_screen.dart'
 import 'package:classy_parking/presentation/screens/my_page/park/my_park_screen.dart';
 import 'package:classy_parking/presentation/screens/parking/parking_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/category/payment_category_screen.dart';
+import 'package:classy_parking/presentation/screens/parking_payment/navi/navi_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/parking_payment_screen.dart';
+import 'package:classy_parking/presentation/screens/parking_payment/prev/prev_pay_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/prev/prev_payment_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/success/payment_success_screen.dart';
 import 'package:classy_parking/presentation/screens/parking_payment/success/prev_payment_success_screen.dart';
+import 'package:classy_parking/presentation/screens/prove/prove_screen.dart';
+import 'package:classy_parking/presentation/screens/prove/prove_success_screen.dart';
 import 'package:classy_parking/presentation/screens/register/register_screen.dart';
 import 'package:classy_parking/presentation/screens/register/register_success_screen.dart';
 import 'package:classy_parking/presentation/screens/report/report_screen.dart';
@@ -65,7 +69,9 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.success_payment: (context, state) => const PaymentSuccessScreen(),
   RoutePath.payment_category: (context, state) => const PaymentCategoryScreen(),
   RoutePath.prev_payment: (context, state) => const PrevPaymentScreen(),
+  RoutePath.prev_pay: (context, state) => const PrevPayScreen(),
   RoutePath.success_prev_payment: (context, state) => const PrevPaymentSuccessScreen(),
+  RoutePath.navi: (context, state) => const NaviScreen(),
   RoutePath.alarm: (context, state) => const AlarmScreen(),
   RoutePath.setting: (context, state) => const SettingScreen(),
 
@@ -74,6 +80,9 @@ final Map<String, GoRouterWidgetBuilder> routeBuilders = {
   RoutePath.myPage_info: (context, state) => const MypageInfoScreen(),
   RoutePath.myPark: (context, state) => const MyParkScreen(),
   RoutePath.park_manage: (context, state) => const MyParkinigManageScreen(),
+
+  RoutePath.prove: (context, state) => const ProveScreen(),
+  RoutePath.prove_success: (context, state) => const ProveSuccessScreen(),
 };
 
 // 앱바 고정 경로 목록 -> 여기 적으면 앱바 고정됨.

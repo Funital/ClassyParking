@@ -5,10 +5,10 @@ import 'my_page_model.dart';
 class MyPageViewModel extends ChangeNotifier {
   // 초기 더미 데이터 설정
   final MyPageModel _model = MyPageModel(
-    nickname: '홍길동',
+    nickname: '사랑',
     phoneNumber: '010-1234-5678',
     carType: '카니발',
-    carName: '사랑',
+    carName: '카니발',
     carNumber: '12가 3456',
     isLicenseUploaded: true,
     parkingStatus: '사용가능',
@@ -20,6 +20,14 @@ class MyPageViewModel extends ChangeNotifier {
   // // 푸시 알림 설정 토글
   void togglePushNotification(bool newValue) {
     _model.isPushNotificationEnabled = newValue;
+    notifyListeners();
+
+    // 실제 서버/로컬 설정 업데이트 로직이 여기에 들어갑니다.
+    print('푸시 알림 상태 변경: $newValue');
+  }
+
+  void togglePushMarketingNotification(bool newValue) {
+    _model.isPushMarketingEnabled = newValue;
     notifyListeners();
 
     // 실제 서버/로컬 설정 업데이트 로직이 여기에 들어갑니다.

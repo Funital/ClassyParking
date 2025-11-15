@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../../../core/constants/color.dart';
 import '../../../../core/router/route_path.dart';
 import '../../../widgets/custom_bottom_button.dart';
 import 'prev_payment_model.dart';
@@ -29,13 +30,25 @@ class PrevPaymentScreen extends StatelessWidget {
               onPressed: isEnabled
                   ? () {
                 // 선택된 상품 정보 출력 또는 다음 화면 이동 로직
+                final selectedParking = viewModel.selectedParkingDetail!;
                 final selectedProduct = viewModel.products![viewModel
                     .selectedIndex!];
                 print("--- 예약하기 버튼 활성화 ---");
                 print("선택된 상품: ${selectedProduct.title}(${selectedProduct
                     .dayOfWeek}), ${selectedProduct.price}원");
+                final Map<String, dynamic> paymentData = {
+                  'parkingName': selectedParking.parkingName,
+                  'productTitle': "${selectedProduct.title}(${selectedProduct.dayOfWeek})",
+                  'availableTime': selectedProduct.availableTime,
+                  'selectedFee': selectedProduct.price,
+                };
+
                 // TODO: 예약/결제 로직 실행
-                context.push(RoutePath.success_prev_payment);
+                // GoRouter의 extra를 통해 데이터 전달
+                context.push(
+                  RoutePath.prev_pay, // 실제 경로는 결제 화면 경로로 수정 필요
+                  extra: paymentData,
+                );
               }
                   : null,
             );
@@ -107,7 +120,7 @@ class PrevPaymentScreen extends StatelessWidget {
               icon: Stack(
                 children: [
                   const Icon(
-                      Icons.directions_car, color: Colors.blueAccent, size: 28),
+                      Icons.directions_car, color: AppColor.main, size: 28),
                   Positioned(
                     right: 0,
                     top: 0,
@@ -298,8 +311,8 @@ class PrevPaymentScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
-        children: const [
-          Icon(Icons.star, color: Color(0xFF3333FF), size: 18), // M 아이콘 대신 별 사용
+        children: [
+          Icon(Icons.star, color: AppColor.main, size: 18), // M 아이콘 대신 별 사용
           SizedBox(width: 8),
           Expanded(
             child: Text(
@@ -389,9 +402,9 @@ class PrevPaymentScreen extends StatelessWidget {
               height: 30,
               decoration: BoxDecoration(
                 // 선택 상태에 따라 테두리 색상과 배경색 변경
-                color: isSelected ? Colors.blue : Colors.white,
+                color: isSelected ? AppColor.main : Colors.white,
                 border: Border.all(
-                  color: isSelected ? Colors.blue : Colors.grey[300]!,
+                  color: isSelected ? AppColor.main : Colors.grey[300]!,
                   width: 1.5,
                 ),
                 borderRadius: BorderRadius.circular(20),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../core/constants/color.dart';
+
 enum CustomButtonType { danger, primary }
 
 class CustomButton extends StatelessWidget {
@@ -36,7 +38,7 @@ class CustomButton extends StatelessWidget {
         break;
 
       case CustomButtonType.primary:
-        backgroundColor = Colors.blue;
+        backgroundColor = AppColor.main;
         child = Text(
           text,
           style: const TextStyle(color: Colors.white, fontSize: 16),

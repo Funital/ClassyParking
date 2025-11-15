@@ -1,12 +1,15 @@
 // map_screen.dart
 import 'package:classy_parking/presentation/screens/map/parking_bottom_sheet.dart';
 import 'package:classy_parking/presentation/screens/map/parking_lot_view_model.dart';
+import 'package:classy_parking/presentation/screens/map/private_parking_bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:provider/provider.dart';
+
+import '../../../core/constants/color.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -119,6 +122,8 @@ class _MapScreenState extends State<MapScreen> {
                       subdomains: const ['a', 'b', 'c'],
                       userAgentPackageName: 'com.funital.classyparking',
                     ),
+                    // map_screen.dart 파일의 MarkerLayer 부분
+
                     MarkerLayer(
                       markers: [
                         if (currentPosition != null)
@@ -128,60 +133,82 @@ class _MapScreenState extends State<MapScreen> {
                             height: 40,
                             child: const Icon(
                               Icons.my_location,
-                              color: Colors.red,
+                              color: AppColor.main,
                               size: 40,
                             ),
                           ),
                         ...viewModel.parkingLots.map(
-                              (lot) => Marker(
-                            point: lot.location,
-                            width: 36,
-                            height: 36,
-                            child: GestureDetector(
-                              onTap: () {
-                                viewModel.selectLot(lot);
-                                // **바텀 시트 수정: DraggableScrollableSheet 적용 (높이 조절 가능)**
-                                showModalBottomSheet(
-                                  context: context,
-                                  isScrollControlled: true, // 필수 설정
-                                  shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.vertical(
-                                        top: Radius.circular(16)),
-                                  ),
-                                  builder: (BuildContext context) {
-                                    return DraggableScrollableSheet(
-                                      initialChildSize: 0.35, // 초기 높이 (화면의 35%)
-                                      minChildSize: 0.2,    // 최소 높이
-                                      maxChildSize: 0.9,    // 최대 높이
-                                      expand: false,
-                                      builder: (context, scrollController) {
-                                        return SingleChildScrollView(
-                                          controller: scrollController,
-                                          child: ParkingBottomSheet(
-                                            location: lot.location,
-                                            title: lot.name,
-                                            address: lot.address,
-                                            phone: lot.phone,
-                                            totalSpaces: lot.totalSpaces,
-                                            availableSpaces: lot.availableSpaces,
-                                            feeInfo: lot.feeInfo,
-                                            operationInfo: lot.operationInfo,
-                                          ),
-                                        );
-                                      },
-                                    );
-                                  },
-                                );
-                              },
-                              child: Icon(
-                                Icons.local_parking,
-                                // **마커 색상 적용**
-                                color: lot.markerColor,
-                                size: 36,
+                              (lot) {
+                            // **마커 색상에 따라 아이콘과 바텀 시트 분리**
+                            final bool isPrivateLot = lot.markerColor == Colors.green;
+                            final IconData markerIcon = isPrivateLot
+                                ? Icons.person // Colors.green 일 때 사람 아이콘
+                                : Icons.local_parking; // 기본 (Colors.main)일 때 주차장 아이콘
+                            final double markerSize = isPrivateLot ? 40 : 36; // 아이콘 크기 조절
+
+                            return Marker(
+                              point: lot.location,
+                              width: markerSize,
+                              height: markerSize,
+                              child: GestureDetector(
+                                onTap: () {
+                                  viewModel.selectLot(lot);
+                                  showModalBottomSheet(
+                                    context: context,
+                                    isScrollControlled: true,
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(16)),
+                                    ),
+                                    builder: (BuildContext context) {
+                                      return DraggableScrollableSheet(
+                                        initialChildSize: 0.35,
+                                        minChildSize: 0.2,
+                                        maxChildSize: 0.9,
+                                        expand: false,
+                                        builder: (context, scrollController) {
+                                          if (isPrivateLot) {
+                                            // **Colors.green일 때 새로운 PrivateParkingBottomSheet 사용**
+                                            return SingleChildScrollView(
+                                              controller: scrollController,
+                                              child: PrivateParkingBottomSheet( // 2단계: 새로 생성할 위젯
+                                                title: lot.name,
+                                                address: lot.address,
+                                                feeInfo: lot.feeInfo,
+                                                operationInfo: lot.operationInfo,
+                                                availableSpaces: lot.availableSpaces,
+                                              ),
+                                            );
+                                          } else {
+                                            // 기본 (AppColor.main)일 때 기존 ParkingBottomSheet 사용
+                                            return SingleChildScrollView(
+                                              controller: scrollController,
+                                              child: ParkingBottomSheet(
+                                                location: lot.location,
+                                                title: lot.name,
+                                                address: lot.address,
+                                                phone: lot.phone,
+                                                totalSpaces: lot.totalSpaces,
+                                                availableSpaces: lot.availableSpaces,
+                                                feeInfo: lot.feeInfo,
+                                                operationInfo: lot.operationInfo,
+                                              ),
+                                            );
+                                          }
+                                        },
+                                      );
+                                    },
+                                  );
+                                },
+                                child: Icon(
+                                  markerIcon, // **분리된 아이콘 사용**
+                                  color: lot.markerColor,
+                                  size: markerSize,
+                                ),
                               ),
-                            ),
-                          ),
-                        ),
+                            );
+                          },
+                        ).toList(), // map 결과를 toList()로 변환
                       ],
                     ),
                   ],
@@ -219,21 +246,24 @@ class _MapScreenState extends State<MapScreen> {
                 FloatingActionButton(
                   onPressed: _recenterMap,
                   tooltip: '현재 위치로 이동',
-                  child: const Icon(Icons.my_location),
+                  backgroundColor: Colors.white,
+                  child: Icon(Icons.my_location, color: AppColor.main,),
                   heroTag: 'recenter',
                 ),
                 const SizedBox(height: 12),
                 FloatingActionButton(
                   onPressed: _zoomIn,
+                  backgroundColor: Colors.white,
                   tooltip: '확대',
-                  child: const Icon(Icons.zoom_in),
+                  child: const Icon(Icons.zoom_in, color: AppColor.main),
                   heroTag: 'zoomIn',
                 ),
                 const SizedBox(height: 12),
                 FloatingActionButton(
                   onPressed: _zoomOut,
+                  backgroundColor: Colors.white,
                   tooltip: '축소',
-                  child: const Icon(Icons.zoom_out),
+                  child: const Icon(Icons.zoom_out, color: AppColor.main),
                   heroTag: 'zoomOut',
                 ),
               ],

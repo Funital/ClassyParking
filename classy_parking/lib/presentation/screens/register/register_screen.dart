@@ -1,11 +1,16 @@
+import 'dart:io';
+
 import 'package:classy_parking/presentation/screens/register/register_view_model.dart';
 import 'package:classy_parking/presentation/widgets/custom_sub_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_map/flutter_map.dart';
+import 'package:latlong2/latlong.dart'; // LatLng 사용을 위해 추가 (필요 없을 수도 있지만 안전하게 유지)
 
+import '../../../core/constants/color.dart';
 import '../../../core/router/route_path.dart';
 
 final MapController _registerMapController = MapController();
@@ -32,25 +37,65 @@ class RegisterScreen extends StatelessWidget {
     );
   }
 
+  // 1. 주소 검색 팝업을 띄우고 결과를 ViewModel에 전달하는 함수
+  void _showAddressSearchDialog(BuildContext context, RegisterViewModel viewModel) {
+    String searchKeyword = '';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('주소 검색'),
+          content: TextField(
+            autofocus: true,
+            decoration: const InputDecoration(
+              hintText: "예: 안양역, 서울시청",
+              border: OutlineInputBorder(),
+            ),
+            onChanged: (value) {
+              searchKeyword = value;
+            },
+            onSubmitted: (value) => Navigator.of(context).pop(value), // 엔터키로도 검색 가능
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('취소'),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(searchKeyword),
+              child: const Text('검색'),
+            ),
+          ],
+        );
+      },
+    ).then((result) async {
+      // 팝업이 닫힌 후, 검색 결과(result)가 문자열이고 비어있지 않은 경우
+      if (result != null && result is String && result.isNotEmpty) {
+        // 검색어를 ViewModel의 searchAddress에 전달하여 실제 검색 수행
+        await viewModel.searchAddress(result);
+
+        // 검색 후 지도를 새 위치로 이동
+        _registerMapController.move(viewModel.mapCenter, 15.0);
+      }
+    });
+  }
+
   // 2. 1단계 본문 내용 구성 (FlutterMap 적용)
   Widget _buildStepOneContent(BuildContext context, RegisterViewModel viewModel) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        _buildImagePickerSection(context, viewModel),
 
-        // 1. 기본 정보 헤더
-        const Text(
-          "1. 기본 정보",
-          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-        ),
         const SizedBox(height: 15.0),
 
-        // (주차장 이름 입력 필드 - 생략 없이 기존 코드 유지)
+        // (주차장 이름 입력 필드)
         const Text("주차장 이름", style: TextStyle(color: Colors.grey)),
         TextFormField(
           initialValue: viewModel.model.parkingName,
           decoration: const InputDecoration(
-            hintText: "예: 강남역 2번 출구 민영 주차장",
+            hintText: "예: 안양역 2번 출구 민영 주차장",
             contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
             border: OutlineInputBorder(),
           ),
@@ -59,23 +104,53 @@ class RegisterScreen extends StatelessWidget {
         const SizedBox(height: 25.0),
 
         // 주소
-        const Text("주소", style: TextStyle(color: Colors.grey)),
-        ElevatedButton(
-          onPressed: () async {
-            // TODO: 주소 검색 UI/팝업을 띄우고 결과를 받아와야 함.
-            // 임시로 더미 주소 검색을 호출 (ViewModel에 LatLng 업데이트 로직 필요)
-            await viewModel.searchAddress("서울특별시 강남구 테헤란로 132");
-            // 검색 후 지도를 새 위치로 이동
-            _registerMapController.move(viewModel.mapCenter, 15.0);
-          },
-          style: ElevatedButton.styleFrom(
-            minimumSize: const Size(double.infinity, 45),
-            backgroundColor: Colors.blue,
-            foregroundColor: Colors.white,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+        const Text("주소", style: TextStyle(color: Colors.white)),
+
+        // ⭐ 수정: 주소 검색 여부에 따른 조건부 UI
+        if (viewModel.model.address.isEmpty)
+        // 주소 검색 버튼
+          ElevatedButton(
+            onPressed: () {
+              // ⭐ 수정: 팝업을 띄워 실제 검색어를 받도록 변경
+              _showAddressSearchDialog(context, viewModel);
+            },
+            style: ElevatedButton.styleFrom(
+              minimumSize: const Size(double.infinity, 45),
+              backgroundColor: Colors.white,
+              foregroundColor: AppColor.main,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+              side: BorderSide(
+                color: AppColor.main,   // ← ⭐ 원하는 borderColor
+                width: 1,             // ← ⭐ 두께 조절 가능
+              ),
+            ),
+            child: const Text("주소 검색", style: TextStyle(fontSize: 16.0)),
+          )
+        else
+        // 검색된 주소와 재검색 버튼
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("도로명 주소 (검색 결과)", style: TextStyle(color: Colors.black)),
+              Text(viewModel.model.address, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
+              const SizedBox(height: 10.0),
+
+              ElevatedButton(
+                onPressed: () {
+                  // ⭐ 수정: 팝업을 띄워 실제 검색어를 받도록 변경
+                  _showAddressSearchDialog(context, viewModel);
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 45),
+                  backgroundColor: Colors.white60,
+                  foregroundColor: AppColor.main,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
+                ),
+                child: const Text("주소 재검색", style: TextStyle(fontSize: 16.0)),
+              ),
+            ],
           ),
-          child: const Text("주소 검색", style: TextStyle(fontSize: 16.0)),
-        ),
+
         const SizedBox(height: 15.0),
 
         // 상세 주소 (검색 결과가 있으면 표시)
@@ -85,9 +160,6 @@ class RegisterScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("도로명 주소 (검색 결과)", style: TextStyle(color: Colors.black)),
-                Text(viewModel.model.address, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
-                const SizedBox(height: 10.0),
                 const Text("상세 주소", style: TextStyle(color: Colors.grey)),
                 TextFormField(
                   initialValue: viewModel.model.detailAddress,
@@ -137,19 +209,14 @@ class RegisterScreen extends StatelessWidget {
                       width: 50,
                       height: 50,
                       child: Draggable( // Draggable 위젯을 사용하여 핀 드래그 구현
-                        feedback: const Icon(Icons.location_on, color: Colors.blue, size: 50),
+                        feedback: const Icon(Icons.location_on, color: AppColor.main, size: 50),
                         childWhenDragging: Container(),
                         data: viewModel.parkingPosition,
                         onDragEnd: (details) {
-                          // 지도 뷰포트 좌표를 LatLng으로 변환하는 로직 필요
-                          // 단순 예시: 화면 중앙 위치를 핀의 새 위치로 가정하거나,
-                          // Dragging 위치를 직접 LatLng으로 변환해야 합니다. (더 복잡한 로직 필요)
-                          // 간단하게는 MapOptions의 onTap을 사용하거나, Custom Marker 사용이 더 일반적입니다.
-
-                          // 여기서는 간단히 지도 중앙을 새로운 핀 위치로 업데이트하는 로직을 가정
+                          // 여기서는 간단히 지도 중앙을 새로운 핀 위치로 업데이트
                           viewModel.updateParkingPosition(_registerMapController.camera.center);
                         },
-                        child: const Icon(Icons.location_on, color: Colors.blue, size: 40),
+                        child: const Icon(Icons.location_on, color: AppColor.main, size: 40),
                       ),
                     ),
                   ],
@@ -160,7 +227,7 @@ class RegisterScreen extends StatelessWidget {
         ),
         const SizedBox(height: 30.0),
 
-        // (주차장 종류 헤더 및 총 주차 가능 면수 입력 필드 - 기존 코드 유지)
+        // (주차장 종류 헤더 및 총 주차 가능 면수 입력 필드)
         const Text(
           "주차장 종류",
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
@@ -186,6 +253,9 @@ class RegisterScreen extends StatelessWidget {
 
   // 3. 하단 "다음 단계" 버튼 (기존 코드 유지)
   Widget _buildBottomButton(BuildContext context, RegisterViewModel viewModel) {
+    // ⭐ 수정: isStepValid()를 사용하여 버튼 활성화/비활성화
+    final bool isButtonEnabled = viewModel.isStepValid();
+
     return Padding(
       padding: EdgeInsets.only(
         left: 20,
@@ -194,10 +264,12 @@ class RegisterScreen extends StatelessWidget {
         top: 10,
       ),
       child: ElevatedButton(
-        onPressed: () => viewModel.goToHome(context),
+        // ⭐ 수정: 유효성 검사를 통과했을 때만 onPressed 함수 실행
+        onPressed: isButtonEnabled ? () => viewModel.goToHome(context) : null,
         style: ElevatedButton.styleFrom(
           minimumSize: const Size(double.infinity, 50),
-          backgroundColor: Colors.blue,
+          // ⭐ 수정: 버튼 활성화 여부에 따라 색상 변경
+          backgroundColor: isButtonEnabled ? AppColor.main : Colors.grey,
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.0)),
         ),
@@ -206,6 +278,85 @@ class RegisterScreen extends StatelessWidget {
           style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
         ),
       ),
+    );
+  }
+  // ⭐ 추가: 이미지 선택 및 미리보기 위젯 구현
+  Widget _buildImagePickerSection(BuildContext context, RegisterViewModel viewModel) {
+    final String? imagePath = viewModel.model.imagePath;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "주차장 대표 사진 등록",
+          style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+        ),
+        const SizedBox(height: 15.0),
+        // 이미지 미리보기 또는 기본 메시지
+        Container(
+          height: 200,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.grey.shade200,
+            borderRadius: BorderRadius.circular(8.0),
+            border: imagePath != null ? null : Border.all(
+                color: Colors.grey.shade400, width: 1),
+          ),
+          child: imagePath != null
+              ? ClipRRect(
+            borderRadius: BorderRadius.circular(8.0),
+            child: Image.file(
+              File(imagePath), // ⭐ File 위젯 사용을 위해 'dart:io' import 필요
+              fit: BoxFit.cover,
+            ),
+          )
+              : const Center(
+            child: Text(
+                '등록할 사진을 선택해 주세요', style: TextStyle(color: Colors.black)),
+          ),
+        ),
+        const SizedBox(height: 15.0),
+
+        // 사진 선택/촬영 버튼
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: () => viewModel.pickImage(ImageSource.camera),
+                icon: const Icon(Icons.camera_alt),
+                label: const Text("사진 촬영"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 45),
+                  backgroundColor: Colors.white,
+                  foregroundColor: AppColor.main,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0)),
+                  side: BorderSide(
+                    color: AppColor.main,   // ← ⭐ 원하는 borderColor
+                    width: 1,             // ← ⭐ 두께 조절 가능
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: () => viewModel.pickImage(ImageSource.gallery),
+                icon: const Icon(Icons.photo_library),
+                label: const Text("이미지 선택"),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: const Size(double.infinity, 45),
+                  backgroundColor: AppColor.main,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0)),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }
