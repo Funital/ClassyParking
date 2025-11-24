@@ -47,6 +47,11 @@ class ReportViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  void updateImage(String value) {
+    _model = _model.copyWith(imagePath: value);
+    notifyListeners();
+  }
+
   // --- 메인 신고 로직 ---
 
   Future<void> handleReportSubmission(BuildContext context) async {
@@ -102,7 +107,7 @@ class ReportViewModel extends ChangeNotifier {
         return AlertDialog(
           title: const Text('2차 신고 필요'),
           content: const Text(
-            '신고의 신뢰도를 높이기 위해, 10초 후에 다시 한 번 신고를 진행해야 합니다.',
+            '신고의 신뢰도를 높이기 위해, 1분 후에 다시 한 번 신고를 진행해야 합니다.',
             style: TextStyle(height: 1.5),
           ),
           actions: <Widget>[

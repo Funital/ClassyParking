@@ -83,14 +83,10 @@ class _NaviView extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          // 1. 지도 영역 (시뮬레이션이므로 회색 배경으로 처리)
-          Container(
-            color: Colors.grey.shade400,
-            child: const Center(
-              child: Text(
-                "지도 표시 영역 (실제 내비게이션 시뮬레이션)",
-                style: TextStyle(color: Colors.black54, fontSize: 16),
-              ),
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/map.png',
+              fit: BoxFit.cover,
             ),
           ),
 
@@ -165,7 +161,7 @@ class _NaviView extends StatelessWidget {
                   foregroundColor: Colors.white,
                   minimumSize: const Size(100, 40),
                 ),
-                child: const Text("도착 완료 (테스트)", style: TextStyle(fontSize: 15)),
+                child: const Text("도착 완료", style: TextStyle(fontSize: 15)),
               ),
             ],
           ),

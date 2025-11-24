@@ -74,7 +74,7 @@ class ReportScreen extends StatelessWidget {
       final pickedFile = await ImagePicker().pickImage(
           source: ImageSource.gallery);
       if (pickedFile != null) {
-        // viewModel.updateImage(File(pickedFile.path).path);
+        viewModel.updateImage(File(pickedFile.path).path);
       }
     }
 
@@ -111,7 +111,14 @@ class ReportScreen extends StatelessWidget {
               border: Border.all(color: Colors.grey.shade300),
             ),
             child: imagePath != null
-                ? Image.file(File(imagePath!), fit: BoxFit.cover)
+                ? ClipRRect( // ✅ 이미지의 모서리를 Container와 동일하게 처리
+              borderRadius: BorderRadius.circular(10),
+              child: Image.file(
+                File(imagePath), // ✅ ! 제거 및 null-check 활용
+                fit: BoxFit.cover, // ✅ fit 옵션을 Image.file에 적용
+                width: double.infinity, // ✅ 너비 전체 사용
+              ),
+            )
                 : const Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
